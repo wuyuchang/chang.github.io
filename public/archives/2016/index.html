@@ -23,8 +23,8 @@
     <link rel="alternative" href="/atom.xml" title="Yuchang&#39;s Blog" type="application/atom+xml">
   
   <meta name="summary" content="this is a lazy boy, he keep nothing to here">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="stylesheet" href="/public/css/style.css">
 </head>
 
 <body>
@@ -48,21 +48,21 @@
     <ul class="nav">
       
           <li class="waves-block waves-effect">
-            <a href="/"  >
+            <a href="/public/"  >
               <i class="icon icon-lg icon-home"></i>
-              主页
+              Home
             </a>
           </li>
       
           <li class="waves-block waves-effect">
-            <a href="/archives"  >
+            <a href="/public/archives"  >
               <i class="icon icon-lg icon-archives"></i>
               Archives
             </a>
           </li>
       
           <li class="waves-block waves-effect">
-            <a href="/tags"  >
+            <a href="/public/tags"  >
               <i class="icon icon-lg icon-tags"></i>
               Tags
             </a>
@@ -96,16 +96,6 @@
           <i class="icon icon-lg icon-navicon"></i>
         </a>
         <div class="flex-col header-title ellipsis">Yuchang&#39;s Blog</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
         
         
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share">
@@ -146,7 +136,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2016/11/29/hello-world/">Hello World</a>
+      <a class="post-title-link" href="/public/2016/11/29/hello-world/">Hello World</a>
     </h3>
   
 
@@ -211,28 +201,8 @@ var BLOG_SHARE = {
 
 <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 
-<script src="/js/main.js"></script>
+<script src="/public/js/main.js"></script>
 
-
-
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<script type="text/template" id="search-tpl">
-<li class="item">
-    <a href="/{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
-            </div>
-            <time class="flex-col time">{date}</time>
-        </div>
-    </a>
-</li>
-</script>
-
-<script src="/js/search.js"></script>
 
 
 

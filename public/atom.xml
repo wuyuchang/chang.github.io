@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Yuchang&#39;s Blog</title>
   <subtitle>Don&#39;t forget your original intention</subtitle>
-  <link href="/atom.xml" rel="self"/>
+  <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://wuyuchang.github.io/"/>
   <updated>2016-11-29T07:55:55.398Z</updated>
