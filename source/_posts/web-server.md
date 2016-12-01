@@ -101,6 +101,11 @@ $ usermod -G www chang # add www group to chang, Be careful, it will remove all 
 $ usermod -G www -a chang
 ```
 
+### chown
+change file owner
+``` bash
+$ chown -hR www:www /home/www # chang the owner of /homw/www to www user and www group
+```
 ## Tip
 ``` bash
 $ man order # to see detail of the order
@@ -117,6 +122,7 @@ $ groups username # show which groups does username have
 *screen* https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/#starting
 *useradd* http://www.tecmint.com/add-users-in-linux/
 *usermod* http://www.tecmint.com/usermod-command-examples/
+*permission* http://www.tecmint.com/manage-users-and-groups-in-linux/
 
 [htop]: https://hisham.hm/htop/index.php
 [top]: https://linux.die.net/man/1/top
