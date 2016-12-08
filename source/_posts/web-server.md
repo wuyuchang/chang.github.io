@@ -123,6 +123,7 @@ $ groups username # show which groups does username have
 *useradd* http://www.tecmint.com/add-users-in-linux/
 *usermod* http://www.tecmint.com/usermod-command-examples/
 *permission* http://www.tecmint.com/manage-users-and-groups-in-linux/
+*nginx* https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/
 
 [htop]: https://hisham.hm/htop/index.php
 [top]: https://linux.die.net/man/1/top
