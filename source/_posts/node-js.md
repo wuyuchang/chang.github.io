@@ -69,3 +69,19 @@ l10n.get((err, resources) => {
   emitter.emit('done', 'resources', resources)
 })
 ```
+
+## order asynchronous
+https://wuyuchang.github.io/2016/12/09/Principle-of-Promise-Deferred/
+
+## smooth
+``` JavaScript
+let smooth = method => {
+  return () => {
+    let deferred = new Deferred()
+    let args = Array.prototype.slice.call(arguments, 0) // transform the arguments to an array
+    args.push(deferred.callback()) // push an parameter, [file, encode, deferred.callback()]
+    method.apply(null, args) // call method, fs.readFile(file, encode, deferred.callback())
+    return deferred.promise
+  }
+}
+```
