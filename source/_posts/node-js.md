@@ -23,7 +23,22 @@ let select = callback => {
 ```
 
 
-## async
+## asynchronous
+Asynchronous is a good stuff, you can execute I/O operate without wait it. It's a good way to improve the CPU usage rate.
+Sometimes, we have multiple I/O operates, and these are associated, we want to do some action after all of the I/O operates finished. What can we do? You may do like this below.
+``` JavaScript
+fs.readFile(path, 'utf8', (err, template) => {
+  db.query(sql, (err, data) => {
+    l10n.get((err, resources) => {
+      // action
+    })
+  })
+})
+```
+It's easy to do that right? But mention the callback, you write 3 level callback then do the action. Think about it, if you have to do 4 or 5 I/O operate, and you do action after all of theses finished. so you may write '}) }) }) }) })', seems painful to maintain the program.
+
+Anyway, we don't do above, that is so stupid. We can make these I/O operate in first level without put an operate in to another callback. Read below.
+
 ``` JavaScript
 let after = (times, callback) => {
   let count = 0
@@ -53,33 +68,4 @@ db.query(sql, (err, data) => {
 l10n.get((err, resources) => {
   emitter.emit('done', 'resources', resources)
 })
-```
-
-
-``` JavaScript
-let after = (times, callback) => {
-  let count = 0
-  let result = {}
-  return (key, value) => {
-    result[key] = value
-    count ++
-    if (count === times) {
-      callback(result)
-    }
-  }
-}
-
-
-let done = after(times, render)
-
-fs.readFile(template_path, 'utf8', (err, template) => {
-  done('template', template)
-})
-db.query(sql, (err, data) => {
-  done('data', data)
-})
-l10n.get((err, resources) => {
-  done('resources', resources)
-})
-
 ```
