@@ -60,7 +60,7 @@ emitter.on('done', done)
 emitter.on('done', other)
 
 fs.readFile(template_path, 'utf8', (err, template) => {
-  emitter.emit('doen', 'template', tempalte)
+  emitter.emit('done', 'template', tempalte)
 })
 db.query(sql, (err, data) => {
   emitter.emit('done', 'data', data)
