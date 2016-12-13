@@ -223,6 +223,82 @@ Now you can run nginx with *nginx* command without fullpath.
 ``` bash
 $ nginx -V
 ```
+
+## Configure web
+Now, you can access webpage in browser with default page in NGINX via localhost. So, the nginx.conf path is put in where we set during we configure NGINX -- */usr/local/nginx/nginx.conf*.
+Let's look at the file via vim.
+``` bash
+$ cd /usr/local/nginx
+$ vim nginx.conf
+```
+go to 35 line through `35 G`
+{% asset_img default_server.png NGINX default server %}
+
+We drop the unnecessary code, and simplify the code and explain the meaning of the code to below:
+``` NGINX
+server {
+    listen       80;                  # listening the port, so you access the server with 80 port, this is the default port, so you can access the web server without append :80
+    server_name  localhost;           # domain
+
+    location / {                      # route, NGINX will receive the URL path, and adapt it with the route, if the path is same with route, then go into the brace block
+        root   html;                  # basic directory where web server in, in this demo, it is in ./html
+        index  index.html index.htm;  # access it without append the file name if it is index.html or index.htm
+    }
+}
+```
+
+Now, we can configure a server by self, we make the root of the web server in */home/www*, and write index.html, then open the nginx.conf to configure the new web server "Hello world"
+``` bash
+$ mkdir /home/www
+$ echo "Hello world" > index.html
+$ cd /usr/local/nginx
+$ vim nginx.conf
+```
+We append *include conf.d/&#42;.conf* into nginx.conf at last second line. so we can add the server configure without pollute the origin configure. It will auto add all of the file that have .conf extension into *nginx.conf*.
+``` nginx
+server {
+  listen 8080;
+  server_name localhost;
+  location / {
+    root /home/www;
+    index index.html index.htm;
+  }
+}
+```
+Then we reload the nginx server with:
+``` bash
+$ nginx -s reload
+```
+Now, you can access www. *http://localhost:8080/*
+
+## change response header
+We already install the headers-more-nginx-module, so we can configure the response header. Before we configure it, let's open the developers-tool in google-chrome, and look at the network request, we can get the response headers:
+{% asset_img response_header.png response headers %}
+For some security reason, we don't want to show Server information to client, so we can add the configuration to *hello_world.conf*.
+``` nginx
+more_set_headers "Server" ""; # add this
+server {
+  listen 8080;
+  server_name localhost;
+  location / {
+    root /home/www;
+    index index.html index.htm;
+  }
+}
+```
+Then reload the nginx server:
+``` bash
+$ nginx -s reload
+```
+Then we reload the page in browser, and open the network, the Server information already drop.
+{% asset_img response_header_safe.png response headers without server information %}
+
+Now, your nginx server is more safer than before you add the server information into response headers.
+
+For more detail about the headers-more-nginx-module, see: https://github.com/openresty/headers-more-nginx-module
+
+## add module
+If you want to add some module into NGINX that was installed, you have to download the module, then reconfigure NGINX with the module and compile it.
 ## Tip
 ``` bash
 $ man order # to see detail of the order
