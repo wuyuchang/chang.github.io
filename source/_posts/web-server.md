@@ -1,5 +1,5 @@
 ---
-title: Config web server with Nginx & PHP7 in Linux for beginner
+title: Config web server with Nginx in Linux for beginner
 ---
 
 We use **Debian** to finish the demo.
@@ -168,6 +168,61 @@ configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-p
 
 ```
 You can see the latest version of the NGINX installed to your system.
+
+### Install from open sources
+As you see, these above two types to install NGINX is non-configurable, these are pre-build, so they already configure with default value. you can't add or remove module and configure it. So if you want to add module or 3rd party module and apply latest security patches, I suggest you use this type to install NGINX.
+1. the PCRE lirary - required by NGINX core and Rewrite modules and provides support for regular expressions.
+``` bash
+$ wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.39.tar.gz
+$ tar -zxf pcre-8.39.tar.gz
+$ cd pcre-8.39
+$ ./configure
+$ make
+$ sudo make install
+```
+2. the zlib library - required by NGINX Gzip module for headers compression.
+``` bash
+$ wget http://zlib.net/zlib-1.2.8.tar.gz
+$ tar -zxf zlib-1.2.8.tar.gz
+$ cd zlib-1.2.8
+$ ./configure
+$ make
+$ sudo make install
+```
+3. the OpenSSL library - required by NGINX SSL modules to support the HTTPS protocol.
+``` bash
+$ wget http://www.openssl.org/source/openssl-1.0.2f.tar.gz
+$ tar -zxf openssl-1.0.2f.tar.gz
+$ cd openssl-1.0.2f
+$ ./configure darwin64-x86_64-cc --prefix=/usr
+$ make
+$ sudo make install
+```
+4. The header more nginx library - required by NGINX header more nginx module to change the response header information.
+``` bash
+$ wget https://codeload.github.com/openresty/headers-more-nginx-module/tar.gz/v0.32
+$ tar -zxf v0.32
+```
+5. download the NGINX sources
+``` bash
+$ wget http://nginx.org/download/nginx-1.10.2.tar.gz
+$ tar zxf nginx-1.10.2.tar.gz
+$ cd nginx-1.10.2
+```
+6. configure NGINX
+Add above that you download module to NGINX, so you can use the module in NGINX.
+``` bash
+$ ./configure --prefix=/usr/local/nginx --sbin-path=/usr/local/nginx/nginx --conf-path=/usr/local/nginx/nginx.conf --pid-path=/usr/local/nginx/nginx.pid --with-pcre=../pcre-8.39 --with-zlib=../zlib-1.2.8 --with-http_ssl_module --add-module../headers-more-nginx-module-0.32
+```
+7. link NGINX
+Now, you can run nginx with full path -- */usr/local/nginx/nginx*, and you can browse it with localhost in any browser. But seems not convenient to run nginx with full path every time, so we link the nginx from local to sbin that you can run it without fullpath, just run *nginx*.
+``` bash
+$ ln -s /usr/local/nginx/nginx /usr/sbin/nginx
+```
+Now you can run nginx with *nginx* command without fullpath.
+``` bash
+$ nginx -V
+```
 ## Tip
 ``` bash
 $ man order # to see detail of the order
@@ -186,7 +241,7 @@ $ groups username # show which groups does username have
 *usermod* http://www.tecmint.com/usermod-command-examples/
 *permission* http://www.tecmint.com/manage-users-and-groups-in-linux/
 *nginx* https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/
-
+*headers-more-nginx-module* https://github.com/openresty/headers-more-nginx-module
 [htop]: https://hisham.hm/htop/index.php
 [top]: https://linux.die.net/man/1/top
 [vim]: http://www.vim.org/
