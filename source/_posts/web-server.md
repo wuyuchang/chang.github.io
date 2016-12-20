@@ -212,7 +212,7 @@ $ cd nginx-1.10.2
 6. configure NGINX
 Add above that you download module to NGINX, so you can use the module in NGINX.
 ``` bash
-$ ./configure --prefix=/usr/local/nginx --sbin-path=/usr/local/nginx/nginx --conf-path=/usr/local/nginx/nginx.conf --pid-path=/usr/local/nginx/nginx.pid --with-pcre=../pcre-8.39 --with-zlib=../zlib-1.2.8 --with-http_ssl_module --add-module../headers-more-nginx-module-0.32
+$ ./configure --prefix=/usr/local/nginx --sbin-path=/usr/local/nginx/nginx --conf-path=/usr/local/nginx/nginx.conf --pid-path=/usr/local/nginx/nginx.pid --with-pcre=../pcre-8.39 --with-zlib=../zlib-1.2.8 --with-http_ssl_module --add-module=../headers-more-nginx-module-0.32 --with-debug
 ```
 7. link NGINX
 Now, you can run nginx with full path -- */usr/local/nginx/nginx*, and you can browse it with localhost in any browser. But seems not convenient to run nginx with full path every time, so we link the nginx from local to sbin that you can run it without fullpath, just run *nginx*.
@@ -309,6 +309,7 @@ $ getent group # show all groups
 $ getent group | grep username
 $ id username # show username information
 $ groups username # show which groups does username have
+$ dpkg-reconfigure tzdate # change timezone
 ```
 
 > Ref:
