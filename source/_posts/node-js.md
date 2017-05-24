@@ -1,7 +1,7 @@
 ---
 title: Node.js
 date: 2016-12-08 20:35:41
-tags: node.js
+tags: Node.js
 ---
 
 ## Event queue to solve a number of SQL with same result executed

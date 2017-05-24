@@ -12,8 +12,8 @@ menu:
     url: /
   archives:
     url: /archives
-#  tags:
-#    url: /tags
+  tags:
+    url: /tags
   github:
     url: https://github.com/wuyuchang
     target: _blank
