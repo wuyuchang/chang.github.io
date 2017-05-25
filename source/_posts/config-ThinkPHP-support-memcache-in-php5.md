@@ -1,7 +1,7 @@
 ---
 title: config ThinkPHP support memcache in php5
 date: 2017-01-03 17:23:37
-tags:
+tags: [Linux, PHP, Memcache]
 ---
 
 This guide is base on Ubuntu & PHP5, so you have to install PHP5 in Ubunut first, but debian is okay.

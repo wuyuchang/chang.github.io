@@ -1,5 +1,6 @@
 ---
 title: Config web server with Nginx in Linux for beginner
+tags: [Linux, Nginx]
 ---
 
 We use **Debian** to finish the demo.
