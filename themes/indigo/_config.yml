@@ -20,12 +20,10 @@ menu:
   github:
     url: https://github.com/wuyuchang
     target: _blank
-#  weibo:
-#    url: http://www.weibo.com/ysweb
-#    target: _blank
-#  link:
-#    text: 测试
-#    url: /custom
+  facebook:
+    text: facebook
+    url: https://www.facebook.com/yuchang.wu.73
+    target: _blank
 
 # 你的头像url
 avatar: /img/logo.jpg
