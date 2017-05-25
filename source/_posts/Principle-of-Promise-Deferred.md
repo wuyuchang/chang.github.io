@@ -68,7 +68,7 @@ window.deferred = {
 ```
 
 # use jQuery promise/deferred
-Fortunately, jQuery already realize this, so we just have to do below.
+Fortunately, jQuery already implement this, so we just have to do below.
 `request.js`
 ``` JavaScript
 window.promise = $.get('url')
@@ -103,8 +103,8 @@ class Promise extends EventEmitter {
   }
 }
 ```
-Here you can see we defined three events after you pass these callback function into it through call 'then' function.
-So we defined the events, and we have to emit it, so that we can execute these callbacks with the result.
+Here you can see we defined three events after you pass these callback function into it through 'then' function.
+So we defined the events, and we have to trigger it, so that we can execute these callbacks with the result.
 
 Below, we defined the Deferred object.
 ## Deferred Object
@@ -132,7 +132,7 @@ class Deferred {
 
 
 ## use Promise & Deferred
-To realize this, we create a new Deferred, and we trigger deferred function (progress/end/error) when we finish specific action to tell Deferred that we finished.
+To implement this, we create a new Deferred, and we trigger deferred function (progress/end/error) when we finish specific action to tell Deferred that we finished.
 Then we get promise object, and then we can store it, and call it with callback in another file.
 So we successful separate call async and get data in two files.
 ``` JavaScript
