@@ -24,6 +24,10 @@ menu:
     text: Facebook
     url: https://www.facebook.com/yuchang.wu.73
     target: _blank
+  html5:
+    text: cnblogs
+    url: http://www.cnblogs.com/wuyuchang
+    target: _blank
 
 # 你的头像url
 avatar: /img/logo.jpg
