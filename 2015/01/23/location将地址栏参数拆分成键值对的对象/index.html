@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>location将地址栏参数拆分成键值对的对象 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,JavaScript">
+    <meta name="description" content="window.location可获取地址栏的一系列信息，并且每个浏览器都支持该属性，非常方便。而获取到的问号后面的参数可以进行加工转变成我们所想要的键值对。 location的属性：   属性名 例子 说明    hash “#contents” 返回URL的hash（#后跟零或多个字符），如果URL中不包含散列，则返回空字符串   host “www.wrox.com:80” 返回服务器名称和端">
+<meta name="keywords" content="Front-End,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="location将地址栏参数拆分成键值对的对象">
+<meta property="og:url" content="https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="window.location可获取地址栏的一系列信息，并且每个浏览器都支持该属性，非常方便。而获取到的问号后面的参数可以进行加工转变成我们所想要的键值对。 location的属性：   属性名 例子 说明    hash “#contents” 返回URL的hash（#后跟零或多个字符），如果URL中不包含散列，则返回空字符串   host “www.wrox.com:80” 返回服务器名称和端">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T10:40:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="location将地址栏参数拆分成键值对的对象">
+<meta name="twitter:description" content="window.location可获取地址栏的一系列信息，并且每个浏览器都支持该属性，非常方便。而获取到的问号后面的参数可以进行加工转变成我们所想要的键值对。 location的属性：   属性名 例子 说明    hash “#contents” 返回URL的hash（#后跟零或多个字符），如果URL中不包含散列，则返回空字符串   host “www.wrox.com:80” 返回服务器名称和端">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">location将地址栏参数拆分成键值对的对象</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">location将地址栏参数拆分成键值对的对象</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2015-01-23T06:02:00.000Z" itemprop="datePublished" class="page-time">
+  2015-01-23
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#location的属性："><span class="post-toc-number">1.</span> <span class="post-toc-text">location的属性：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#location刷新"><span class="post-toc-number">2.</span> <span class="post-toc-text">location刷新</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#获取地址栏的参数，并以键值对展现"><span class="post-toc-number">3.</span> <span class="post-toc-text">获取地址栏的参数，并以键值对展现</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-location将地址栏参数拆分成键值对的对象"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">location将地址栏参数拆分成键值对的对象</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2015-01-23 14:02:00" datetime="2015-01-23T06:02:00.000Z"  itemprop="datePublished">2015-01-23</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><code>window.location</code>可获取地址栏的一系列信息，并且每个浏览器都支持该属性，非常方便。而获取到的问号后面的参数可以进行加工转变成我们所想要的键值对。</p>
+<h2 id="location的属性："><a href="#location的属性：" class="headerlink" title="location的属性："></a>location的属性：</h2><table>
+<thead>
+<tr>
+<th align="left">属性名</th>
+<th align="left">例子</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">hash</td>
+<td align="left">“#contents”</td>
+<td align="left">返回URL的hash（#后跟零或多个字符），如果URL中不包含散列，则返回空字符串</td>
+</tr>
+<tr>
+<td align="left">host</td>
+<td align="left">“<a href="http://www.wrox.com:80”" target="_blank" rel="noopener">www.wrox.com:80”</a></td>
+<td align="left">返回服务器名称和端口号（如果有）</td>
+</tr>
+<tr>
+<td align="left">hostname</td>
+<td align="left">“<a href="http://www.wrox.com”" target="_blank" rel="noopener">www.wrox.com”</a></td>
+<td align="left">返回不带端口号的服务器名称</td>
+</tr>
+<tr>
+<td align="left">href</td>
+<td align="left">“<a href="http://www.wrox.com”" target="_blank" rel="noopener">http://www.wrox.com”</a></td>
+<td align="left">返回当前加载页面的完整URL。而location对象的toString()方法也返回这个值</td>
+</tr>
+<tr>
+<td align="left">pathname</td>
+<td align="left">“WileyCDA”</td>
+<td align="left">返回URL中的目录或文件名</td>
+</tr>
+<tr>
+<td align="left">port</td>
+<td align="left">“8080”</td>
+<td align="left">返回URL中指定的端口号。如果URL中不包含端口号则返回空字符串</td>
+</tr>
+<tr>
+<td align="left">protocol</td>
+<td align="left">“http:”</td>
+<td align="left">返回页面的使用协议。通常是http:或https:</td>
+</tr>
+<tr>
+<td align="left">search</td>
+<td align="left">“?q=javascript”</td>
+<td align="left">返回URL的查询字符串，这个字符串以问号开头</td>
+</tr>
+</tbody></table>
+<p>而修改了其中的任何属性，都会使得页面刷新，当然页面刷新还有其它方式。</p>
+<h2 id="location刷新"><a href="#location刷新" class="headerlink" title="location刷新"></a>location刷新</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location.assign(url);            　　<span class="comment">// 跳转链接</span></span><br><span class="line">location.href = url;            　　 <span class="comment">// 跳转链接</span></span><br><span class="line"><span class="built_in">window</span>.location = url;              <span class="comment">// 跳转链接</span></span><br><span class="line">location.replace(url);              <span class="comment">// 链接链接，不保存于历史纪录</span></span><br><span class="line">location.reload();            　　  <span class="comment">// 刷新，从缓存中读取</span></span><br><span class="line">location.reload(<span class="literal">true</span>);             <span class="comment">// 刷新，重新从服务器读取</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="获取地址栏的参数，并以键值对展现"><a href="#获取地址栏的参数，并以键值对展现" class="headerlink" title="获取地址栏的参数，并以键值对展现"></a>获取地址栏的参数，并以键值对展现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getQueryStringArgs</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> qs = (location.search.length &gt; <span class="number">0</span> ? location.search.substring(<span class="number">1</span>) : <span class="string">""</span>),</span><br><span class="line">        args = &#123;&#125;,</span><br><span class="line">        items = qs.length ? qs.split(<span class="string">"&amp;"</span>) : [],</span><br><span class="line">        item = <span class="literal">null</span>,</span><br><span class="line">        name = <span class="literal">null</span>,</span><br><span class="line">        value = <span class="literal">null</span>,</span><br><span class="line">        i = <span class="number">0</span>,</span><br><span class="line">        len = items.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        item = items[i].split(<span class="string">"="</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// decodeURIComponent解码</span></span><br><span class="line">        name = <span class="built_in">decodeURIComponent</span>(item[<span class="number">0</span>]);</span><br><span class="line">        value = <span class="built_in">decodeURIComponent</span>(item[<span class="number">1</span>]);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (name.length) &#123;</span><br><span class="line">            args[name] = value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> args;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过调用<code>getQueryStringArgs()</code>方法就可以返回地址栏中的参数信息，并保存于对象中。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T10:40:04.000Z" itemprop="dateUpdated">2019-06-29 18:40:04</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2015/01/23/location将地址栏参数拆分成键值对的对象/" target="_blank" rel="external">https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/&title=《location将地址栏参数拆分成键值对的对象》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/&title=《location将地址栏参数拆分成键值对的对象》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《location将地址栏参数拆分成键值对的对象》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2015/01/24/navigator，JS检测浏览器插件/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">navigator，JS检测浏览器插件</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2014/12/30/Ubuntu下搭建LAMP配置讲解/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Ubuntu下搭建LAMP配置讲解</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/&title=《location将地址栏参数拆分成键值对的对象》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/&title=《location将地址栏参数拆分成键值对的对象》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《location将地址栏参数拆分成键值对的对象》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/01/23/location将地址栏参数拆分成键值对的对象/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADIElEQVR42u3aQZLiMBAEQP7/afa6GxM2VS0Pi0X6REwYWykOPV2txyO+nj+uv/9+fs/R035+Pnpjvp6LL2xsbOybsJ+nV8tOqMnfj/BHq8ot2NjY2Luy8zJz9KC8LOW8X3wvNjY29tezr2pRzr+bFypsbGxs7HV2Uk7yIjQjYWNjY38zOwmVZluThEezkpZs2QVZGjY2NvbHs/OlfP7nX5lvY2NjY38w+1le7UA3KSRLwdBMgY2Njb0ROy8AV/2LXyxrYeSctDfY2NjYO7Fnt64czZwNHmabWwdb2NjY2Ldit0dh1stMG+vnLU1xJzY2NvZ27FnL0W5Qe2d7HKeo1djY2NgbsfOYPi9dbazfjgTyrRx2LdjY2Ni3ZbcbMQNfO1pO1lMf7sHGxsa+IXtlUNouvd77ckOL4oqNjY29BTsvACsHLvO4qh0At+3TP4NebGxs7I3YsxM9bRuQR/ntaCGPwLCxsbH3Y79nSHAVsh0//OdxLzY2NvYb2bMDN7NGZSWiKpqNZCXY2NjYG7FncVI7EpgdvmxbmraIYmNjY9+dPSsA7WvaoezKJg6zNGxsbOxN2bOR7Xobs/4zvHgCNjY29kbs/GX5gPYRXLMB82wMfL5ybGxs7D3Ys6Mw71zirKV5sdHY2NjYW7DbkL09IrMe67dbHz0TGxsbeyN2HhJddWee6uTfnY2TsbGxsfdgzyL72YGe4Umi0Z1FfoaNjY19c/b60DQfCeQtTXsQZ+Vb2NjY2Huw2zKTL/18KW3LkcdGxVQEGxsbe2t2XsDyZa1saPv2+twQNjY29s3Z7ec23MkBSdy/MoTGxsbG3pWdl5YclhezlfHD+TOLFA0bGxv75uxZ4ZmVwLYRKjD5z4ONjY29BftZXm0stdL8zIpZPRjAxsbGvjl7VgDa0eyMOhvrtg0PNjY29h7sWSh/Vdg0G+uujKWxsbGxd2W3DUO+iLZVuKqdePFkbGxsbOzlECpveFZGEYdPw8bGxsZePiI5C/TbbAwbGxv7e9jrDcYs6Fk5vjNrabCxsbH3Y+cBzSziP8esvL0dEmNjY2Nvx/4DvzOlgfP5OHsAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

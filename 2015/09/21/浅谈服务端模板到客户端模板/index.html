@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>浅谈服务端模板到客户端模板 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,Back-End">
+    <meta name="description" content="谈起客户端模板技术，要先从服务端MVC说起。 服务器端MVC当客户通过浏览器访问URL，服务器端会获取到客户端传来的URL并通过路由(router)解析URL到不同的控制器(controller)，再通过模板技术将模板中渲染(render)成到页面(HTML)。 在开发过程中路由可能由服务器配置，可能自己手写，也可能由框架实现。路由通过获取URL，得知要执行哪个控制器，而控制器再去从模型(mode">
+<meta name="keywords" content="Front-End,Back-End">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈服务端模板到客户端模板">
+<meta property="og:url" content="https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="谈起客户端模板技术，要先从服务端MVC说起。 服务器端MVC当客户通过浏览器访问URL，服务器端会获取到客户端传来的URL并通过路由(router)解析URL到不同的控制器(controller)，再通过模板技术将模板中渲染(render)成到页面(HTML)。 在开发过程中路由可能由服务器配置，可能自己手写，也可能由框架实现。路由通过获取URL，得知要执行哪个控制器，而控制器再去从模型(mode">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/img_1.png">
+<meta property="og:updated_time" content="2019-06-29T11:51:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈服务端模板到客户端模板">
+<meta name="twitter:description" content="谈起客户端模板技术，要先从服务端MVC说起。 服务器端MVC当客户通过浏览器访问URL，服务器端会获取到客户端传来的URL并通过路由(router)解析URL到不同的控制器(controller)，再通过模板技术将模板中渲染(render)成到页面(HTML)。 在开发过程中路由可能由服务器配置，可能自己手写，也可能由框架实现。路由通过获取URL，得知要执行哪个控制器，而控制器再去从模型(mode">
+<meta name="twitter:image" content="https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/img_1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">浅谈服务端模板到客户端模板</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">浅谈服务端模板到客户端模板</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2015-09-21T11:10:00.000Z" itemprop="datePublished" class="page-time">
+  2015-09-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#服务器端MVC"><span class="post-toc-number">1.</span> <span class="post-toc-text">服务器端MVC</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#服务器端模板技术"><span class="post-toc-number">2.</span> <span class="post-toc-text">服务器端模板技术</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#客户端-浏览器-端模板技术"><span class="post-toc-number">3.</span> <span class="post-toc-text">客户端(浏览器)端模板技术</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#展望未来-AngularJs"><span class="post-toc-number">4.</span> <span class="post-toc-text">展望未来(AngularJs)</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-浅谈服务端模板到客户端模板"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">浅谈服务端模板到客户端模板</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2015-09-21 19:10:00" datetime="2015-09-21T11:10:00.000Z"  itemprop="datePublished">2015-09-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>谈起客户端模板技术，要先从服务端MVC说起。</p>
+<h2 id="服务器端MVC"><a href="#服务器端MVC" class="headerlink" title="服务器端MVC"></a>服务器端MVC</h2><p>当客户通过浏览器访问URL，服务器端会获取到客户端传来的URL并通过路由(router)解析URL到不同的控制器(controller)，再通过模板技术将模板中渲染(render)成到页面(HTML)。</p>
+<p>在开发过程中路由可能由服务器配置，可能自己手写，也可能由框架实现。路由通过获取URL，得知要执行哪个控制器，而控制器再去从模型(model)获取数据，模型在去从数据库(database)获取数据，数据库返回数据到模型，再返回至控制器。于是控制器在通过模板技术将从数据库获取的数据替换模板中预定义的内容。最后在返回给客户端浏览器。这是一个完整的前端交互到路由到MVC的流程。</p>
+<img src="/2015/09/21/浅谈服务端模板到客户端模板/img_1.png">
+<p>而在模板引擎就是我们的视图(view)部分，接下来，我们来看模板视图。</p>
+<h2 id="服务器端模板技术"><a href="#服务器端模板技术" class="headerlink" title="服务器端模板技术"></a>服务器端模板技术</h2><p>接下来我们先看一段服务器端的模板(handlebars)代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;title&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    &#123;&#123;#names&#125;&#125;</span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>&#123;&#123;name&#125;&#125;<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    &#123;&#123;/names&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上是一段handlebars的代码，</p>
+<p>控制器去从模型中获取以下数据：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">     <span class="string">"title"</span>: <span class="string">"Story"</span>,</span><br><span class="line">     <span class="string">"names"</span>: [</span><br><span class="line">         &#123;<span class="string">"name"</span>: <span class="string">"Tarzan"</span>&#125;,</span><br><span class="line">         &#123;<span class="string">"name"</span>: <span class="string">"Jane"</span>&#125;</span><br><span class="line">     ]</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>本文中不谈及数据是如何获取的。在这里获取到数据后，我们可以通过模板引擎将上面的模板解析成如下的HTML代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Story<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>Tarzan<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>Jane<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>而后只需要将此代码以HTML的格式返回给客户端即能正常显示。</p>
+<p>这样看来没什么问题，但服务器端模板技术实际上是依赖于控制器，也就是控制器中必须要有访问模板的方法，换句话说，要在客户端浏览器上展示这个渲染出来的页面，需要在服务器端的控制器上去写代码。而且，模板引擎还是后端定的，在后端渲染解析，而维护模板有时还需要前后端共同参与 。因此后端模板在web开发领域中一直是一个前后化分不清的地位。</p>
+<p>因此，衍生出了试图前端模板技术，试图将前后端的分工化分的更明细。</p>
+<h2 id="客户端-浏览器-端模板技术"><a href="#客户端-浏览器-端模板技术" class="headerlink" title="客户端(浏览器)端模板技术"></a>客户端(浏览器)端模板技术</h2><p>1、为了更好的化分出前后端开发领域，让HTML完全由前端处理。后端只处理数据及业务逻辑。</p>
+<p>2、随着前端交互的复杂性不断提升，无刷新页面数据传输与渲染越发地频繁化，我们发现传统的前端开发方式在ajax数据渲染等方面存在着一个主要问题：繁琐的数据渲染。当前端从后台通过ajax等方式或许到数据后，如果要将这个数据渲染到指定的dom元素中，则需要进行各种字符串拼接工作或者一系列创建元素的工作，还不论细节的问题（单引号双引号问题等），不管是哪一种形式，都是繁琐且费时的。同时，在可读性与维护性上也存在问题。试想，各种循环操作的字符串拼接，元素创建插入，在需要修改时，都需要重新花费不少时间与精力。</p>
+<p>就此衍生出了前端模板技术。</p>
+<p>浏览器端的模板技术与服务器端的模板技术实现上大体相同，以服务器端上的模板技术的代码为例，如果在客户端使用模板技术，只需要引入模板引擎对应的handlebars.js模板即可使用，而此处的数据，则由前端通过ajax向后端发起请求。而仅仅是这么一点功能，解决了后端渲染模板，前端ajax拼接生成dom的问题。并且ajax是可以缓存的，这在很大程度上减轻了服务器端的压力。但这同时也对前端的技术要求增加。</p>
+<h2 id="展望未来-AngularJs"><a href="#展望未来-AngularJs" class="headerlink" title="展望未来(AngularJs)"></a>展望未来(AngularJs)</h2><p>未来的发展趋势是前端后端只靠json数据来进行通信：后端只处理和发送一段Json数据到前端，然后计算和模板渲染都在前端进行。而前端的改动后，形成json数据然后传回到后端。未来趋势就是：后台程序再也不做模板的任何处理。</p>
+<p>AngularJS 的作用简单说就是就是把后台的Json值直接用html进行渲染，然后html的操作又直接在形成json传回后台。未来的后台MVC，视图不再是模板了，而是一段结构整齐标准的JSON，而这个JSON作为前台的model直接在AngularJS直接使用。或者说后台的视图是前台的模型，而整个前台就是后台的视图。后台程序再也不做模板的任何处理了。并且AngularJS可以实现双向数据绑定、依赖注入、指令、MVC、模板、模块化开发，使得更像是写后台代码、更规范、更结构化、更可控。</p>
+<p>但是，使用AngularJS的话，数据全是通过JSON来进行前后台传输，到了浏览器端才进行数据渲染， 对于SEO，这是一个严重的问题，并且对于庞大的JS库，首次加载时间将更长。对此可以用NodeJS作为一个中转首次加载，模板渲染在NodeJS上实现，之后，由前端实现模板渲染。而这又使前端不得不学习NodeJS。</p>
+<p>前端在web开发领域担任的职责将越来越重要，前后端的分工也越来越明细。</p>
+<p>引用：<br><a href="http://blog.fens.me/angularjs-route-template/、" target="_blank" rel="noopener">http://blog.fens.me/angularjs-route-template/、</a><br><a href="http://kb.cnblogs.com/page/210862/" target="_blank" rel="noopener">http://kb.cnblogs.com/page/210862/</a><br><a href="http://zhidao.baidu.com/link?url=w21FVvMy7By69ylyW3-vLVAdBDBwthHZ8qhSjj67nKE5_h8coDGefDNqUlTwAka8CfY3_LijH_S8EdmNj5h9dYBfuzyp9FfbV5gLm49D9O7&amp;qq-pf-to=pcqq.c2c" target="_blank" rel="noopener">http://zhidao.baidu.com/link?url=w21FVvMy7By69ylyW3-vLVAdBDBwthHZ8qhSjj67nKE5_h8coDGefDNqUlTwAka8CfY3_LijH_S8EdmNj5h9dYBfuzyp9FfbV5gLm49D9O7&amp;qq-pf-to=pcqq.c2c</a><br><a href="http://blog.jobbole.com/65534/" target="_blank" rel="noopener">http://blog.jobbole.com/65534/</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T11:51:04.000Z" itemprop="dateUpdated">2019-06-29 19:51:04</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2015/09/21/浅谈服务端模板到客户端模板/" target="_blank" rel="external">https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Back-End/">Back-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/&title=《浅谈服务端模板到客户端模板》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/&title=《浅谈服务端模板到客户端模板》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《浅谈服务端模板到客户端模板》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2015/09/23/Math-random骗术-无聊篇/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Math.random骗术-无聊篇</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2015/07/23/一些JavaScript常用方技巧/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">一些JavaScript常用方技巧</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/&title=《浅谈服务端模板到客户端模板》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/&title=《浅谈服务端模板到客户端模板》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《浅谈服务端模板到客户端模板》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/09/21/浅谈服务端模板到客户端模板/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACq0lEQVR42u3a0WocMRAEQP//TzuQp4DZc/dIc3ag9slsiFYlgzTu0cdH/Hz+fb6++fd5+td8tNcjPI124cHDw8MbTf3pyT/2GTxf/28Oe3rzeqHx8PDw9nivt+8ZtT1I8jf5kYOHh4f3s7xko8/f5IVyXl7j4eHh/U7e7O/9ZMmSkfHw8PB+D6/d+hN2cqjkh9B61oKHh4cX89oG2G/4ebG/h4eHh3fQVc+33Ty2aAOIk9ni4eHhbfDagGAGzvft12X67EIDHh4e3h5vFua2W/9JxNC23PDw8PD2eO21qpaXTy5fvvZKAR4eHt5d3qxtf54Z50uTLMrjmHh4eHhXeUlRmwcEt9r8eZn+zRs8PDy8BV5eebbFcTtOHiK3Y+Lh4eHt8doGWB4KtMdPHn/kM8TDw8N7J68tmtv8OC+v20YdHh4e3nt4s6B2FmfkcW3+rbqwxsPDwxvxZsPNDpXzwj2PUfDw8PA2eDksKXDbq1RtzNGW9Xh4eHgbvFv3ttpgd7bRJwfGN79DPDw8vKu8tsxtN/08dLg8Mh4eHt7uyEVImi9HfiSchMVRSo2Hh4e3xps1wGZNrNnX82sEeHh4eNu8dupti6u9jLWxNHh4eHgnvLwYTdaj3dBny1RcusLDw8Nb4+WR6KyF314paMd8/PXg4eHhLfDyC1VthT4jtdetihAEDw8P7xKv3XBvld3v+RYeHh7eBu9kKvl02wtVeSMtmS0eHh7eXd75taqTRZktQRFV4OHh4W2loBfqz7w0Py/xk/Hx8PDwtnltWys/Nto2VTLpemQ8PDy8Nd6tj503+/ODBA8PD+9/4bXFcXvkJLPKIww8PDy8n+UlH9gukQsYHh4e3jLvJIwoPhYv6yy0fTwY8PDw8K7y2gbYa3A+3RPeNRgeHh5ex/sDGrqnrLyiW2cAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

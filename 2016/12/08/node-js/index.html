@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Node.js | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,Node.js,MongoDB">
+    <meta name="description" content="Perform query SQL for server during variety of requests with same result at specific timeBrowser auto cache the result of AJAX for performance, but sometimes we get a special activity which a lot of u">
+<meta name="keywords" content="Front-End,Node.js,MongoDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js">
+<meta property="og:url" content="https://blog.afacat.com/2016/12/08/node-js/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="Perform query SQL for server during variety of requests with same result at specific timeBrowser auto cache the result of AJAX for performance, but sometimes we get a special activity which a lot of u">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T09:36:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Node.js">
+<meta name="twitter:description" content="Perform query SQL for server during variety of requests with same result at specific timeBrowser auto cache the result of AJAX for performance, but sometimes we get a special activity which a lot of u">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Node.js</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Node.js</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-12-08T12:35:41.000Z" itemprop="datePublished" class="page-time">
+  2016-12-08
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Perform-query-SQL-for-server-during-variety-of-requests-with-same-result-at-specific-time"><span class="post-toc-number">1.</span> <span class="post-toc-text">Perform query SQL for server during variety of requests with same result at specific time</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#asynchronous"><span class="post-toc-number">2.</span> <span class="post-toc-text">asynchronous</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#order-asynchronous"><span class="post-toc-number">3.</span> <span class="post-toc-text">order asynchronous</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#smooth"><span class="post-toc-number">4.</span> <span class="post-toc-text">smooth</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-node-js"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Node.js</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-12-08 20:35:41" datetime="2016-12-08T12:35:41.000Z"  itemprop="datePublished">2016-12-08</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Perform-query-SQL-for-server-during-variety-of-requests-with-same-result-at-specific-time"><a href="#Perform-query-SQL-for-server-during-variety-of-requests-with-same-result-at-specific-time" class="headerlink" title="Perform query SQL for server during variety of requests with same result at specific time"></a>Perform query SQL for server during variety of requests with same result at specific time</h2><p>Browser auto cache the result of AJAX for performance, but sometimes we get a special activity which a lot of user will access server for same data at specific time, if we don’t handle it, the server may die. So we can use event queue to handle the problem.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> proxy = <span class="keyword">new</span> events.EventEmitter()</span><br><span class="line"><span class="keyword">let</span> status = <span class="string">'ready'</span></span><br><span class="line"><span class="keyword">let</span> select = <span class="function"><span class="params">callback</span> =&gt;</span> &#123;</span><br><span class="line">  proxy.once(<span class="string">'selected'</span>, callback)  <span class="comment">// bind event for every request</span></span><br><span class="line">  <span class="keyword">if</span> (status === <span class="string">'ready'</span>) &#123;</span><br><span class="line">    status = <span class="string">'pending'</span></span><br><span class="line">    db.select(<span class="string">'sql'</span>, result =&gt; &#123;      <span class="comment">// if SQL query finished,</span></span><br><span class="line">      proxy.emit(<span class="string">'selected'</span>, result)  <span class="comment">// then trigger event</span></span><br><span class="line">      status = <span class="string">'ready'</span>                <span class="comment">// and recover status</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="asynchronous"><a href="#asynchronous" class="headerlink" title="asynchronous"></a>asynchronous</h2><p>Asynchronous is a good object, you can run I/O operate without wait it. It’s a good way to improve the CPU usage rate.<br>Sometimes, we have multiple I/O operates, and these are associated, we want to do some action after all of the I/O operates finished. What can we do? You may do like this below.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fs.readFile(path, <span class="string">'utf8'</span>, (err, template) =&gt; &#123;</span><br><span class="line">  db.query(sql, (err, data) =&gt; &#123;</span><br><span class="line">    l10n.get(<span class="function">(<span class="params">err, resources</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// action</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>It’s easy to do that right? But mention the callback, you run the action in the 3 level callbacks. Think about it, if you have to do 4 or 5 I/O operate, and you do action after all of theses finished. so you may write ‘}) }) }) }) })’, seems painful to maintain the program.</p>
+<p>Anyway, we don’t do above, that is so stupid. We can make these I/O operate in first level without put an operate in to another callback. Read below.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> after = <span class="function">(<span class="params">times, callback</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> result = &#123;&#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">key, value</span>) =&gt;</span> &#123;</span><br><span class="line">    result[key] = value</span><br><span class="line">    count++</span><br><span class="line">    <span class="keyword">if</span> (count === times) &#123;</span><br><span class="line">      callback(results)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> emitter = <span class="keyword">new</span> events.Emitter()</span><br><span class="line"><span class="keyword">let</span> done = after(times, render)</span><br><span class="line"></span><br><span class="line">emitter.on(<span class="string">'done'</span>, done)</span><br><span class="line">emitter.on(<span class="string">'done'</span>, other)</span><br><span class="line"></span><br><span class="line">fs.readFile(template_path, <span class="string">'utf8'</span>, (err, template) =&gt; &#123;</span><br><span class="line">  emitter.emit(<span class="string">'done'</span>, <span class="string">'template'</span>, tempalte)</span><br><span class="line">&#125;)</span><br><span class="line">db.query(sql, (err, data) =&gt; &#123;</span><br><span class="line">  emitter.emit(<span class="string">'done'</span>, <span class="string">'data'</span>, data)</span><br><span class="line">&#125;)</span><br><span class="line">l10n.get(<span class="function">(<span class="params">err, resources</span>) =&gt;</span> &#123;</span><br><span class="line">  emitter.emit(<span class="string">'done'</span>, <span class="string">'resources'</span>, resources)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>similar with <code>async</code> in waterfall</p>
+</blockquote>
+<h2 id="order-asynchronous"><a href="#order-asynchronous" class="headerlink" title="order asynchronous"></a>order asynchronous</h2><p><a href="https://wuyuchang.github.io/2016/12/09/Principle-of-Promise-Deferred/" target="_blank" rel="noopener">https://wuyuchang.github.io/2016/12/09/Principle-of-Promise-Deferred/</a></p>
+<h2 id="smooth"><a href="#smooth" class="headerlink" title="smooth"></a>smooth</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> smooth = <span class="function"><span class="params">method</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> deferred = <span class="keyword">new</span> Deferred()</span><br><span class="line">    <span class="keyword">let</span> args = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>) <span class="comment">// transform the arguments to an array</span></span><br><span class="line">    args.push(deferred.callback()) <span class="comment">// push an parameter, [file, encode, deferred.callback()]</span></span><br><span class="line">    method.apply(<span class="literal">null</span>, args) <span class="comment">// call method, fs.readFile(file, encode, deferred.callback())</span></span><br><span class="line">    <span class="keyword">return</span> deferred.promise</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T09:36:37.000Z" itemprop="dateUpdated">2019-06-29 17:36:37</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/12/08/node-js/" target="_blank" rel="external">https://blog.afacat.com/2016/12/08/node-js/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/">MongoDB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2016/12/08/node-js/&title=《Node.js》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2016/12/08/node-js/&title=《Node.js》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2016/12/08/node-js/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Node.js》 — Yuchang Wu's blog&url=https://blog.afacat.com/2016/12/08/node-js/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2016/12/08/node-js/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/12/09/Principle-of-Promise-Deferred/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Principle of Promise/Deferred</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2015/09/23/Math-random骗术-无聊篇/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Math.random骗术-无聊篇</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2016/12/08/node-js/&title=《Node.js》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2016/12/08/node-js/&title=《Node.js》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2016/12/08/node-js/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Node.js》 — Yuchang Wu's blog&url=https://blog.afacat.com/2016/12/08/node-js/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2016/12/08/node-js/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIklEQVR42u3aQW6EMAwF0N7/0tNtpdEw/xuoRPKyqhgKfiws28nPT7xef9b7leTX4yd/esvFCwMD47GM1+E6DisJ4tP9xx8ojw0DA2MfRpIKj/8r5x2/Mb8TAwMDI0+UycoDxcDAwLiKET36MJkefxQMDAyMWRM7S75J4ZgM4C7rxTEwMB7IyKfu///3LfsbGBgYj2LMGtEZLy8u66gwMDCWZrQN6iyUFjaMBwMDY1FGu63YhjIbwCVX6rkgBgbGYxnnX9luLbRbm0XKxsDAWJRxpn1NNgnaDDlM6BgYGBswzr8+Ly7zIrUoVTEwMLZhJCVafjAiT8d52v1yWgQDA2Npxuz1bSK+rBB8/4gYGBgbMPKRWbuSxjj/fF/GbRgYGEsz8u3JvNRrj2K0g7yPOxsYGBiLMnJSni7b1nc2yMPAwNiB0RZ/7TAuH8ldsHmAgYGxKCMpv646TjELtOiVMTAwlmbc18S2G5b50Q0MDIx9GG2I5+/P03T+ITAwMHZg5OkvPxZ2ZjA3G9VhYGDszMgfOsz0d3TkGBgYizLOp8t2P7EN98vYDgMDY1HGq1ztUGyWyttPiYGBsTYjX3lY7eAsT8Rnyk0MDIynM2al4Wx7sj3McWo/FgMDYzlGm/jyQu1MiVm3shgYGBij/DY7PNFex8DAwEjGavcd+YqGgBgYGBswkiZ2NsrPp33tSA4DA2Mfxo1HtS5qaJMhIAYGxqKMX0xGS6lXZlQkAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

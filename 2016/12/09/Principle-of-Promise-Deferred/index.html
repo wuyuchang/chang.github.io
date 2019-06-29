@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Principle of Promise/Deferred | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,Node.js">
+    <meta name="description" content="Super simple realize separate call an async and handle result in two files.Assume we have a project base on jQuery, we have to separate call AJAX and handle result in another file. Most of the time, w">
+<meta name="keywords" content="Front-End,Node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Principle of Promise&#x2F;Deferred">
+<meta property="og:url" content="https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="Super simple realize separate call an async and handle result in two files.Assume we have a project base on jQuery, we have to separate call AJAX and handle result in another file. Most of the time, w">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T09:36:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Principle of Promise&#x2F;Deferred">
+<meta name="twitter:description" content="Super simple realize separate call an async and handle result in two files.Assume we have a project base on jQuery, we have to separate call AJAX and handle result in another file. Most of the time, w">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Principle of Promise/Deferred</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Principle of Promise/Deferred</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-12-09T02:21:08.000Z" itemprop="datePublished" class="page-time">
+  2016-12-09
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Super-simple-realize-separate-call-an-async-and-handle-result-in-two-files"><span class="post-toc-number">1.</span> <span class="post-toc-text">Super simple realize separate call an async and handle result in two files.</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#use-jQuery-promise-deferred"><span class="post-toc-number">2.</span> <span class="post-toc-text">use jQuery promise/deferred</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Promise-A"><span class="post-toc-number">3.</span> <span class="post-toc-text">Promise/A</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Promise-Object"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Promise Object</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Deferred-Object"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Deferred Object</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#use-Promise-amp-Deferred"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">use Promise &amp; Deferred</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Deferred-all"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">Deferred.all()</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Order-Run-asynchronous"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">Order Run asynchronous</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Principle-of-Promise-Deferred"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Principle of Promise/Deferred</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-12-09 10:21:08" datetime="2016-12-09T02:21:08.000Z"  itemprop="datePublished">2016-12-09</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Super-simple-realize-separate-call-an-async-and-handle-result-in-two-files"><a href="#Super-simple-realize-separate-call-an-async-and-handle-result-in-two-files" class="headerlink" title="Super simple realize separate call an async and handle result in two files."></a>Super simple realize separate call an async and handle result in two files.</h1><p>Assume we have a project base on jQuery, we have to separate call AJAX and handle result in another file.</p>
+<p>Most of the time, we handle the result with below.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="keyword">get</span>('url', data =&gt; &#123;</span><br><span class="line">  <span class="comment">//handle data</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>But, sometimes, we don’t want to handle it in the moment. Maybe we just want to handle in another file. So we can do below.<br><code>request.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="keyword">get</span>('url', data =&gt; &#123;</span><br><span class="line">  <span class="built_in">window</span>.result(data)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>handle.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.result = <span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// handle result</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>But, we most of the time, we are not just handle the success result. We also handle error, receiving data.<br>For example.</p>
+<p><code>request.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">  url: <span class="string">'url'</span>,</span><br><span class="line">  data: <span class="string">'data'</span>,</span><br><span class="line">  type: <span class="string">'get'</span>,</span><br><span class="line">  success: <span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">window</span>.deferrd.resolve(data)</span><br><span class="line">  &#125;,</span><br><span class="line">  error: <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">window</span>.defered.error(err)</span><br><span class="line">  &#125;,</span><br><span class="line">  complete: <span class="function"><span class="params">notify</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">window</span>.deferred.notify(<span class="string">'complete'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>handle.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.deferred = &#123;</span><br><span class="line">  <span class="comment">//handle success</span></span><br><span class="line">  resolve: <span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">//handle error</span></span><br><span class="line">  error: <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">//handle complete</span></span><br><span class="line">  notify: <span class="function"><span class="params">msg</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(msg)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="use-jQuery-promise-deferred"><a href="#use-jQuery-promise-deferred" class="headerlink" title="use jQuery promise/deferred"></a>use jQuery promise/deferred</h1><p>Fortunately, jQuery already implement this, so we just have to do below.<br><code>request.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.promise = $.<span class="keyword">get</span>('url')</span><br></pre></td></tr></table></figure>
+
+<p><code>handle.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.promise.then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// handle success</span></span><br><span class="line">&#125;, err =&gt; &#123;</span><br><span class="line">  <span class="comment">// handle error</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="Promise-A"><a href="#Promise-A" class="headerlink" title="Promise/A"></a>Promise/A</h1><p>For show how promise and deferred work, we create a new and simple promise and deferred object, so that you can easy understand it.</p>
+<h2 id="Promise-Object"><a href="#Promise-Object" class="headerlink" title="Promise Object"></a>Promise Object</h2><p>Here try to extend EventEmitter module to explain how it work.<br><code>Promise.class.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Promise</span> <span class="keyword">extends</span> <span class="title">EventEmitter</span> </span>&#123;</span><br><span class="line">  then(success, error, progress) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> success === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.once(<span class="string">'success'</span>, success)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> error === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.once(<span class="string">'error'</span>, error)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> progress === <span class="string">'progress'</span>) &#123;</span><br><span class="line">      <span class="comment">// Note, this function will be recall, so here defined the event use 'on'</span></span><br><span class="line">      <span class="keyword">this</span>.on(<span class="string">'progress'</span>, progress)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here you can see we defined three events after you pass these callback function into it through ‘then’ function.<br>So we defined the events, and we have to trigger it, so that we can execute these callbacks with the result.</p>
+<p>Below, we defined the Deferred object.</p>
+<h2 id="Deferred-Object"><a href="#Deferred-Object" class="headerlink" title="Deferred Object"></a>Deferred Object</h2><p>Here we defined the Deferred, these functions just emit promise, so tell them we finished.<br><code>Deferred.class.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Deferred</span> </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.state = <span class="string">'unsuccess'</span></span><br><span class="line">  <span class="keyword">this</span>.promise = <span class="keyword">new</span> <span class="built_in">Promise</span>()</span><br><span class="line"></span><br><span class="line">  resolve(obj) &#123;</span><br><span class="line">    <span class="keyword">this</span>.state = <span class="string">'success'</span></span><br><span class="line">    <span class="keyword">this</span>.promise.emit(<span class="string">'success'</span>, obj)</span><br><span class="line">  &#125;</span><br><span class="line">  reject(obj) &#123;</span><br><span class="line">    <span class="keyword">this</span>.state = <span class="string">'error'</span></span><br><span class="line">    <span class="keyword">this</span>.promise.emit(<span class="string">'error'</span>, obj)</span><br><span class="line">  &#125;</span><br><span class="line">  progress(obj) &#123;</span><br><span class="line">    <span class="keyword">this</span>.state = <span class="string">'progress'</span></span><br><span class="line">    <span class="keyword">this</span>.promise.emit(<span class="string">'progress'</span>, obj)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="use-Promise-amp-Deferred"><a href="#use-Promise-amp-Deferred" class="headerlink" title="use Promise &amp; Deferred"></a>use Promise &amp; Deferred</h2><p>To implement this, we create a new Deferred, and we trigger deferred function (progress/end/error) when we finish specific action to tell Deferred that we finished.<br>Then we get promise object, and then we can store it, and call it with callback in another file.<br>So we successful separate call async and get data in two files.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promisify = <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> deferred = <span class="keyword">new</span> Deferred()</span><br><span class="line">  <span class="keyword">let</span> result = <span class="string">''</span></span><br><span class="line"></span><br><span class="line">  res.on(<span class="string">'data'</span>, chunk =&gt; &#123;</span><br><span class="line">    result += chunk</span><br><span class="line">    deferred.progress(result)</span><br><span class="line">  &#125;)</span><br><span class="line">  res.on(<span class="string">'end'</span>, () =&gt; &#123;</span><br><span class="line">    deferred.resolve(result)</span><br><span class="line">  &#125;)</span><br><span class="line">  res.on(<span class="string">'error'</span>, () =&gt; &#123;</span><br><span class="line">    deferred.reject()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> deferred.promise</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">global.result = promisify(res)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// in another file, this just an example to pass the result to global, so we can easy get the result, in the production, you better to pass the result in other way.</span></span><br><span class="line">global.result.then(<span class="function">(<span class="params">result</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// success</span></span><br><span class="line">&#125;, (err) =&gt; &#123;</span><br><span class="line">  <span class="comment">// error</span></span><br><span class="line">&#125;, (chunk) =&gt; &#123;</span><br><span class="line">  <span class="comment">// progress</span></span><br><span class="line">  <span class="built_in">console</span>.log(chunk)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Deferred-all"><a href="#Deferred-all" class="headerlink" title="Deferred.all()"></a>Deferred.all()</h2><p>Do some action after a several of asynchronous finished.<br><code>Deferred.class.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Deferred</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  all(promises) &#123;</span><br><span class="line">    <span class="keyword">let</span> count = promises.length</span><br><span class="line">    <span class="keyword">let</span> that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">let</span> results = []</span><br><span class="line">    promises.forEach(<span class="function">(<span class="params">promise, i</span>) =&gt;</span> &#123;</span><br><span class="line">      promise.then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">        count --</span><br><span class="line">        results[i] = data</span><br><span class="line">        <span class="keyword">if</span> (count === <span class="number">0</span>) &#123;</span><br><span class="line">          that.resolve(results)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;, err =&gt; &#123;</span><br><span class="line">      that.reject(err)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.promise</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Order-Run-asynchronous"><a href="#Order-Run-asynchronous" class="headerlink" title="Order Run asynchronous"></a>Order Run asynchronous</h2><p>Run asynchronous in order<br><code>Deferred.class.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">Promise</span> = <span class="built_in">require</span>(<span class="string">'./promise.class'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="title">Deferred</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.promise = <span class="keyword">new</span> <span class="built_in">Promise</span>()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  resolve(data) &#123;</span><br><span class="line">    <span class="keyword">let</span> promise = <span class="keyword">this</span>.promise</span><br><span class="line">    <span class="keyword">let</span> handler</span><br><span class="line">    <span class="keyword">while</span>(handler = promise.queue.shift()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (handler &amp;&amp; handler.resolve) &#123;</span><br><span class="line">        <span class="keyword">let</span> ret = handler.resolve(data)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// if there has next promise, then we interrupt current loop, and set next promise.queue equals current queue</span></span><br><span class="line">        <span class="keyword">if</span> (ret &amp;&amp; ret.isPromise) &#123;</span><br><span class="line">          ret.queue = promise.queue</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  reject(err) &#123;</span><br><span class="line">    <span class="keyword">let</span> promise = <span class="keyword">this</span>.promise</span><br><span class="line">    <span class="keyword">let</span> handler</span><br><span class="line">    <span class="keyword">while</span>(handler = promise.queue.shift()) &#123;</span><br><span class="line">      <span class="keyword">if</span> (handler &amp;&amp; handler.reject) &#123;</span><br><span class="line">        <span class="keyword">let</span> ret = handler.reject(err)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// if there has next promise, then we interrupt current loop, and set next promise.queue equals current queue</span></span><br><span class="line">        <span class="keyword">if</span> (ret &amp;&amp; ret.isPromise) &#123;</span><br><span class="line">          ret.queue = promise.queue</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  callback(str) &#123;</span><br><span class="line">    <span class="keyword">let</span> that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">err, file</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="keyword">return</span> that.reject(err)</span><br><span class="line">      &#125;</span><br><span class="line">      that.resolve(file)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>promise.class.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="title">Promise</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.queue = []</span><br><span class="line">    <span class="keyword">this</span>.isPromise = <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  then(resolve, reject) &#123;</span><br><span class="line">    <span class="keyword">let</span> handler = &#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> resolve === <span class="string">'function'</span>) &#123;</span><br><span class="line">      handler.resolve = resolve</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> reject === <span class="string">'function'</span>) &#123;</span><br><span class="line">      handler.reject = reject</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.queue.push(handler)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>app.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Deferred = <span class="built_in">require</span>(<span class="string">'./deferred.class'</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> action1 = <span class="function">(<span class="params">file, encoding</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> deferred = <span class="keyword">new</span> Deferred()</span><br><span class="line">  fs.readFile(file, encoding, deferred.callback())</span><br><span class="line">  <span class="keyword">return</span> deferred.promise</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> action2 = <span class="function">(<span class="params">file, encoding</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> deferred = <span class="keyword">new</span> Deferred()</span><br><span class="line">  fs.readFile(file, encoding, deferred.callback())</span><br><span class="line">  <span class="keyword">return</span> deferred.promise</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">action1(<span class="string">'./file1.txt'</span>, <span class="string">'utf8'</span>).then(<span class="function"><span class="params">file1</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> action2(file1.trim(), <span class="string">'utf8'</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">file2</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(file2)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T09:36:15.000Z" itemprop="dateUpdated">2019-06-29 17:36:15</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/12/09/Principle-of-Promise-Deferred/" target="_blank" rel="external">https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/&title=《Principle of Promise/Deferred》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/&title=《Principle of Promise/Deferred》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Principle of Promise/Deferred》 — Yuchang Wu's blog&url=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/12/20/Four-commonly-used-form-accept-type/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Four commonly used form accept type</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/12/08/node-js/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Node.js</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/&title=《Principle of Promise/Deferred》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/&title=《Principle of Promise/Deferred》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Principle of Promise/Deferred》 — Yuchang Wu's blog&url=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2016/12/09/Principle-of-Promise-Deferred/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3awW4iQQwEUP7/p3elPW0UgarsbkikxwlBZqbfRJo2ZT8e8evPv9f/75PX92Ofne31db+f8/ALDw8Pb7T0don5GRLqM8CzY5Nr4eHh4d3mJZtBsm3MHu75GfI14+Hh4f0E3uvHevJ5sj0kJDw8PLzfwmsX1AYcs/d4eHh4n+IlIUIbN+Q3pQ18r2QteHh4eDHvnQ/xG5vBlf4eHh4e3qJxtX/s5sHEvs325Vp4eHh4F3izEKFtg7XNs1PNMDw8PLx7vNcN/jYsSOKM5NjN8EGUuODh4eGNeHnRnCyrLXzzben1qqJiGg8PD+8o7yxgv23k28mx7BkPDw9v0SdqT9relNm3bUGPh4eH9x7erNWUN7H2j/hhYIGHh4d3lJc8avMf/+3ZNuMFUbMNDw8P7wKvjR4S9sXxqXIoAQ8PD+8GLx94SkhtlJD/fRv74uHh4X2KtxkC2BTHbeC7CiPw8PDwRrx2FGA2qpWX2nmAGw1d4eHh4R3lbcLZBNZuHptxKzw8PLz3886moHl0mw9yDQcL8PDw8I7y2migLcQ38UReOj9V4OHh4V3gbVpW7YM7H+rKj0r+PXh4eHhnebN2VNG8L2HJxvDY3Es8PDy8NW+G3y9iP1DVtu7w8PDwzvLattNsq3i9GbRldNGWw8PDw7vA2/zsbwvrekHlqoZZCB4eHl7Jyx/c+Sf5t+2mUt9KPDw8vMu89jLt2Ya5yD6uxcPDw3sLLC+X27ghH6uatdy+zJTh4eHhHeWd7bPnJXuyqWzCkStjBHh4eHijkvpGxbu5rXh4eHif5e2b98kta8cRZpkDHh4e3k/j5Rnppmh+vcJ8tAsPDw/vs7wcOSup98MEeHh4eO/kzZpPeWl7qg1Wl914eHh4F3g3Itf29iW3aTMKhoeHh3eI9xfRMSvwRHQTgAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

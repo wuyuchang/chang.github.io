@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Four commonly used form accept type | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,Node.js">
+    <meta name="description" content="The blog based on Node.js server. In front-end, we have several types to send a request to server, most of the time, we use 3 commonly below:  application/json application/x-www-form-urlencoded multip">
+<meta name="keywords" content="Front-End,Node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Four commonly used form accept type">
+<meta property="og:url" content="https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="The blog based on Node.js server. In front-end, we have several types to send a request to server, most of the time, we use 3 commonly below:  application/json application/x-www-form-urlencoded multip">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T09:36:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Four commonly used form accept type">
+<meta name="twitter:description" content="The blog based on Node.js server. In front-end, we have several types to send a request to server, most of the time, we use 3 commonly below:  application/json application/x-www-form-urlencoded multip">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Four commonly used form accept type</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Four commonly used form accept type</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-12-20T03:06:46.000Z" itemprop="datePublished" class="page-time">
+  2016-12-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#application-json"><span class="post-toc-number">1.</span> <span class="post-toc-text">application/json</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#GET"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">GET</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#client"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">client</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#server"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">server</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#POST"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">POST</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Client"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">Client</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Server"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">Server</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#application-x-www-form-urlencoded"><span class="post-toc-number">2.</span> <span class="post-toc-text">application/x-www-form-urlencoded</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#GET-1"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">GET</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Client-1"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">Client</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#server-1"><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">server</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#POST-1"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">POST</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#server-2"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">server</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#multipart-form-data"><span class="post-toc-number">3.</span> <span class="post-toc-text">multipart/form-data</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#GET-2"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">GET</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#POST-2"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">POST</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Client-2"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">Client</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Server-1"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">Server</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Four-commonly-used-form-accept-type"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Four commonly used form accept type</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-12-20 11:06:46" datetime="2016-12-20T03:06:46.000Z"  itemprop="datePublished">2016-12-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>The blog based on Node.js server.</p>
+<p>In front-end, we have several types to send a request to server, most of the time, we use 3 commonly below:</p>
+<ol>
+<li>application/json</li>
+<li>application/x-www-form-urlencoded</li>
+<li>multipart/form-data</li>
+</ol>
+<h2 id="application-json"><a href="#application-json" class="headerlink" title="application/json"></a>application/json</h2><h3 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h3><h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">  url: <span class="string">'/upload'</span>,</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  contentType: <span class="string">'application/json'</span>,</span><br><span class="line">  data: <span class="built_in">JSON</span>.stringify(&#123;   <span class="comment">// must turn to string, whether jQuery will turn to "x-www-form-urlcoded" format</span></span><br><span class="line">    username: <span class="string">'username'</span>,</span><br><span class="line">    password: <span class="string">'password'</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>Check the request header in network panel in Chrome dev-tool, you will see the request URL turn to <em><a href="http://domain/upload?{&quot;test&quot;:&quot;wuyuchang&quot;,&quot;passowrd&quot;:&quot;chang&quot;}" target="_blank" rel="noopener">http://domain/upload?{&quot;test&quot;:&quot;wuyuchang&quot;,&quot;passowrd&quot;:&quot;chang&quot;}</a></em>, it’s because GET request always append data to the request URL.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Request URL:http://domain/upload?&#123;&quot;test&quot;:&quot;username&quot;,&quot;passowrd&quot;:&quot;password&quot;&#125;</span><br><span class="line">Request Method:GET</span><br><span class="line">Content-Type:application/json</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><p>In server side, you can read the header that client send throw req.headers, and URL throw req.url, then you just compile analysis the parameter after question mark.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> qs = <span class="built_in">require</span>(<span class="string">'querystring'</span>)</span><br><span class="line">  <span class="keyword">let</span> param = qs.unescape(req.url.split(<span class="string">'?'</span>)[<span class="number">1</span>])</span><br><span class="line">  <span class="keyword">let</span> json = <span class="built_in">JSON</span>.parse(param)</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;).listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h3><h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h4><p>For client, you just change the request method from ‘GET’ to ‘POST’.</p>
+<h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h4><p>In server side, you can’t get content that client send directly, it’s send throw buffer, so you have to receive it by listen it throw req.on(‘data’)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> chunk = <span class="string">''</span></span><br><span class="line">  req.on(<span class="string">'data'</span>, data =&gt; &#123;</span><br><span class="line">    chunk += data</span><br><span class="line">  &#125;)</span><br><span class="line">  req.on(<span class="string">'end'</span>, err =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> json = <span class="built_in">JSON</span>.parse(chunk.toString())</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;).listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<p>It’s convenient to get JSON data throw this way.</p>
+<h2 id="application-x-www-form-urlencoded"><a href="#application-x-www-form-urlencoded" class="headerlink" title="application/x-www-form-urlencoded"></a>application/x-www-form-urlencoded</h2><h3 id="GET-1"><a href="#GET-1" class="headerlink" title="GET"></a>GET</h3><h4 id="Client-1"><a href="#Client-1" class="headerlink" title="Client"></a>Client</h4><p>Same with above, just change the contenType to ‘application/x-www-form-urlencoded’, the jQuery wouldn’t add contentType automatic if you set method as ‘GET’.</p>
+<h4 id="server-1"><a href="#server-1" class="headerlink" title="server"></a>server</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> json = <span class="built_in">require</span>(<span class="string">'url'</span>).parse(req.url, <span class="literal">true</span>).query</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;).listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="POST-1"><a href="#POST-1" class="headerlink" title="POST"></a>POST</h3><p>jQuery set contentType as ‘application/x-www-form-urlencoded’ if you send request throw ‘POST’ method.</p>
+<h4 id="server-2"><a href="#server-2" class="headerlink" title="server"></a>server</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> chunk = <span class="string">''</span></span><br><span class="line">  req.on(<span class="string">'data'</span>, data =&gt; &#123;</span><br><span class="line">    chunk += data</span><br><span class="line">  &#125;)</span><br><span class="line">  req.on(<span class="string">'end'</span>, err =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> qs = <span class="built_in">require</span>(<span class="string">'querystring'</span>)</span><br><span class="line">    <span class="keyword">let</span> json = qs.parse(chunk.toString())</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;).listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="multipart-form-data"><a href="#multipart-form-data" class="headerlink" title="multipart/form-data"></a>multipart/form-data</h2><p><em>multipart/form-data</em> always used to send a file, of course, you also can send form without file.</p>
+<h3 id="GET-2"><a href="#GET-2" class="headerlink" title="GET"></a>GET</h3><p>It’s same with below, the different is that if you send a file to server, the server can’t accept it.</p>
+<h3 id="POST-2"><a href="#POST-2" class="headerlink" title="POST"></a>POST</h3><h4 id="Client-2"><a href="#Client-2" class="headerlink" title="Client"></a>Client</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"/upload"</span> <span class="attr">method</span>=<span class="string">"POST"</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"test"</span> <span class="attr">value</span>=<span class="string">"wuyuchang"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"pwd"</span> <span class="attr">value</span>=<span class="string">"chang"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">multiple</span>=<span class="string">"multiple"</span> <span class="attr">name</span>=<span class="string">"upload"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"Upload"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>the request header is different</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Content-Type:multipart/form-data; boundary=----WebKitFormBoundaryuyeyXEbnVwhZJcl6</span><br><span class="line">Request Payload:</span><br><span class="line">  ------WebKitFormBoundaryuyeyXEbnVwhZJcl6</span><br><span class="line">  Content-Disposition: form-data; name=&quot;test&quot;</span><br><span class="line"></span><br><span class="line">  wuyuchang</span><br><span class="line">  ------WebKitFormBoundaryuyeyXEbnVwhZJcl6</span><br><span class="line">  Content-Disposition: form-data; name=&quot;pwd&quot;</span><br><span class="line"></span><br><span class="line">  chang</span><br><span class="line">  ------WebKitFormBoundaryuyeyXEbnVwhZJcl6</span><br><span class="line">  Content-Disposition: form-data; name=&quot;upload&quot;; filename=&quot;boom.png&quot;</span><br><span class="line">  Content-Type: image/png</span><br></pre></td></tr></table></figure>
+
+<p>the value of boundary is random.</p>
+<h4 id="Server-1"><a href="#Server-1" class="headerlink" title="Server"></a>Server</h4><p>In server side you can compile it, but it’s complex, you can import a package name of ‘formidable’.</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T09:36:47.000Z" itemprop="dateUpdated">2019-06-29 17:36:47</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/12/20/Four-commonly-used-form-accept-type/" target="_blank" rel="external">https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/&title=《Four commonly used form accept type》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/&title=《Four commonly used form accept type》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Four commonly used form accept type》 — Yuchang Wu's blog&url=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/01/03/config-ThinkPHP-support-memcache-in-php5/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">config ThinkPHP support memcache in php5</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/12/09/Principle-of-Promise-Deferred/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Principle of Promise/Deferred</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/&title=《Four commonly used form accept type》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/&title=《Four commonly used form accept type》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Four commonly used form accept type》 — Yuchang Wu's blog&url=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2016/12/20/Four-commonly-used-form-accept-type/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACs0lEQVR42u3aQW7jMBAEwP3/p7PAXgN5u2dIwYfSKYhlisWDOG7Onz/x9fPv+v2fp+v3PU/f/fyUz/cfu/Dw8PBGU59N9Pe0nr6bLFMycj5nPDw8vNu8zaQ/j5N8mm9C+Zzx8PDwvoG3ub9djv0c8PDw8L6Hl5Tj7Thn54OHh4f3Di8JI5IydxbOfh4t/xQPDw/vHV4bEHzD3xfP9/Dw8PAWp+p5odwe87cHZrMLDw8P7wbvaYj6B3/wZt4U2XmEEf1iwMPDw1vzNl/YRBKz5oN248HDw8O7wdtsBp/L302gkM8kKqnx8PDwDvHaIGB2fLWPKtpNAg8PD+8ebxOtJmXxbKvIw4gigMDDw8M7xJs9pg1n25f+LIx4LKnx8PDwjvKSbSDBzzaYWTTcxsp4eHh4Z3lJiJBvCUmosQ9wiwXFw8PDu8DLg4Z26NlrPb8/+RQPDw/vBq+dbn7oNQwO1mw8PDy8N3ntAdis1J41BAy3JTw8PLwLvLxBKj8qm0UMmyaG/ywfHh4e3jXe7Ph/Fknkx11tsFvEuHh4eHgj3j4qbZux8gaFtkB//MWAh4eHd4E3i1CTiCHfMPLtJync8fDw8N7hJY9pC998zFNPwcPDw7vN2zRXtcVuu2QJcthThoeHh3eIlzdRJYFvXnC3Y9YBCh4eHt5R3uZQqm2ZysvlWZMBHh4e3vu8NnKtQ4H1oVobl+Dh4eHd4CUv33ZjaJsG2kVcXXh4eHhr3k95zaa+D4iHoQkeHh7eBd5sw2hf4i243TDw8PDw3uclm0G+NrODtPZwK4968fDw8O7x2ni0LbiTEQ7sYJ97yvDw8PBe5yWYGT4Pi+u2LTw8PLwv4CXfzY/Tzo7wGEbg4eHhXeDlkcHsJd42HOTtBVFJjYeHh3eUt5/ELHrYY04tMR4eHl7M+ws/raZL782lpgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

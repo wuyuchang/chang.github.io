@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>config ThinkPHP support memcache in php5 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="PHP,Linux,Back-ENd">
+    <meta name="description" content="This guide is base on Ubuntu &amp;amp; PHP5, so you have to install PHP5 in Ubunut first, but debian is okay. Install Memcached12$ sudo apt-get install memcached$ service memcached start  then execute ps">
+<meta name="keywords" content="PHP,Linux,Back-ENd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="config ThinkPHP support memcache in php5">
+<meta property="og:url" content="https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="This guide is base on Ubuntu &amp;amp; PHP5, so you have to install PHP5 in Ubunut first, but debian is okay. Install Memcached12$ sudo apt-get install memcached$ service memcached start  then execute ps">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T09:37:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="config ThinkPHP support memcache in php5">
+<meta name="twitter:description" content="This guide is base on Ubuntu &amp;amp; PHP5, so you have to install PHP5 in Ubunut first, but debian is okay. Install Memcached12$ sudo apt-get install memcached$ service memcached start  then execute ps">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">config ThinkPHP support memcache in php5</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">config ThinkPHP support memcache in php5</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-01-03T09:23:37.000Z" itemprop="datePublished" class="page-time">
+  2017-01-03
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Install-Memcached"><span class="post-toc-number">1.</span> <span class="post-toc-text">Install Memcached</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Install-Memcache-extension-for-PHP"><span class="post-toc-number">2.</span> <span class="post-toc-text">Install Memcache extension for PHP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#set-php-ini"><span class="post-toc-number">3.</span> <span class="post-toc-text">set php.ini</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#config-ThinkPHP"><span class="post-toc-number">4.</span> <span class="post-toc-text">config ThinkPHP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#restart-php-fpm"><span class="post-toc-number">5.</span> <span class="post-toc-text">restart php-fpm</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-config-ThinkPHP-support-memcache-in-php5"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">config ThinkPHP support memcache in php5</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-01-03 17:23:37" datetime="2017-01-03T09:23:37.000Z"  itemprop="datePublished">2017-01-03</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>This guide is base on Ubuntu &amp; PHP5, so you have to install PHP5 in Ubunut first, but debian is okay.</p>
+<h2 id="Install-Memcached"><a href="#Install-Memcached" class="headerlink" title="Install Memcached"></a>Install Memcached</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo apt-get install memcached</span><br><span class="line"><span class="meta">$</span> service memcached start</span><br></pre></td></tr></table></figure>
+
+<p>then execute <code>ps aux | grep memcached</code> to check it is running.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ps aux | grep memcached</span><br></pre></td></tr></table></figure>
+
+<h2 id="Install-Memcache-extension-for-PHP"><a href="#Install-Memcache-extension-for-PHP" class="headerlink" title="Install Memcache extension for PHP"></a>Install Memcache extension for PHP</h2><p>Let’s go to <a href="https://pecl.php.net/package-stats.php" target="_blank" rel="noopener">https://pecl.php.net/package-stats.php</a>.</p>
+<ol>
+<li>download memcache package from <a href="https://pecl.php.net/package-stats.php" target="_blank" rel="noopener">https://pecl.php.net/package-stats.php</a> to your home directory.</li>
+<li>extract it.</li>
+<li>run phpize to gererate configure, make file.</li>
+<li>configure</li>
+<li>make</li>
+<li>make install</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> wget https://pecl.php.net/get/memcache-2.2.7.tgz</span><br><span class="line"><span class="meta">$</span> tar zxf memcache-2.2.7.tgz</span><br><span class="line"><span class="meta">$</span> phpize</span><br><span class="line"><span class="meta">$</span> ./configure</span><br><span class="line"><span class="meta">$</span> sudo make</span><br><span class="line"><span class="meta">$</span> sudo make install</span><br></pre></td></tr></table></figure>
+
+<h2 id="set-php-ini"><a href="#set-php-ini" class="headerlink" title="set php.ini"></a>set php.ini</h2><p>append extension=/path/to/memcache.so<br><code>php.ini</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extension=/path/to/memcache.so</span><br></pre></td></tr></table></figure>
+
+<h2 id="config-ThinkPHP"><a href="#config-ThinkPHP" class="headerlink" title="config ThinkPHP"></a>config ThinkPHP</h2><p>Go into Core/conf/conf.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'DATA_CACHE_TYPE'</span> =&gt; <span class="string">'Memcache'</span>,</span><br><span class="line"><span class="string">'MEMCACHE_HOST'</span> =&gt; <span class="string">'localhost'</span>,</span><br><span class="line"><span class="string">'MEMCACHE_PORT'</span> =&gt; <span class="string">'11211'</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="restart-php-fpm"><a href="#restart-php-fpm" class="headerlink" title="restart php-fpm"></a>restart php-fpm</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ps aux | grep memcached</span><br><span class="line"><span class="meta">$</span> kill pid</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T09:37:04.000Z" itemprop="dateUpdated">2019-06-29 17:37:04</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/01/03/config-ThinkPHP-support-memcache-in-php5/" target="_blank" rel="external">https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Back-ENd/">Back-ENd</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/&title=《config ThinkPHP support memcache in php5》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/&title=《config ThinkPHP support memcache in php5》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《config ThinkPHP support memcache in php5》 — Yuchang Wu's blog&url=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/13/wechat-jssdk/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">微信JSSDK测试接口的Node实现</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/12/20/Four-commonly-used-form-accept-type/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Four commonly used form accept type</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/&title=《config ThinkPHP support memcache in php5》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/&title=《config ThinkPHP support memcache in php5》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《config ThinkPHP support memcache in php5》 — Yuchang Wu's blog&url=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2017/01/03/config-ThinkPHP-support-memcache-in-php5/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsklEQVR42u3a0U7rMBAE0P7/T5dXJEg647VLkU6frgJNfHylrJndxyP+PL99rq78vJ58K7/Dz9/c9sHDw8MbLD1f1v3d7peePDfZlGgL8PDw8I7x8oXeL/qekb+32427vI6Hh4f3Abz8p/eFpIXh4eHh/V9e8pg22mhJeHh4eJ/AS+KAtiTcxwfJt96ateDh4eEd6CJ9zr+P9Pfw8PDwxl31/BWfhxGT0KFeLR4eHt4BXv7CXQtb9x5/23Xi4eHhneDl0UMbUkwC4qTkRPfHw8PD+yNe3ryfl417Rhv+4uHh4Z3grTWf5ofpeQCx4f8QDw8Pb8zLW/Ute3KH9rBefBkPDw9vzGvj17xU7Co2i6NXeHh4eId5a9FAWx7aY3f7lEf7ADw8PLyYN2n2582wXYUk3yA8PDy8c7y8wb82CDV50efPfbGVeHh4eFt5SZv/BHJvu+uykODh4eEd4+VBbdv+b38zjySircfDw8M7xpu0/CeAteNy3frCw8PD28rLB5vuw9y28b9WBvJ3fhTm4uHh4S3x8oUmYUQ7TJAXlaTA/HIdDw8P7wAvjxLmrax26dtacXh4eHhbeWuv2jbeXUOubdxlScDDw8Pbymvj1ASfb9Pa4Tu6Ax4eHt4BXj5GkES9k6N2PVBVlig8PDy8vby1iGE+LLUWRrSDCHh4eHjv4eUBQT6AtQbIf7phJgIPDw9vwFtr9k+Ov2tNryj8xcPDw9vKe5afdtRgLQLeth14eHh473vT1oVhPrzVgtvxAjw8PLy9vEnrK398HrzmQXBUGPDw8PCO8fKhqzaczQewJkXr8goeHh7eB/DyI3WxiE13KxpgeHh4eG/nteNTbTScB82bj9R4eHh4MS9//NpQVPK6n0S6LwoDHh4e3lbe5A/+Ftkuq42VR/09PDw8vNe8L9akSt92WmxUAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

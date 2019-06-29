@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>JavaScript子元素oumouseover触发父元素onmouseout | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,JavaScript">
+    <meta name="description" content="JavaScript中，父元素包含子元素：　　当父级设置onmouseover及onmouseout时，鼠标从父级移入子级，则触发父级的onmouseout后又触发onmouseover从子级移入父级后再次触发父级的oumouseout后又触发onmouseover。而如果onmouseover内又应用了计时器便会存在较大的问题。下面针对此问题给出解决方案。　　首先，在给出解决方案之前，必须先">
+<meta name="keywords" content="Front-End,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript子元素oumouseover触发父元素onmouseout">
+<meta property="og:url" content="https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="JavaScript中，父元素包含子元素：　　当父级设置onmouseover及onmouseout时，鼠标从父级移入子级，则触发父级的onmouseout后又触发onmouseover从子级移入父级后再次触发父级的oumouseout后又触发onmouseover。而如果onmouseover内又应用了计时器便会存在较大的问题。下面针对此问题给出解决方案。　　首先，在给出解决方案之前，必须先">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T09:44:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript子元素oumouseover触发父元素onmouseout">
+<meta name="twitter:description" content="JavaScript中，父元素包含子元素：　　当父级设置onmouseover及onmouseout时，鼠标从父级移入子级，则触发父级的onmouseout后又触发onmouseover从子级移入父级后再次触发父级的oumouseout后又触发onmouseover。而如果onmouseover内又应用了计时器便会存在较大的问题。下面针对此问题给出解决方案。　　首先，在给出解决方案之前，必须先">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">JavaScript子元素oumouseover触发父元素onmouseout</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">JavaScript子元素oumouseover触发父元素onmouseout</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2014-08-10T15:18:00.000Z" itemprop="datePublished" class="page-time">
+  2014-08-10
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-JavaScript子元素oumouseover触发父元素onmouseout"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">JavaScript子元素oumouseover触发父元素onmouseout</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2014-08-10 23:18:00" datetime="2014-08-10T15:18:00.000Z"  itemprop="datePublished">2014-08-10</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>　　JavaScript中，父元素包含子元素：<br>　　当父级设置<code>onmouseover</code>及<code>onmouseout</code>时，鼠标从父级移入子级，则触发父级的<code>onmouseout</code>后又触发<code>onmouseover</code>从子级移入父级后再次触发父级的<code>oumouseout</code>后又触发<code>onmouseover</code>。而如果<code>onmouseover</code>内又应用了计时器便会存在较大的问题。下面针对此问题给出解决方案。<br>　　首先，在给出解决方案之前，必须先弄清楚几个对象及方法，分别如下：<br>　　1、事件对象<br>　　2、事件对象相关属性（只针对<code>onmouseover</code>及<code>onmouseout</code>），即<code>fromElement</code>、<code>toElement</code>、<code>relatedTarget</code><br>　　3、判断一个元素是否包含另一个元素的方法，即<code>element.contains(Node)</code>与<code>element.compareDocumentPosition(Node)</code></p>
+<p>　　既然前面已经说了要弄清如上几个对象及方法，那么，我们就可以分析一下倒底如何去解决这个问题。<br>分析：<br>　　存在的问题是设置<code>onmouseover</code>时，鼠标从移入父级内时，没任何问题，但由父级移入子级时，以及由子级称出到父级时会出现如上问题，那么我们可以想办法设置当鼠标从父级移入到子级时，或从子级移出到父级时让触发对象失效，我们可以通过<code>if</code>语句进行判断。而事件对象里面有个属性可以获取移入移出时的相关对象，下面就来介绍。</p>
+<p>　　1、事件对象：可以获取事件对象的一系列属性，在事件中写一个参数，即可通过参数获取，方法如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wrap.onmouseover = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e = <span class="built_in">window</span>.event || e;        <span class="comment">// window.event是为了兼容ie下获取事件对象，而e为标准浏览器直接获取</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　2、事件对象的相关对象<br>在触发<code>onmouseover</code>及<code>onmouseout</code>时，必定会涉及到其它对象，如：<code>onmouseover</code>的相关对象，即为哪个对象进入的。<code>onmouseout</code>的相关对象即为进入到哪个对象。获取方法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wrap.onmouseover = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e = <span class="built_in">window</span>.event || e;</span><br><span class="line">    <span class="keyword">var</span> s = e.fromElement || e.relatedTarget;    <span class="comment">//e.fromElement为IE下onmouseover获取相关对象方法，relatedTarget为标准浏览器下获取方法</span></span><br><span class="line">&#125;</span><br><span class="line">wrap.onmouseout = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e = <span class="built_in">window</span>.event || e;</span><br><span class="line">    <span class="keyword">var</span> s = e.toElement || e.relatedTarget;        <span class="comment">//e.toElementIE下onmouseout获取相关对象方法，relatedTarget为标准浏览器下获取方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　3、判断一个元素是否包含另一个元素<br>IE下可以使用<code>a.contains(b)</code>判断a是否包含b<br>标准浏览器下<code>a.compareDocumentPosition(b)</code>有5个值，若为0表示为同一节点，若为2表示a位于b后面，若为4表示a位于b前面，若为10表示a为b的后代，若为20表示a为b的祖级。</p>
+<p>　　先上个即将用到的示例的HTML及CSS</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span></span><br><span class="line">    html,body,div&#123;margin:0;padding:0&#125;</span><br><span class="line">        .wrapper &#123;</span><br><span class="line">            overflow: hidden;</span><br><span class="line">            width: 800px;</span><br><span class="line">            background: black;</span><br><span class="line">        &#125;</span><br><span class="line">        .box &#123;</span><br><span class="line">            height: 200px;</span><br><span class="line">            background: #FF0;</span><br><span class="line">            margin: 80px 0;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrapper"</span> <span class="attr">id</span>=<span class="string">"wrap"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span> <span class="attr">id</span>=<span class="string">"box"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>　　既然知道了以上的获取属性及事件的必备方法，那么我们就可以想方法解决问题了<br>当触发<code>onmouseover</code>时，可能是从对象以外移入的，也有可能是父级移入到子级，以及子级移出到父级，刚才也说过，<code>onmouseover</code>的相关对象是获取从哪个对象进入的。如果是从外面的对象进入的，我们就执行所需的代码。如果是从父级移入到子级或是由子级移出到父级时，则直接跳过。<br>父级移入到子级对象，相关对象为父级。 子级移出到父级对象，相对对象为子级。<br>代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wrap.onmouseover = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e = <span class="built_in">window</span>.event || e;</span><br><span class="line">    <span class="keyword">var</span> s = e.fromElement || e.relatedTarget;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">document</span>.all) &#123;    <span class="comment">//判断浏览器是否为IE,如果存在document.all则为IE</span></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.contains(s)) &#123;    <span class="comment">// 判断调用onmouseover的对象(this)是否包含自身或子级，如果包含，则不执行</span></span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'IE will over'</span>);</span><br><span class="line">        &#125;    </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;    <span class="comment">//标准浏览器下的方法</span></span><br><span class="line">        <span class="keyword">var</span> reg = <span class="keyword">this</span>.compareDocumentPosition(s);</span><br><span class="line">        <span class="keyword">if</span> (!(reg == <span class="number">20</span> || reg == <span class="number">0</span>)) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'Browser will over'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　当触发<code>onmouseout</code>时，可能是从父级移到子级，也可能由子级移到父级，或是移出至父级之外。<br>父级称到子级，则相关对象为子级，子级称到父级，则相关对象为父级。<br>代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wrap.onmouseout = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e = <span class="built_in">window</span>.event || e;</span><br><span class="line">    <span class="keyword">var</span> s = e.toElement || e.relatedTarget;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">document</span>.all) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.contains(s)) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'IE will out'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> reg = <span class="keyword">this</span>.compareDocumentPosition(s);</span><br><span class="line">        <span class="keyword">if</span> (!(reg == <span class="number">20</span> || reg == <span class="number">0</span>)) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'Browser will out'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题也就得到了解决。</p>
+<p>不过你会发现：<code>onmouseover</code>与<code>onmouseout</code>的判断方法其实是一样的。于是我们得到：<br><strong>无论是移入还是移出，只要相关对象是父级以外的就可以执行，否则代码不执行。</strong></p>
+<p>最后，再为大家提供本人自己写的兼容代码，复制到JS代码后可直接调用。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * 功能：鼠标移入对象触发事件，兼容所有浏览器并防止鼠标在父子对象间移动造成的触发onmouseover的bug</span></span><br><span class="line"><span class="comment"> * 参数：第一个参数表示触发的对象，第二个参数表示触发的对象的事件对象，第三个对象表示要执行的函数</span></span><br><span class="line"><span class="comment"> * 作者：http://www.cnblogs.com/wuyuchang/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mouseover</span>(<span class="params">a, e, func</span>) </span>&#123;</span><br><span class="line">    e = e || <span class="built_in">window</span>.event;</span><br><span class="line">    <span class="keyword">var</span> b = e.fromElement || e.relatedTarget;</span><br><span class="line">    </span><br><span class="line">    mouseoverAndOut(a, b, func);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * 功能：鼠标移出对象触发事件，兼容所有浏览器并防止鼠标在父子对象间移动造成的onmouseout的bug</span></span><br><span class="line"><span class="comment"> * 参数：第一个参数表示触发的对象，第二个参数表示触发的对象的事件对象，第三个对象表示要执行的函数</span></span><br><span class="line"><span class="comment"> * 作者：http://www.cnblogs.com/wuyuchang/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mouseout</span>(<span class="params">a ,e, func</span>) </span>&#123;</span><br><span class="line">    e = e || <span class="built_in">window</span>.event;</span><br><span class="line">    <span class="keyword">var</span> b = e.toElement || e.relatedTarget;</span><br><span class="line">    mouseoverAndOut(a, b, func);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * 功能：鼠标移入或移出对象触发事件，兼容所有浏览器并防止鼠标在父子对象间移动造成的onmouseover &amp; onmouseout的bug</span></span><br><span class="line"><span class="comment"> * 参数：第一个参数表示触发的对象，第二个参数表示触发的对象的事件对象，第三个对象表示要执行的函数</span></span><br><span class="line"><span class="comment"> * 作者：http://www.cnblogs.com/wuyuchang/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mouseoverOrOut</span>(<span class="params">a, e, func</span>) </span>&#123;</span><br><span class="line">    e = e || <span class="built_in">window</span>.event;</span><br><span class="line">    <span class="keyword">var</span> b;</span><br><span class="line">    <span class="keyword">if</span> (e.type == <span class="string">'mouseover'</span>) &#123;</span><br><span class="line">        b = e.fromElement || e.relatedTarget;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (e.type == <span class="string">'mouseout'</span>) &#123;</span><br><span class="line">        b = e.toElement || e.relatedTarget;</span><br><span class="line">    &#125;</span><br><span class="line">    mouseoverAndOut(a, e, func);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * 功能：鼠标移入或移出对象触发事件，兼容所有浏览器并防止鼠标在父子对象间移动造成的onmouseover &amp; onmouseout的bug</span></span><br><span class="line"><span class="comment"> * 参数：第一个参数表示触发的对象，第二个参数表示触发的对象的相关对象，第三个对象表示要执行的函数</span></span><br><span class="line"><span class="comment"> * 作者：http://www.cnblogs.com/wuyuchang/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mouseoverAndOut</span>(<span class="params">a, b, func</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">document</span>.all) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!(a.contains(b))) &#123;</span><br><span class="line">            func();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> res = a.compareDocumentPosition(b);</span><br><span class="line">        <span class="keyword">if</span>(!(res == <span class="number">20</span> || res == <span class="number">0</span>))&#123;        </span><br><span class="line">                func();</span><br><span class="line">            &#125;       </span><br><span class="line">    &#125;           </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（如果是<code>onmouseover</code>，调用<code>mouseover(a, e, func)</code>即可；如果是<code>onmouseout</code>，调用<code>mouseout(a, e, func)</code>即可；或不管<code>onmouseover</code>还是<code>onmouseout</code>直接调用<code>mouseoverOrOut(a, e, func)</code>即可。）</p>
+<p>以上为个人经验之谈，如有不到之处还请留言指点。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T09:44:00.000Z" itemprop="dateUpdated">2019-06-29 17:44:00</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/" target="_blank" rel="external">https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/&title=《JavaScript子元素oumouseover触发父元素onmouseout》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/&title=《JavaScript子元素oumouseover触发父元素onmouseout》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JavaScript子元素oumouseover触发父元素onmouseout》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2014/08/10/JavaScript中apply与call的含义与区别/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">JavaScript中apply与call的含义与区别</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2014/08/10/IE6常见bug/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">IE6常见bug</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/&title=《JavaScript子元素oumouseover触发父元素onmouseout》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/&title=《JavaScript子元素oumouseover触发父元素onmouseout》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JavaScript子元素oumouseover触发父元素onmouseout》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/08/10/JavaScript子元素oumouseover触发父元素onmouseout/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADLElEQVR42u3aS3LiQBAFQN//0sx2ImzDe9XgQEVqRYCs7mwtyvX5+oqv23/X92++XydPbp/frviFjY2NvY6dLHD/+2T53369/4TZHqKXgY2Njb2OnW8op54fwf1v8v1gY2NjY8/CzP2gcv/+fCfY2NjY2M9NEpJnJr8+Nx3CxsbG/gR2smTbNpgV8ZM2w5/W0rCxsbHfnt2Wgd7580v629jY2NhvzL6V1yxdSQZu2vTjSIGNjY29iJ0HgLzon6QQzzrcPM3AxsbG3srOQ0vbMJgV9GfFoKIlkERFbGxs7Eux88btSYKRb/HVQ0IPutzY2NjYF2S3aUBLysd6TtoAyZN/yL2wsbGxV7DbhKEdzWmbB/mhzwIqNjY29lZ22wZo2XmS0CY2s1IXNjY29j52u3zUPY5TguhtxGsVzQZsbGzsFez23/rZmE7+t7PRnPwNY2NjY29lJyX4Z2U850M5J8eEjY2N/TnstqiUJyF58Sg/oPbgsLGxsTexZ4+YNYnbYaD8CPIA/KBVgI2NjX1Bdrtwkn60JZ78+W1C8usq2NjY2OvY5wlGWwaaHffsIOqiEjY2Nval2G0Jvi0YzZKKPB1q7x92HrCxsbEvwj7B523g2Z1t86A+UGxsbOx17JMgNBvxaTfdNgyiRi82Njb2ZdlJgb4t6J80hpODO38Z2NjY2DvYs2J9vol8lXbdPCZHoQsbGxv7suw2YZg1g/PGcLuH2SgnNjY29j52zmiPIH9Onq7MdvjDndjY2Njr2O2jT9q37cElQbFdFxsbG3sTu751NNzTwl5SQprxsLGxsd+eHXWDy4GbNqk4aT9gY2NjY88GX04Gd84D2ywQPqilYWNjY1+c3aYBJ6Wok2GdPNw+CNLY2NjYK9i38jpZOAEnCVKexjx4z9jY2Ngr2CdpQ1usb9sMecJz8is2Njb2DnYetPKGwawRO2sM5MOj2NjY2LvZs9CSfM4PdFbSatvS2NjY2NgnwWaW8OR/m6c02NjY2J/MbgcfZ23dPCi2R4mNjY29lZ03d9s0IC8M5YlNcrhPq6VhY2Njvz27/Ud/1jB4bpoxO0psbGzsdex/k+Jy3mpWaVkAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

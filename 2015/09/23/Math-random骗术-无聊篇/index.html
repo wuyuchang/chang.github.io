@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Math.random骗术-无聊篇 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,JavaScript">
+    <meta name="description" content="我觉得今天我运气特好，今天我们来赌一赌，我们来搞个随机数，Math.floor(Math.random() * 10)，如果这个数等于0到7，这个月的饭，我全请了，如果是8或9，你就请一个礼拜成不？于是你想了想，万一我真运气这么好，那不是完了。。于是我追加说，我们来玩5盘，5盘中有一盘0到7，就我请，如果全是8或9，你就请。想想你还是相信概率这东西的，于是和我赌了。。其实，在赌前，我就以经执行了下">
+<meta name="keywords" content="Front-End,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Math.random骗术-无聊篇">
+<meta property="og:url" content="https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="我觉得今天我运气特好，今天我们来赌一赌，我们来搞个随机数，Math.floor(Math.random() * 10)，如果这个数等于0到7，这个月的饭，我全请了，如果是8或9，你就请一个礼拜成不？于是你想了想，万一我真运气这么好，那不是完了。。于是我追加说，我们来玩5盘，5盘中有一盘0到7，就我请，如果全是8或9，你就请。想想你还是相信概率这东西的，于是和我赌了。。其实，在赌前，我就以经执行了下">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/img_1.png">
+<meta property="og:image" content="https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/img_2.png">
+<meta property="og:image" content="https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/img_3.png">
+<meta property="og:image" content="https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/img_4.png">
+<meta property="og:updated_time" content="2019-06-29T11:54:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Math.random骗术-无聊篇">
+<meta name="twitter:description" content="我觉得今天我运气特好，今天我们来赌一赌，我们来搞个随机数，Math.floor(Math.random() * 10)，如果这个数等于0到7，这个月的饭，我全请了，如果是8或9，你就请一个礼拜成不？于是你想了想，万一我真运气这么好，那不是完了。。于是我追加说，我们来玩5盘，5盘中有一盘0到7，就我请，如果全是8或9，你就请。想想你还是相信概率这东西的，于是和我赌了。。其实，在赌前，我就以经执行了下">
+<meta name="twitter:image" content="https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/img_1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Math.random骗术-无聊篇</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Math.random骗术-无聊篇</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2015-09-23T02:10:00.000Z" itemprop="datePublished" class="page-time">
+  2015-09-23
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-Math-random骗术-无聊篇"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Math.random骗术-无聊篇</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2015-09-23 10:10:00" datetime="2015-09-23T02:10:00.000Z"  itemprop="datePublished">2015-09-23</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>我觉得今天我运气特好，今天我们来赌一赌，我们来搞个随机数，Math.floor(Math.random() * 10)，如果这个数等于0到7，这个月的饭，我全请了，如果是8或9，你就请一个礼拜成不？<br>于是你想了想，万一我真运气这么好，那不是完了。。于是我追加说，我们来玩5盘，5盘中有一盘0到7，就我请，如果全是8或9，你就请。想想你还是相信概率这东西的，于是和我赌了。。<br>其实，在赌前，我就以经执行了下面这段脚本并测试通过：</p>
+<img src="/2015/09/23/Math-random骗术-无聊篇/img_1.png">
+
+<p>然后，我又悄悄的把他清空了。<br>于是结果是：</p>
+<img src="/2015/09/23/Math-random骗术-无聊篇/img_2.png">
+
+<p>。。。。。。。。。。。。。你跳楼去了。。从此不相信概率。。。</p>
+<p>你们公司有前端妹子？快去骗骗她吧！</p>
+<p>改进：<br>后来，被这个前端妹纸发现了问题，于是我把问题纠正了，去骗下一个妹纸，于是，我在行骗之前，执行了如下脚本：</p>
+<img src="/2015/09/23/Math-random骗术-无聊篇/img_3.png">
+<p>于是关掉标签页，新开一个，不执行测试，执行了上面的函数。<br>直到现在妹纸还不知道是什么原因。。。</p>
+<p>后来妹子一火，你在来试试呀，在来试试我就信，于是我想着应该要我能控制这个随机数，于是我又加了：</p>
+<img src="/2015/09/23/Math-random骗术-无聊篇/img_4.png">
+<p>当我要赌的时候，我就点击一下页面的右半部分，当怕妹子怀疑的时候，我就点击页面的左半部分。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T11:54:48.000Z" itemprop="dateUpdated">2019-06-29 19:54:48</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2015/09/23/Math-random骗术-无聊篇/" target="_blank" rel="external">https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/&title=《Math.random骗术-无聊篇》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/&title=《Math.random骗术-无聊篇》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Math.random骗术-无聊篇》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/12/08/node-js/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Node.js</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2015/09/21/浅谈服务端模板到客户端模板/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">浅谈服务端模板到客户端模板</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/&title=《Math.random骗术-无聊篇》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/&title=《Math.random骗术-无聊篇》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Math.random骗术-无聊篇》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/09/23/Math-random骗术-无聊篇/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACp0lEQVR42u3aQW4cMQwEQP//08k1QOxxNykt5lBzWqw3GpUCiEJTX1/x8+ef56dv8n/10y8371o9eHh4eIup///kv3mG5W98nkM9Hzw8PLxrvGSz3i/HrHjMCgweHh7eO3mzsnFjCfDw8PDez3v+/Dz+PsjAw8PDewMvDwLaLf65hOSY61kLHh4e3uSU+0sX6T2fr/T38PDw8NZd9U2jq93W98XgmzHx8PDwLvDyDfeZ2k5xf+Wr+CUeHh7eR3inLlclC7S/iPC83Hh4eHj3eG3LP1+a/PDdRsPR4uLh4eFd4LWAHLlpj7UH+oKKh4eHt+C1W+r+MkGCaWPiaLp4eHh4h3htJLqZUD659mLW8OoVHh4e3pqXt7jyCGN/XM6Xpk5c8PDw8Ba8fOp5kWgD1mS0NjjGw8PDu8GbNeOfX5AfzdvP7Xvx8PDw7vGSYpCEAm1jLJ/J8D8DDw8P7xrvVPO+jYPzZc3D3GEOjYeHhzfpW9UNsCR+zSPa2ZE9KRJ4eHh4Z3n5IXXWlGqTgXz8KPjAw8PDu8ZrG0ttqWg3+tmifPM9Hh4e3jVee0Q+dVxuLyLUl67w8PDwPsLbRxLtFa5ZwywZHw8PD+8Grx3obMg7m+5wUfDw8PCO8tpIYha55iFCW3h+iTnw8PDwPs5Lwoj80sCsVZYvXz0cHh4e3pq336zzrX8WK9SRLh4eHt41XrLpzw7H7Vtm4QgeHh7eZ3intv6cl18gSMb/5a94eHh4F3ibplQSTyRTnx2g24ADDw8P7ywvLwbtab2OXIOIIVkIPDw8vM/wNhM9G1KcXVA8PDy8d/Lab/YlpCgteHh4eC/g5VcBNgvRlp9jhQEPDw8v5u0Pvu3lgFksUly3wsPDw7vGq29pxQPtI928Cbfq8uHh4eGlvL/I9NpPqlvzKAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

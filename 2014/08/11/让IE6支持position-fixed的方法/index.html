@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,IE-Support,CSS">
+    <meta name="description" content="做吸顶效果或是固定效果时，使用position:fixed无非是最方便的，可是万恶的IE6是没有fixed这个属性值的，而我们要使IE6能够像fixed一样固定在浏览器中的某个位置，使用onscroll改变top值是一个方法，但如果滚轮滚的快，会出现卡闪烁情况。而如高级浏览器如果也这样用，那显然有失大雅，除非JS中判断浏览器版本。但是在这里笔者要讲解的是使用CSS完成fixed效果。千言万语不">
+<meta name="keywords" content="Front-End,IE-Support,CSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解">
+<meta property="og:url" content="https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="做吸顶效果或是固定效果时，使用position:fixed无非是最方便的，可是万恶的IE6是没有fixed这个属性值的，而我们要使IE6能够像fixed一样固定在浏览器中的某个位置，使用onscroll改变top值是一个方法，但如果滚轮滚的快，会出现卡闪烁情况。而如高级浏览器如果也这样用，那显然有失大雅，除非JS中判断浏览器版本。但是在这里笔者要讲解的是使用CSS完成fixed效果。千言万语不">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/img_1.jpg">
+<meta property="og:updated_time" content="2019-06-29T08:11:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解">
+<meta name="twitter:description" content="做吸顶效果或是固定效果时，使用position:fixed无非是最方便的，可是万恶的IE6是没有fixed这个属性值的，而我们要使IE6能够像fixed一样固定在浏览器中的某个位置，使用onscroll改变top值是一个方法，但如果滚轮滚的快，会出现卡闪烁情况。而如高级浏览器如果也这样用，那显然有失大雅，除非JS中判断浏览器版本。但是在这里笔者要讲解的是使用CSS完成fixed效果。千言万语不">
+<meta name="twitter:image" content="https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/img_1.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2014-08-11T09:50:00.000Z" itemprop="datePublished" class="page-time">
+  2014-08-11
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-让IE6支持position-fixed的方法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2014-08-11 17:50:00" datetime="2014-08-11T09:50:00.000Z"  itemprop="datePublished">2014-08-11</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>　　做吸顶效果或是固定效果时，使用position:fixed无非是最方便的，可是万恶的IE6是没有fixed这个属性值的，而我们要使IE6能够像fixed一样固定在浏览器中的某个位置，使用onscroll改变top值是一个方法，但如果滚轮滚的快，会出现卡闪烁情况。而如高级浏览器如果也这样用，那显然有失大雅，除非JS中判断浏览器版本。但是在这里笔者要讲解的是使用CSS完成fixed效果。<br>千言万语不及实例一个：</p>
+<img src="/2014/08/11/让IE6支持position-fixed的方法/img_1.jpg">
+
+<p>　　以上是笔者在IETester下测试IE6的fixed，注意看滚动条。其中导航采用的是position:fixed。<br>核心代码如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;    <span class="comment">/* nav为导航栏 */</span></span><br><span class="line">    <span class="attribute">position</span>:fixed;</span><br><span class="line">    <span class="attribute">_position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">0</span>;</span><br><span class="line">    <span class="attribute">_top</span>:<span class="built_in">expression</span>(eval(documentElement.scrollTop));</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#FAA</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　使用到了hack技术，下划线所代表的属性只有IE6以下识别。（因为只有IE6以下不支持fixed，所以特殊处理）<br>以上效果即可实现IE6下的fixed效果。而要理解_top:expression(eval(documentElement.scrollTop));不太容易，需要理解expression及eval的含义及用法，也是下面要讲解的内容。</p>
+<p>　　expression为IE特有的属性，支持IE5及以上版本，用来在CSS中书写JavaScript代码，也就是说expression的括号内可以是一段JavaScript代码。</p>
+<p>eval表示执行字符串内容的语句或表达式，并返回其结果。</p>
+<p>用法：eval(codes);</p>
+<p>参数：</p>
+<ul>
+<li>codes – 字符串形式的表达式或语句</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>如果没有参数，返回undefined</li>
+<li>如果有返回值将返回此值，否则返回undefined</li>
+<li>如果为表达式，返回表达式的值</li>
+<li>如果为语句返回语句的值</li>
+<li>如果为多条语句或表达式返回最后一条语句的值</li>
+</ul>
+<p>　　了解expression及eval后，_top:expression(eval(documentElement.scrollTop));就不难理解了。documentElement.scrollTop为IE下获取滚动条的位置，而top值就相当于滚动条距离顶部的位置。如果scrollTop值改变，_top也就相应改变。<br>　　而为什么要使用eval呢？因为documentElement.scrollTop实际就是一条语句，并没有返回值，相当于在JS中执行了a=1后没执行任何操作。而我们要拿到documentElement.scrollTop值就需要将其返回，而只需要使用eval即可。<br>　　这样一来，所有浏览器器都可以有fixed的效果了，但是你会发现IE6下滚动鼠标滚轮时仍然会出现闪烁现象，这是因为当滚动条滚动或浏览器大小改变时，IE6奇葩的渲染引擎会重置所有内容并重画页面，因此会出现振动或闪烁的问题。而使用backgroune-attachment:fixed;添加至html或body会强制页面重画前先加载CSS，因为重画前处理的CSS，也就是重画前你的表达式就已经改变了，不像之前的重画之后才改变。这样当你鼠标滚动的时候就不会出现闪烁的现象了。这样就完全达成了fixed的效果。代码如下：<br>body { _background: url(about: blank) fixed}</p>
+<p>总结：<br>IE6下不能实现fixed，因此使用absolute模拟fixed，因此需要使用JS。而只针对IE6进行处理，可在CSS中通过IE特有的expresstion写JavaScript，从而实时改变top值达到模拟fixed的效果。而IE6滚动或调整浏览器大小则重载CSS，因此使用在body中使用background-attachment:fixed使页面重新渲染前加载CSS。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;<span class="attribute">_background</span>: <span class="built_in">url</span>(about:blank) fixed&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">_position</span>: absolute;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">_top</span>: <span class="built_in">expression</span>(eval(documentElement.scrollTop));    </span><br><span class="line"></span><br><span class="line">    // top值为想要固定定位的位置，设置left同理，设置right与bottom需要通过scrollLeft及scrollTop进行计算，如下注释</span><br><span class="line"></span><br><span class="line">    // 固定左：_left:expression(eval(documentElement.scrollLeft));</span><br><span class="line"></span><br><span class="line">    // 固定右：_left:expression(eval(documentElement.scrollLeft + documentElement.clientWidth - this.offsetWidth));</span><br><span class="line"></span><br><span class="line">    // 固定下：_top:expression(eval(documentElement.scrollTop + documentElement.clientHeight - this.offsetHeight));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上就是IE6下解决fixed方法的完美方案。如有问题或疑问请留言。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T08:11:59.000Z" itemprop="dateUpdated">2019-06-29 16:11:59</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2014/08/11/让IE6支持position-fixed的方法/" target="_blank" rel="external">https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IE-Support/">IE-Support</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/&title=《让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/&title=《让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2014/08/11/DOM2级事件兼容/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">DOM2级事件兼容</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2014/08/11/JavaScript的DOM节点操作/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JavaScript的DOM节点操作</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/&title=《让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/&title=《让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《让IE6支持position:fixed的方法，CSS expression与JavaScript eval讲解》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/08/11/让IE6支持position-fixed的方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACqklEQVR42u3a0W7jMAwEwPz/T/deC7Tx7ZKWLweMn4okkjUqIBEkX6/4+fr2fP/k57fvPv856nqed9++Tjx4eHh4i6XnC71e0Lt58u3IN+J6FB4eHt453rsTtf27eHF5eSSXBB4eHt5n8pIL4Jo0g+Hh4eH977zZb/K0wiwxgYeHh/ckLznoN+ndWTjepjzw8PDwnuHlVaTP+ftIfQ8PDw9vXVXPy1F3zTz79u0oPDw8vAO8WWrgmYD7ep48hYGHh4d3L29W+N+Xuza/TJq08PDw8M7x8h/ddSXkoflmbLRbeHh4eAteXprKD+hZ+9RsiyMwHh4e3k28Niw+Xf5P3lg0cuHh4eE9wmvD4mRUcTsFV0jReoWHh4d3gJefou1FcvPiFtkGPDw8vBO85KBv+xFmoXmSyKjfjoeHh3crr20CyNsL2tar/EIq/iV4eHh4D/Jm7QKbayZ/b1Gcw8PDwzvG24TI+/LVLICOPsfDw8M7wLu3/N8WutrNGjaw4uHh4R3jDQePnk0iI7lOfslS4+Hh4d3KO5dabbepTY4Uza94eHh4N/GSidroNGfnx3p7heDh4eGd4+Xhb7uUTQCdJ4hXMDw8PLwFL2+i2hzom+JZW2DDw8PDe4aXLHrWrprMmc/ftojh4eHhneMlg2epgVmInKSYo5nx8PDwjvHadEBdYYtHbcL6X36Dh4eH9yBvv6x9e8HsInnltwoeHh5eyfsqnzzwnZWsNg0EdekLDw8Pb8RrGwhmy2pnyDMJm4YDPDw8vA1vU2pqr4rh7m6uDTw8PLxjvDZJ0Rb48yuh3YIi14KHh4f3j3htonaWxs3X9pdNwcPDw/sYXhsKb4pbbdCPh4eH9wxvE/jmqds26TBrYsDDw8M7zWsP97xNat9WtU9V4OHh4d3K+wNbNXOoBmwnqQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

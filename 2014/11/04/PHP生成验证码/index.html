@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>PHP生成验证码 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Back-End,PHP">
+    <meta name="description" content="验证码已经是现在网站中非常基础的知识点了，验证码的存在可以防止恶意破解密码、刷票、灌水，可以有效的防止暴力破解特定用户。 　　现在就来了解了解那些年PHP中屌屌的验证码吧。 　　首先，以四位验证码为例（多位验证码一样的道理）。 　　目前网站大多仍然采用静态图片验证码，因为这样实现起来简单又方便，不需要过硬的功底，当然这也是基础。而其原理也就是通过PHP的画图功能将文字画成图片返回到页面。因此，">
+<meta name="keywords" content="Back-End,PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP生成验证码">
+<meta property="og:url" content="https://blog.afacat.com/2014/11/04/PHP生成验证码/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="验证码已经是现在网站中非常基础的知识点了，验证码的存在可以防止恶意破解密码、刷票、灌水，可以有效的防止暴力破解特定用户。 　　现在就来了解了解那些年PHP中屌屌的验证码吧。 　　首先，以四位验证码为例（多位验证码一样的道理）。 　　目前网站大多仍然采用静态图片验证码，因为这样实现起来简单又方便，不需要过硬的功底，当然这也是基础。而其原理也就是通过PHP的画图功能将文字画成图片返回到页面。因此，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.afacat.com/2014/11/04/PHP生成验证码/img_1.png">
+<meta property="og:image" content="https://blog.afacat.com/2014/11/04/PHP生成验证码/img_2.png">
+<meta property="og:updated_time" content="2019-06-29T09:08:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP生成验证码">
+<meta name="twitter:description" content="验证码已经是现在网站中非常基础的知识点了，验证码的存在可以防止恶意破解密码、刷票、灌水，可以有效的防止暴力破解特定用户。 　　现在就来了解了解那些年PHP中屌屌的验证码吧。 　　首先，以四位验证码为例（多位验证码一样的道理）。 　　目前网站大多仍然采用静态图片验证码，因为这样实现起来简单又方便，不需要过硬的功底，当然这也是基础。而其原理也就是通过PHP的画图功能将文字画成图片返回到页面。因此，">
+<meta name="twitter:image" content="https://blog.afacat.com/2014/11/04/PHP生成验证码/img_1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">PHP生成验证码</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">PHP生成验证码</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2014-11-04T10:41:00.000Z" itemprop="datePublished" class="page-time">
+  2014-11-04
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-PHP生成验证码"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">PHP生成验证码</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2014-11-04 18:41:00" datetime="2014-11-04T10:41:00.000Z"  itemprop="datePublished">2014-11-04</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>　　验证码已经是现在网站中非常基础的知识点了，验证码的存在可以防止恶意破解密码、刷票、灌水，可以有效的防止暴力破解特定用户。</p>
+<p>　　现在就来了解了解那些年PHP中屌屌的验证码吧。</p>
+<p>　　首先，以四位验证码为例（多位验证码一样的道理）。</p>
+<p>　　目前网站大多仍然采用静态图片验证码，因为这样实现起来简单又方便，不需要过硬的功底，当然这也是基础。而其原理也就是通过PHP的画图功能将文字画成图片返回到页面。因此，我们解决的问题也就只有三步而已：</p>
+<p>随机生成验证码的内容<br>将验证码转换成图片，即绘图<br>将所绘出的图返回到页面中<br>　　当然，PHP默认是没有开启绘图功能的，因此，在php.ini的配置文件中先开启绘图功能吧：搜到  ;extension=php_gd2.dll  将前面的分号去掉即可。（记得保存喔！）</p>
+<p>　　那根据第一点，大家首先应该会想到数字的验证码，因为这容易，随机生成个几个数字，然后拼起来也就行了，像酱紫！</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$validateCode = <span class="string">''</span>;</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">4</span>; $i ++) &#123;</span><br><span class="line">    $validateCode .= rand(<span class="number">0</span>, <span class="number">9</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> $validateCode;</span><br></pre></td></tr></table></figure>
+
+<p>　　然后仔细想想，现在的网站验证码都有字母，可这玩意儿都没字母，怎么呢？然后又想到，直接把上面那玩意儿搞成十六进制就好了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$validateCode = <span class="string">''</span>;</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">4</span>; $i ++) &#123;</span><br><span class="line">    $validateCode .= dechex(rand(<span class="number">0</span>, <span class="number">16</span>));</span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">echo</span> $validateCode;</span><br></pre></td></tr></table></figure>
+
+<p>　　好像有点自作聪明的赶脚呀，不过想想，也算是有几个字母了，可却只有a,b,c,d,e,f，那要是需要所有字母咋办呢？哈哈，在想想也就想到把所有的字母和数字等在一个字符串中列出来，然后通过随机下标的形式去<br>随机获取对应的值，也就成了这样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$validateCode = <span class="string">''</span>;</span><br><span class="line">$str = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'</span>;</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">4</span>; $i ++) &#123;</span><br><span class="line">    $validateCode .= $str[rand(<span class="number">0</span>, strlen($str))];</span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">echo</span> $validateCode;</span><br></pre></td></tr></table></figure>
+
+<p>　　哈哈，终于像验证码里的随机数了，不过看到下面的方法，有总瞬间被秒的赶脚呀：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> substr(str_shuffle(<span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'</span>), <span class="number">0</span>, <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+
+<p>　　<code>str_shuffle</code>方法将字符串内容打乱，<code>substr($str, 0, 4)</code>取到了前四个数。这样是完全没有问题的！不过细心的看的出来，这样的验证码里的内容是不会重复的。<br>　　以上验证码也就产生了，接下来也就要将验证码用PHP画出来了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$validateCode = substr(str_shuffle(<span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'</span>), <span class="number">0</span>, <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一张宽为110px，高为25px的图片</span></span><br><span class="line">$img = imagecreatetruecolor(<span class="number">110</span>, <span class="number">25</span>);</span><br><span class="line"><span class="comment">// 将图片的背景颜色设置成黑色，颜色值分别对应RGB</span></span><br><span class="line">$bgcolor = imagecolorallocate($img, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建白色</span></span><br><span class="line">$white = imagecolorallocate($img, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加文字在图片中，第二个参数为文字的大小，只能在1~5，第三个参数为x坐标，第4个参数为y坐标，第5个参数为文字的内容，第6个参数为文字的颜色</span></span><br><span class="line">imagestring($img, rand(<span class="number">3</span>, <span class="number">5</span>), rand(<span class="number">0</span>, <span class="number">80</span>), rand(<span class="number">2</span>, <span class="number">10</span>), $validateCode, $white);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加文字在图片中，第二个参数为文字的大小，只能在1~5，第三个参数为x坐标，第4个参数为y坐标，第5个参数为文字的内容，第6个参数为文字的颜色</span></span><br><span class="line">imagestring($img, rand(<span class="number">3</span>, <span class="number">5</span>), rand(<span class="number">0</span>, <span class="number">80</span>), rand(<span class="number">2</span>, <span class="number">10</span>), $validateCode, $white);</span><br></pre></td></tr></table></figure>
+
+<img src="/2014/11/04/PHP生成验证码/img_1.png">
+
+<p>　　当然，这样的话验证码就太好识别了，就只是单纯的黑底白字，为了增加点难度，我们就多加几条线叠加在验证码的上面。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$validateCode = substr(str_shuffle(<span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'</span>), <span class="number">0</span>, <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一张宽为110px，高为25px的图片</span></span><br><span class="line">$img = imagecreatetruecolor(<span class="number">110</span>, <span class="number">25</span>);</span><br><span class="line"><span class="comment">// 将图片的背景颜色设置成黑色，颜色值分别对应RGB</span></span><br><span class="line">$bgcolor = imagecolorallocate($img, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// imagefill($img, 10, 10, $bgcolor);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建白色</span></span><br><span class="line">$white = imagecolorallocate($img, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">30</span>; $i ++) &#123;</span><br><span class="line">    <span class="comment">// 在图片上画线，其中第2个参数表示线的x起始坐标，第3个参数表示线的y起始坐标，第4个参数表示x的终止坐标，第5个参数表示y的终止坐标，第6个参数表示颜色，此处生成一个随机颜色</span></span><br><span class="line">    imageline($img, rand(<span class="number">0</span>, <span class="number">110</span>), rand(<span class="number">0</span>, <span class="number">50</span>), rand(<span class="number">0</span>, <span class="number">110</span>), rand(<span class="number">0</span>, <span class="number">50</span>), imagecolorallocate($img, rand(<span class="number">0</span>, <span class="number">255</span>), rand(<span class="number">0</span>, <span class="number">255</span>), rand(<span class="number">0</span>, <span class="number">255</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加文字在图片中，第二个参数为文字的大小，只能在1~5，第三个参数为x坐标，第4个参数为y坐标，第5个参数为文字的内容，第6个参数为文字的颜色</span></span><br><span class="line">imagestring($img, rand(<span class="number">3</span>, <span class="number">5</span>), rand(<span class="number">0</span>, <span class="number">80</span>), rand(<span class="number">2</span>, <span class="number">10</span>), $validateCode, $white);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回成图片</span></span><br><span class="line">header(<span class="string">'Content-type: image/png'</span>);</span><br><span class="line">imagepng($img);</span><br></pre></td></tr></table></figure>
+
+<img src="/2014/11/04/PHP生成验证码/img_2.png">
+<p>　　结果也就成了这样，当然，要想实现验证码，这样还是不够滴，需要通过将验证码生成的随机数存到服务器的session中，<code>$_SESSION[&#39;validate&#39;] = $validateCode;</code>然后在通过客户端输入的验证码与之对比即可。PHP中屌屌的验证码也就这样实现了，当然，前面也说过了，这是最基础的代码，可以通过你的想法将其改变为实现算术的验证码，中文的验证码，或其它一些有趣的验证码，以减少其枯燥性又实现安全性。<br>　　大家有没有什么其它屌屌的验证码分享与我呢？</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T09:08:05.000Z" itemprop="dateUpdated">2019-06-29 17:08:05</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2014/11/04/PHP生成验证码/" target="_blank" rel="external">https://blog.afacat.com/2014/11/04/PHP生成验证码/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Back-End/">Back-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/11/04/PHP生成验证码/&title=《PHP生成验证码》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/11/04/PHP生成验证码/&title=《PHP生成验证码》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/11/04/PHP生成验证码/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP生成验证码》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/11/04/PHP生成验证码/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/11/04/PHP生成验证码/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2014/11/08/PHP文件上传后缀名与文件类型对照表/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">PHP文件上传后缀名与文件类型对照表</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2014/09/04/原生JavaScript生成GUID/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">原生JavaScript生成GUID</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/11/04/PHP生成验证码/&title=《PHP生成验证码》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/11/04/PHP生成验证码/&title=《PHP生成验证码》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/11/04/PHP生成验证码/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP生成验证码》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/11/04/PHP生成验证码/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/11/04/PHP生成验证码/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACPElEQVR42u3awa6DMAxE0f7/T9MtEk06M04rxbmsUB8vcFgYO/brJR/X7bj/8jx/Xv/863zN0fULDhgwYGzLuKbH/JoR47m+Ah5dP787DBgwzmFkt8/C6OhR9BcEAwYMGHOGe64Ed/31wYABA4bLmJeslUQQBgwYMLIiVrl+1Uv5YS0OAwaMDRn6rvv/z3/S34ABA8ZWjMs83K0xd7XwqWDAgNGaoQe4etrnpp7288CAAaMpox5Y9Y0z/dXo7VK72wADBozNGVlgXbtJpzcJhgEXBgwY7RjZYIQeKOtDYMaaMGDAaMpwhySy0jTbXNPTWRgwYJzMKI01mA1RJRwbtTgMGDAaMeY3MDa8ym3LrC0xXAEGDBitGW7DwE0f3eZotvMPAwaMTgw9Iau0NpVkVAnxxkAYDBgwGjHcLXh9LEMPsu72XKl8hQEDxrYMpTGgpICVUJs1Jz58PWDAgNGUobcV9WCaPcqChgQMGDCOYbiFpd6MzF6E/jGAAQNGV0alAVCpIl28lBTCgAHjAMaq8FoZ49BbDl9qcRgwYBzD0MvOSlPBmAQZvRQYMGAcwKhnWdmmXrbOMODCgAGjHeMyDz2YZisov39JCmHAgNGO4YY2dxTMHaHQg3LY5oQBA8a2DCVEZmni2kAsZbgwYMBozdALTr2IVdI+9wsw/C8YMGDAWDSEobcWls21wYAB40iGUljqiV2FVAq4MGDA2JChh0U31dOHJ7IgDgMGjBMY9nRGeXhi1UPDgAHjAMYbbmWTYT1hal0AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

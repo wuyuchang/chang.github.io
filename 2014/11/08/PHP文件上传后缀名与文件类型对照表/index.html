@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>PHP文件上传后缀名与文件类型对照表 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Back-End,PHP">
+    <meta name="description" content="左边为IE， 右边为Firefox    id 后缀名 php识别出的文件类型 id 后缀名 php识别出的文件类型    0 gif image/gif 0 gif image/gif   1 jpg image/jpeg 1 jpg image/pjpeg   2 png image/png 2 png image/x-png   3 bmp image/bmp 3 bmp image/bmp">
+<meta name="keywords" content="Back-End,PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP文件上传后缀名与文件类型对照表">
+<meta property="og:url" content="https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="左边为IE， 右边为Firefox    id 后缀名 php识别出的文件类型 id 后缀名 php识别出的文件类型    0 gif image/gif 0 gif image/gif   1 jpg image/jpeg 1 jpg image/pjpeg   2 png image/png 2 png image/x-png   3 bmp image/bmp 3 bmp image/bmp">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T09:34:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP文件上传后缀名与文件类型对照表">
+<meta name="twitter:description" content="左边为IE， 右边为Firefox    id 后缀名 php识别出的文件类型 id 后缀名 php识别出的文件类型    0 gif image/gif 0 gif image/gif   1 jpg image/jpeg 1 jpg image/pjpeg   2 png image/png 2 png image/x-png   3 bmp image/bmp 3 bmp image/bmp">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">PHP文件上传后缀名与文件类型对照表</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">PHP文件上传后缀名与文件类型对照表</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2014-11-08T01:24:00.000Z" itemprop="datePublished" class="page-time">
+  2014-11-08
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-PHP文件上传后缀名与文件类型对照表"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">PHP文件上传后缀名与文件类型对照表</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2014-11-08 09:24:00" datetime="2014-11-08T01:24:00.000Z"  itemprop="datePublished">2014-11-08</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>左边为IE， 右边为Firefox</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">后缀名</th>
+<th align="left">php识别出的文件类型</th>
+<th align="left">id</th>
+<th align="left">后缀名</th>
+<th align="left">php识别出的文件类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left">gif</td>
+<td align="left">image/gif</td>
+<td align="left">0</td>
+<td align="left">gif</td>
+<td align="left">image/gif</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">jpg</td>
+<td align="left">image/jpeg</td>
+<td align="left">1</td>
+<td align="left">jpg</td>
+<td align="left">image/pjpeg</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">png</td>
+<td align="left">image/png</td>
+<td align="left">2</td>
+<td align="left">png</td>
+<td align="left">image/x-png</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">bmp</td>
+<td align="left">image/bmp</td>
+<td align="left">3</td>
+<td align="left">bmp</td>
+<td align="left">image/bmp</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">psd</td>
+<td align="left">application/octet-stream</td>
+<td align="left">4</td>
+<td align="left">psd</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">ico</td>
+<td align="left">image/x-icon</td>
+<td align="left">5</td>
+<td align="left">ico</td>
+<td align="left">image/x-icon</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">rar</td>
+<td align="left">application/octet-stream</td>
+<td align="left">6</td>
+<td align="left">rar</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">zip</td>
+<td align="left">application/zip</td>
+<td align="left">7</td>
+<td align="left">zip</td>
+<td align="left">application/x-zip-compressed</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left">7z</td>
+<td align="left">application/octet-stream</td>
+<td align="left">8</td>
+<td align="left">7z</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td align="left">exe</td>
+<td align="left">application/octet-stream</td>
+<td align="left">9</td>
+<td align="left">exe</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left">avi</td>
+<td align="left">video/avi</td>
+<td align="left">10</td>
+<td align="left">avi</td>
+<td align="left">video/avi</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="left">rmvb</td>
+<td align="left">application/vnd.rn-realmedia-vbr</td>
+<td align="left">11</td>
+<td align="left">rmvb</td>
+<td align="left">application/vnd.rn-realmedia-vbr</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td align="left">3gp</td>
+<td align="left">application/octet-stream</td>
+<td align="left">12</td>
+<td align="left">3gp</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">13</td>
+<td align="left">flv</td>
+<td align="left">application/octet-stream</td>
+<td align="left">13</td>
+<td align="left">flv</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">14</td>
+<td align="left">mp3</td>
+<td align="left">audio/mpeg</td>
+<td align="left">14</td>
+<td align="left">mp3</td>
+<td align="left">audio/mpeg</td>
+</tr>
+<tr>
+<td align="left">15</td>
+<td align="left">wav</td>
+<td align="left">audio/wav</td>
+<td align="left">15</td>
+<td align="left">wav</td>
+<td align="left">audio/wav</td>
+</tr>
+<tr>
+<td align="left">16</td>
+<td align="left">krc</td>
+<td align="left">application/octet-stream</td>
+<td align="left">16</td>
+<td align="left">krc</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">17</td>
+<td align="left">lrc</td>
+<td align="left">application/octet-stream</td>
+<td align="left">17</td>
+<td align="left">lrc</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">18</td>
+<td align="left">txt</td>
+<td align="left">text/plain</td>
+<td align="left">18</td>
+<td align="left">txt</td>
+<td align="left">text/plain</td>
+</tr>
+<tr>
+<td align="left">19</td>
+<td align="left">doc</td>
+<td align="left">application/msword</td>
+<td align="left">19</td>
+<td align="left">doc</td>
+<td align="left">application/msword</td>
+</tr>
+<tr>
+<td align="left">20</td>
+<td align="left">xls</td>
+<td align="left">application/vnd.ms-excel</td>
+<td align="left">20</td>
+<td align="left">xls</td>
+<td align="left">application/vnd.ms-excel</td>
+</tr>
+<tr>
+<td align="left">21</td>
+<td align="left">ppt</td>
+<td align="left">application/vnd.ms-powerpoint</td>
+<td align="left">21</td>
+<td align="left">ppt</td>
+<td align="left">application/vnd.ms-powerpoint</td>
+</tr>
+<tr>
+<td align="left">22</td>
+<td align="left">pdf</td>
+<td align="left">application/pdf</td>
+<td align="left">22</td>
+<td align="left">pdf</td>
+<td align="left">application/pdf</td>
+</tr>
+<tr>
+<td align="left">23</td>
+<td align="left">chm</td>
+<td align="left">application/octet-stream</td>
+<td align="left">23</td>
+<td align="left">chm</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">24</td>
+<td align="left">mdb</td>
+<td align="left">application/msaccess</td>
+<td align="left">24</td>
+<td align="left">mdb</td>
+<td align="left">application/msaccess</td>
+</tr>
+<tr>
+<td align="left">25</td>
+<td align="left">sql</td>
+<td align="left">application/octet-stream</td>
+<td align="left">25</td>
+<td align="left">sql</td>
+<td align="left">text/plain</td>
+</tr>
+<tr>
+<td align="left">26</td>
+<td align="left">con</td>
+<td align="left">application/octet-stream</td>
+<td align="left">26</td>
+<td align="left">con</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">27</td>
+<td align="left">log</td>
+<td align="left">text/plain</td>
+<td align="left">27</td>
+<td align="left">log</td>
+<td align="left">text/plain</td>
+</tr>
+<tr>
+<td align="left">28</td>
+<td align="left">dat</td>
+<td align="left">application/octet-stream</td>
+<td align="left">28</td>
+<td align="left">dat</td>
+<td align="left">text/plain</td>
+</tr>
+<tr>
+<td align="left">29</td>
+<td align="left">ini</td>
+<td align="left">application/octet-stream</td>
+<td align="left">29</td>
+<td align="left">ini</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">30</td>
+<td align="left">php</td>
+<td align="left">application/octet-stream</td>
+<td align="left">30</td>
+<td align="left">php</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">31</td>
+<td align="left">html</td>
+<td align="left">text/html</td>
+<td align="left">31</td>
+<td align="left">html</td>
+<td align="left">text/html</td>
+</tr>
+<tr>
+<td align="left">32</td>
+<td align="left">ttf</td>
+<td align="left">application/octet-stream</td>
+<td align="left">32</td>
+<td align="left">ttf</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">33</td>
+<td align="left">fon</td>
+<td align="left">application/octet-stream</td>
+<td align="left">33</td>
+<td align="left">fon</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">34</td>
+<td align="left">js</td>
+<td align="left">application/x-javascript</td>
+<td align="left">34</td>
+<td align="left">js</td>
+<td align="left">text/html</td>
+</tr>
+<tr>
+<td align="left">35</td>
+<td align="left">xml</td>
+<td align="left">text/xml</td>
+<td align="left">35</td>
+<td align="left">xml</td>
+<td align="left">text/xml</td>
+</tr>
+<tr>
+<td align="left">36</td>
+<td align="left">dll</td>
+<td align="left">application/octet-stream</td>
+<td align="left">36</td>
+<td align="left">dll</td>
+<td align="left">application/octet-stream</td>
+</tr>
+<tr>
+<td align="left">37</td>
+<td align="left">dll</td>
+<td align="left">application/octet-stream</td>
+<td align="left">37</td>
+<td align="left">class</td>
+<td align="left">application/java</td>
+</tr>
+</tbody></table>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T09:34:47.000Z" itemprop="dateUpdated">2019-06-29 17:34:47</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2014/11/08/PHP文件上传后缀名与文件类型对照表/" target="_blank" rel="external">https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Back-End/">Back-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/&title=《PHP文件上传后缀名与文件类型对照表》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/&title=《PHP文件上传后缀名与文件类型对照表》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP文件上传后缀名与文件类型对照表》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2014/11/10/PHP-jpgraph的一点小提示（附安装方法）/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">PHP jpgraph的一点小提示（附安装方法）</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2014/11/04/PHP生成验证码/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">PHP生成验证码</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/&title=《PHP文件上传后缀名与文件类型对照表》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/&title=《PHP文件上传后缀名与文件类型对照表》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP文件上传后缀名与文件类型对照表》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/11/08/PHP文件上传后缀名与文件类型对照表/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsUlEQVR42u3a0WoCQQwFUP//py30qWBdb5KJtnD2SeyyO2eESZrkdouv+/f17PPPbx6/f7ye3Zmv4fCFh4eH11r69VKekZ698vo510++flp1+/Dw8PD2eHkwSMBVwCQ4vbDg4eHhfZSXk8qLiN+Ih4eH9794Vdi80ICHh4f3l3lJWjwpT1Sf09tiPDw8vPfw5g2w939+a38PDw8PLw4JyXW28FpN01+sDQ8PD2+BVx17qibBVUZSDs7fiIeHh7fBq5YPrg/rpCw7H1lIVv5L3MPDw8M7xMuP2rzFlWxBEgyqBYioSo2Hh4d3iDcpClSLsL2NmDfe8PDw8DZ41VZ9XizoBYNecCr/hnh4eHgDXi9pTl6QJ9/VSYD8r3h4eHineOWUNDi4e0WKaqhISs94eHh4e7xqQWHeypok63kww8PDw9vgXR/QvZQ3b1/l78qT+Bf9PTw8PLwFXq8BFjXvA15vhOvFE/Dw8PDeyMtT5JzX27Lq85uVDDw8PLyYl7Speq/Jx7N6rbW8XIKHh4d3ildtVuWp8Pz+W+uKRgfw8PDwjvJ6YWCSoPeaZNGPgYeHh7fG6zEmiXjCmCToeHh4eNu8XskgX3oeeCaDX83/GPDw8PBavMkBXS1kVKvLo2CDh4eHt8DLj/tJGp20+ZOCxag5h4eHh7fAmye41SS7ugWTVBsPDw/vLG+yxF75IAk5kyYZHh4e3md51TurZYVqYEgCGx4eHt4e7168kmQ3uX8SEgrDB3h4eHi7c02FA3dSmOg12HrPx8PDw9vj9QYCeuNQ863MAwYeHh7eNm9jKKqagvcS4mhcAA8PD++jvL3hquoAQWEaAg8PD+9DvOTor95ZLQrnYwd4eHh427ykGNFLi/PiQv72QtMLDw8Pb4F3qrSaFyl6YSP5vonEw8PDS3lfiW5zqOZzs4oAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

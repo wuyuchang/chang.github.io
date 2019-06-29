@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Config web server with Nginx in Linux for beginner | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Linux,Nginx">
+    <meta name="description" content="We use Debian to finish the demo.Both of below are basic command line, If you are not familiar with command line in Linux, you should learn it first. Update &amp;amp; Upgrade12$ apt-get update$ apt-get up">
+<meta name="keywords" content="Linux,Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Config web server with Nginx in Linux for beginner">
+<meta property="og:url" content="https://blog.afacat.com/2019/06/28/web-server/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="We use Debian to finish the demo.Both of below are basic command line, If you are not familiar with command line in Linux, you should learn it first. Update &amp;amp; Upgrade12$ apt-get update$ apt-get up">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.afacat.com/2019/06/28/web-server/default_server.png">
+<meta property="og:image" content="https://blog.afacat.com/2019/06/28/web-server/response_header.png">
+<meta property="og:image" content="https://blog.afacat.com/2019/06/28/web-server/response_header_safe.png">
+<meta property="og:updated_time" content="2019-06-28T02:45:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Config web server with Nginx in Linux for beginner">
+<meta name="twitter:description" content="We use Debian to finish the demo.Both of below are basic command line, If you are not familiar with command line in Linux, you should learn it first. Update &amp;amp; Upgrade12$ apt-get update$ apt-get up">
+<meta name="twitter:image" content="https://blog.afacat.com/2019/06/28/web-server/default_server.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Config web server with Nginx in Linux for beginner</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Config web server with Nginx in Linux for beginner</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-06-28T02:45:15.000Z" itemprop="datePublished" class="page-time">
+  2019-06-28
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Update-amp-Upgrade"><span class="post-toc-number">1.</span> <span class="post-toc-text">Update &amp; Upgrade</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Htop-Vim-amp-Screen"><span class="post-toc-number">2.</span> <span class="post-toc-text">Htop, Vim &amp; Screen</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Group-amp-User"><span class="post-toc-number">3.</span> <span class="post-toc-text">Group &amp; User</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#useradd"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">useradd</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#the-meaning-of-files-that-user-and-group-saved"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">the meaning of files that user and group saved</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#usermod"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">usermod</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#chown"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">chown</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Nginx-Install"><span class="post-toc-number">4.</span> <span class="post-toc-text">Nginx Install</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Install-from-Debian-repository"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Install from Debian repository</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Install-from-Nginx-repository"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Install from Nginx repository</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Install-from-open-sources"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Install from open sources</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Configure-web"><span class="post-toc-number">5.</span> <span class="post-toc-text">Configure web</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#change-response-header"><span class="post-toc-number">6.</span> <span class="post-toc-text">change response header</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#add-module"><span class="post-toc-number">7.</span> <span class="post-toc-text">add module</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Tip"><span class="post-toc-number">8.</span> <span class="post-toc-text">Tip</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-web-server"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Config web server with Nginx in Linux for beginner</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-06-28 10:45:15" datetime="2019-06-28T02:45:15.000Z"  itemprop="datePublished">2019-06-28</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>We use <strong>Debian</strong> to finish the demo.<br>Both of below are basic command line, If you are not familiar with command line in Linux, you should learn it first.</p>
+<h2 id="Update-amp-Upgrade"><a href="#Update-amp-Upgrade" class="headerlink" title="Update &amp; Upgrade"></a>Update &amp; Upgrade</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get update</span><br><span class="line">$ apt-get upgrade</span><br></pre></td></tr></table></figure>
+
+<p>You must curious what’s difference between <a href="https://linux.die.net/man/8/apt-get" target="_blank" rel="noopener">update</a> and <a href="https://linux.die.net/man/8/apt-get" target="_blank" rel="noopener">upgrade</a>.</p>
+<blockquote>
+<p><strong>update</strong><br>Used to re-synchronize the package index files from their sources. The indexes of available packages are fetched from the location(s) specified in /etc/apt/sources.list(5). An update should always be performed before an upgrade or dist-upgrade.<br><strong>upgrade</strong><br>Used to install the newest versions of all packages currently installed on the system from the sources enumerated in /etc/apt/sources.list(5). Packages currently installed with new versions available are retrieved and upgraded; under no circumstances are currently installed packages removed, nor are packages that are not already installed retrieved and installed. New versions of currently installed packages that cannot be upgraded without changing the install status of another package will be left at their current version. An update must be performed first so that apt-get knows that new versions of packages are available.</p>
+</blockquote>
+<h2 id="Htop-Vim-amp-Screen"><a href="#Htop-Vim-amp-Screen" class="headerlink" title="Htop, Vim &amp; Screen"></a>Htop, Vim &amp; Screen</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install htop</span><br><span class="line">$ apt-get install vim</span><br><span class="line">$ apt-get install screen</span><br></pre></td></tr></table></figure>
+
+<p>These packages can improve your effective.<br><strong><em>htop:</em></strong> [htop][htop] command like [top][top] command, both of these are interactive process viewer for Unix systems. Its help you manage process and monitor resource easy. But [htop][htop] is more convenient than [top][top].</p>
+<blockquote>
+<ul>
+<li>In ‘htop’ you can scroll the list vertically and horizontally to see all processes and complete command lines.</li>
+<li>In ‘top’ you are subject to a delay for each unassigned key you press (especially annoying when multi-key escape sequences are triggered by accident).</li>
+<li>‘htop’ starts faster (‘top’ seems to collect data for a while before displaying anything).</li>
+<li>In ‘htop’ you don’t need to type the process number to kill a process, in ‘top’ you do.</li>
+<li>In ‘htop’ you don’t need to type the process number or the priority value to renice a process, in ‘top’ you do.</li>
+<li>‘htop’ supports mouse operation, ‘top’ doesn’t</li>
+<li>‘top’ is older, hence, more used and tested.<br>From <a href="http://hisham.hm/htop/index.php?page=comparison" target="_blank" rel="noopener">http://hisham.hm/htop/index.php?page=comparison</a></li>
+</ul>
+</blockquote>
+<p><strong><em>vim:</em></strong> [vim][vim] is almost a proper superset of [vi][vi], everything that is in vi is available in vim.</p>
+<p><strong><em>screen:</em></strong></p>
+<blockquote>
+<ol>
+<li>use multiple shell window from a single SSH session</li>
+<li>Keep a shell active even through network disruptions</li>
+<li>Disconnect and re-connect to a shell sessions from multiple locations</li>
+<li>Run a long running process without maintaining an active shell session</li>
+</ol>
+</blockquote>
+<p><strong>Usage</strong><br>screen uses the command <code>ctrl-a</code> that’s the control key and a lowercase “a” as a signal to send commands to screen instead of the shell.<br><em>start</em>: <code>screen</code><br><em>creating</em>: <code>Ctrl-a c</code><br><em>switch</em>: <code>Ctrl-a n</code> for the next window or <code>Ctrl-a p</code> for the previous window.<br><em>detach</em>: <code>Ctrl-a d</code><br><em>reattach</em>: <code>Ctrl-a r</code><br><em>logging</em>: <code>Ctrl-a h</code><br><em>lock</em>: <code>Ctrl-a x</code><br><em>stop</em>: <code>Ctrl-a k</code></p>
+<h2 id="Group-amp-User"><a href="#Group-amp-User" class="headerlink" title="Group &amp; User"></a>Group &amp; User</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ groupadd</span><br><span class="line">$ groupdel</span><br><span class="line">$ useradd</span><br><span class="line">$ passwd</span><br><span class="line">$ usermod</span><br><span class="line">$ userdel</span><br></pre></td></tr></table></figure>
+
+<h3 id="useradd"><a href="#useradd" class="headerlink" title="useradd"></a>useradd</h3><p>user add will auto create group that the name same as user</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ useradd chang <span class="comment"># craete user "chang"</span></span><br><span class="line">$ useradd -d /data/projects chang <span class="comment"># create user "chang" into /data/projects</span></span><br><span class="line">$ useradd -u 999 -g 998 chang <span class="comment"># create user with 999 for user id and 998 for group id</span></span><br><span class="line">$ useradd -G admings,webadmin,developers chang <span class="comment">#</span></span><br><span class="line">$ useradd -M chang <span class="comment"># add user "chang" without home directory</span></span><br><span class="line">$ useradd -e 2017-01-01 chang <span class="comment"># add user "chang" expire at 2017-01-02</span></span><br><span class="line">$ chage -l chang <span class="comment"># show/change user or password expire date</span></span><br><span class="line">$ useradd -e 2017-01-01 -f 45 chang <span class="comment"># password expire after 2017-01-01</span></span><br><span class="line">$ useradd -c <span class="string">"Yuchang Wu"</span> chang <span class="comment"># add user with "Yuchang Wu" infomation</span></span><br><span class="line">$ tail -1 /etc/passwd <span class="comment"># print last 1 line of the file "/etc/passwd"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="the-meaning-of-files-that-user-and-group-saved"><a href="#the-meaning-of-files-that-user-and-group-saved" class="headerlink" title="the meaning of files that user and group saved"></a>the meaning of files that user and group saved</h3><ul>
+<li>/etc/passwd – User account information.</li>
+<li>/etc/shadow – Secure account information.</li>
+<li>/etc/group – Group account information.</li>
+<li>/etc/gshadow – Secure group account information.</li>
+<li>/etc/login.defs – Shadow password suite configuration..</li>
+</ul>
+<p>/etc/passwd format:<br>username:password:uid:gid:userInfo:homeDirectory:shell</p>
+<p>/etc/group format:<br>groupname:password:gidd:groupMembers</p>
+<h3 id="usermod"><a href="#usermod" class="headerlink" title="usermod"></a>usermod</h3><p>for more detail, to below to see</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ usermod --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ usermod -G www chang <span class="comment"># add www group to chang, Be careful, it will remove all existing groups that user belongs, so always add the '-a' with '-G' to append new groups</span></span><br><span class="line">$ usermod -G www -a chang</span><br></pre></td></tr></table></figure>
+
+<h3 id="chown"><a href="#chown" class="headerlink" title="chown"></a>chown</h3><p>change file owner</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chown -hR www:www /home/www <span class="comment"># chang the owner of /homw/www to www user and www group</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Nginx-Install"><a href="#Nginx-Install" class="headerlink" title="Nginx Install"></a>Nginx Install</h2><p>As you know, you can install an application with few different methods, below we introduce three common methods to install Nginx.</p>
+<h3 id="Install-from-Debian-repository"><a href="#Install-from-Debian-repository" class="headerlink" title="Install from Debian repository"></a>Install from Debian repository</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install nginx</span><br></pre></td></tr></table></figure>
+
+<p>you can verify the installation through:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -v</span><br></pre></td></tr></table></figure>
+
+<p>and you can verify which module you are install through:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -V  <span class="comment"># Capital</span></span><br></pre></td></tr></table></figure>
+
+<p>and you will get the default configuration like:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nginx version: nginx/1.6.2</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --with-cc-opt=<span class="string">'-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2'</span> --with-ld-opt=-Wl,-z,relro --prefix=/usr/share/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/<span class="built_in">log</span>/nginx/access.log --error-log-path=/var/<span class="built_in">log</span>/nginx/error.log --lock-path=/var/lock/nginx.lock --pid-path=/run/nginx.pid --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --http-proxy-temp-path=/var/lib/nginx/proxy --http-scgi-temp-path=/var/lib/nginx/scgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --with-debug --with-pcre-jit --with-ipv6 --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_addition_module --with-http_dav_module --with-http_geoip_module --with-http_gzip_static_module --with-http_image_filter_module --with-http_spdy_module --with-http_sub_module --with-http_xslt_module --with-mail --with-mail_ssl_module --add-module=/build/nginx-AZ8ONw/nginx-1.6.2/debian/modules/nginx-auth-pam --add-module=/build/nginx-AZ8ONw/nginx-1.6.2/debian/modules/nginx-dav-ext-module --add-module=/build/nginx-AZ8ONw/nginx-1.6.2/debian/modules/nginx-echo --add-module=/build/nginx-AZ8ONw/nginx-1.6.2/debian/modules/nginx-upstream-fair --add-module=/build/nginx-AZ8ONw/nginx-1.6.2/debian/modules/ngx_http_substitutions_filter_module</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Note: this type can not get the latest version of the NGINX.</p>
+</blockquote>
+<h3 id="Install-from-Nginx-repository"><a href="#Install-from-Nginx-repository" class="headerlink" title="Install from Nginx repository"></a>Install from Nginx repository</h3><ol>
+<li><p>Download the key used to sign NGINX packages and repository to the apt program keyring and add it:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://nginx.org/keys/nginx_signing.key</span><br><span class="line">$ apt-key add nginx_signing.key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Add the “sources” from which NGINX Open Source packages can be obtained: open the <em>/etc/apt/sources.list</em> file in any text editor, for example, vim:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Append the lines to the file:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http://nginx.org/packages/mainline/debian/ codename nginx</span><br><span class="line">deb-src http://nginx.org/packages/mainline/debian/ codename nginx</span><br></pre></td></tr></table></figure>
+
+<p>where:<br>codename is a codename of a Debian release:</p>
+<table> <thead> <tr> <th>Version</th> <th>Codename</th> <th>Supported Platforms</th> </tr> </thead> <tbody> <tr> <td>7.x</td> <td>wheezy</td> <td>x86_64,i386</td> </tr> <tr> <td>8.x</td> <td>jessie</td> <td>x86_64,i386</td> </tr> </tbody> </table></li>
+<li><p>Install</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get remove nginx-common</span><br><span class="line">$ apt-get update</span><br><span class="line">$ apt-get install nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>list the default module that nginx installed</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -V</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nginx version: nginx/1.11.6</span><br><span class="line">built by gcc 4.9.2 (Debian 4.9.2-10)</span><br><span class="line">built with OpenSSL 1.0.1t  3 May 2016</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/<span class="built_in">log</span>/nginx/error.log --http-log-path=/var/<span class="built_in">log</span>/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-cc-opt=<span class="string">'-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2'</span> --with-ld-opt=<span class="string">'-Wl,-z,relro -Wl,-z,now -Wl,--as-needed'</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>You can see the latest version of the NGINX installed to your system.</p>
+<h3 id="Install-from-open-sources"><a href="#Install-from-open-sources" class="headerlink" title="Install from open sources"></a>Install from open sources</h3><p>As you see, these above two types to install NGINX is non-configurable, these are pre-build, so they already configure with default value. you can’t add or remove module and configure it. So if you want to add module or 3rd party module and apply latest security patches, I suggest you use this type to install NGINX.</p>
+<ol>
+<li><p>the PCRE lirary - required by NGINX core and Rewrite modules and provides support for regular expressions.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.39.tar.gz</span><br><span class="line">$ tar -zxf pcre-8.39.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> pcre-8.39</span><br><span class="line">$ ./configure</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>the zlib library - required by NGINX Gzip module for headers compression.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://zlib.net/zlib-1.2.8.tar.gz</span><br><span class="line">$ tar -zxf zlib-1.2.8.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> zlib-1.2.8</span><br><span class="line">$ ./configure</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>the OpenSSL library - required by NGINX SSL modules to support the HTTPS protocol.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://www.openssl.org/<span class="built_in">source</span>/openssl-1.0.2f.tar.gz</span><br><span class="line">$ tar -zxf openssl-1.0.2f.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> openssl-1.0.2f</span><br><span class="line">$ ./configure darwin64-x86_64-cc --prefix=/usr</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The header more nginx library - required by NGINX header more nginx module to change the response header information.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://codeload.github.com/openresty/headers-more-nginx-module/tar.gz/v0.32</span><br><span class="line">$ tar -zxf v0.32</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>download the NGINX sources</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://nginx.org/download/nginx-1.10.2.tar.gz</span><br><span class="line">$ tar zxf nginx-1.10.2.tar.gz</span><br><span class="line">$ <span class="built_in">cd</span> nginx-1.10.2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>configure NGINX<br>Add above that you download module to NGINX, so you can use the module in NGINX.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure --prefix=/usr/<span class="built_in">local</span>/nginx --sbin-path=/usr/<span class="built_in">local</span>/nginx/nginx --conf-path=/usr/<span class="built_in">local</span>/nginx/nginx.conf --pid-path=/usr/<span class="built_in">local</span>/nginx/nginx.pid --with-pcre=../pcre-8.39 --with-zlib=../zlib-1.2.8 --with-http_ssl_module --add-module=../headers-more-nginx-module-0.32 --with-debug</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>link NGINX<br>Now, you can run nginx with full path – <em>/usr/local/nginx/nginx</em>, and you can browse it with localhost in any browser. But seems not convenient to run nginx with full path every time, so we link the nginx from local to sbin that you can run it without fullpath, just run <em>nginx</em>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ln -s /usr/<span class="built_in">local</span>/nginx/nginx /usr/sbin/nginx</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>Now you can run nginx with <em>nginx</em> command without fullpath.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -V</span><br></pre></td></tr></table></figure>
+
+<h2 id="Configure-web"><a href="#Configure-web" class="headerlink" title="Configure web"></a>Configure web</h2><p>Now, you can access webpage in browser with default page in NGINX via localhost. So, the nginx.conf path is put in where we set during we configure NGINX – <em>/usr/local/nginx/nginx.conf</em>.
+Let’s look at the file via vim.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx</span><br><span class="line">$ vim nginx.conf</span><br></pre></td></tr></table></figure>
+
+<p>go to 35 line through <code>35 G</code></p>
+<img src="/2019/06/28/web-server/default_server.png" title="NGINX default server">
+
+<p>We drop the unnecessary code, and simplify the code and explain the meaning of the code to below:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;                  <span class="comment"># listening the port, so you access the server with 80 port, this is the default port, so you can access the web server without append :80</span></span><br><span class="line">    <span class="attribute">server_name</span>  localhost;           <span class="comment"># domain</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;                      <span class="comment"># route, NGINX will receive the URL path, and adapt it with the route, if the path is same with route, then go into the brace block</span></span><br><span class="line">        <span class="attribute">root</span>   html;                  <span class="comment"># basic directory where web server in, in this demo, it is in ./html</span></span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;  <span class="comment"># access it without append the file name if it is index.html or index.htm</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now, we can configure a server by self, we make the root of the web server in <em>/home/www</em>, and write index.html, then open the nginx.conf to configure the new web server “Hello world”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir /home/www</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">"Hello world"</span> &gt; index.html</span><br><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx</span><br><span class="line">$ vim nginx.conf</span><br></pre></td></tr></table></figure>
+
+<p>We append <em>include conf.d/&#42;.conf</em> into nginx.conf at last second line. so we can add the server configure without pollute the origin configure. It will auto add all of the file that have .conf extension into <em>nginx.conf</em>.</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">  <span class="attribute">server_name</span> localhost;</span><br><span class="line">  <span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span> /home/www;</span><br><span class="line">    <span class="attribute">index</span> index.html index.htm;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Then we reload the nginx server with:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<p>Now, you can access www. <em><a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a></em></p>
+<h2 id="change-response-header"><a href="#change-response-header" class="headerlink" title="change response header"></a>change response header</h2><p>We already install the headers-more-nginx-module, so we can configure the response header. Before we configure it, let’s open the developers-tool in google-chrome, and look at the network request, we can get the response headers:</p>
+<img src="/2019/06/28/web-server/response_header.png" title="response headers">
+<p>For some security reason, we don’t want to show Server information to client, so we can add the configuration to <em>hello_world.conf</em>.</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">more_set_headers</span> <span class="string">"Server"</span> <span class="string">""</span>; <span class="comment"># add this</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">  <span class="attribute">server_name</span> localhost;</span><br><span class="line">  <span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span> /home/www;</span><br><span class="line">    <span class="attribute">index</span> index.html index.htm;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Then reload the nginx server:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<p>Then we reload the page in browser, and open the network, the Server information already drop.</p>
+<img src="/2019/06/28/web-server/response_header_safe.png" title="response headers without server information">
+
+<p>Now, your nginx server is more safer than before you add the server information into response headers.</p>
+<p>For more detail about the headers-more-nginx-module, see: <a href="https://github.com/openresty/headers-more-nginx-module" target="_blank" rel="noopener">https://github.com/openresty/headers-more-nginx-module</a></p>
+<h2 id="add-module"><a href="#add-module" class="headerlink" title="add module"></a>add module</h2><p>If you want to add some module into NGINX that was installed, you have to download the module, then reconfigure NGINX with the module and compile it.</p>
+<h2 id="Tip"><a href="#Tip" class="headerlink" title="Tip"></a>Tip</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ man order <span class="comment"># to see detail of the order</span></span><br><span class="line">$ apt-cache search package <span class="comment"># search package</span></span><br><span class="line">$ cat /etc/passwd <span class="comment"># show all users</span></span><br><span class="line">$ getent passwd <span class="comment"># show all users</span></span><br><span class="line">$ getent group <span class="comment"># show all groups</span></span><br><span class="line">$ getent group | grep username</span><br><span class="line">$ id username <span class="comment"># show username information</span></span><br><span class="line">$ groups username <span class="comment"># show which groups does username have</span></span><br><span class="line">$ dpkg-reconfigure tzdate <span class="comment"># change timezone</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Ref:<br><em>screen</em> <a href="https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/#starting" target="_blank" rel="noopener">https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/#starting</a><br><em>useradd</em> <a href="http://www.tecmint.com/add-users-in-linux/" target="_blank" rel="noopener">http://www.tecmint.com/add-users-in-linux/</a><br><em>usermod</em> <a href="http://www.tecmint.com/usermod-command-examples/" target="_blank" rel="noopener">http://www.tecmint.com/usermod-command-examples/</a><br><em>permission</em> <a href="http://www.tecmint.com/manage-users-and-groups-in-linux/" target="_blank" rel="noopener">http://www.tecmint.com/manage-users-and-groups-in-linux/</a><br><em>nginx</em> <a href="https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/" target="_blank" rel="noopener">https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/</a><br><em>headers-more-nginx-module</em> <a href="https://github.com/openresty/headers-more-nginx-module" target="_blank" rel="noopener">https://github.com/openresty/headers-more-nginx-module</a><br>[htop]: <a href="https://hisham.hm/htop/index.php" target="_blank" rel="noopener">https://hisham.hm/htop/index.php</a><br>[top]: <a href="https://linux.die.net/man/1/top" target="_blank" rel="noopener">https://linux.die.net/man/1/top</a><br>[vim]: <a href="http://www.vim.org/" target="_blank" rel="noopener">http://www.vim.org/</a><br>[vi]: <a href="http://ex-vi.sourceforge.net/" target="_blank" rel="noopener">http://ex-vi.sourceforge.net/</a></p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-28T02:45:15.000Z" itemprop="dateUpdated">2019-06-28 10:45:15</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2019/06/28/web-server/" target="_blank" rel="external">https://blog.afacat.com/2019/06/28/web-server/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2019/06/28/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2019/06/28/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2019/06/28/web-server/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&url=https://blog.afacat.com/2019/06/28/web-server/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2019/06/28/web-server/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/13/wechat-jssdk/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">微信JSSDK测试接口的Node实现</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2019/06/28/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2019/06/28/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2019/06/28/web-server/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&url=https://blog.afacat.com/2019/06/28/web-server/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2019/06/28/web-server/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3ay47CMAwFUP7/p5ntSCM698aA1OR0haCPnC6MHfvxiI/nr+PvN7+/f3X+9Z3bqxYPDAyM2zKel0e+6He9iOtzXlIxMDAOYCShsF1cHmSv73Z9BwwMDIw8gcuDZv4KMDAwMCYBt03ykoViYGBgXDOSIjYJuHkSef30D9biGBgYN2Tku+7f//yR/gYGBsatGM/ymBSlecuzXhUGBsbWjLUGZJtE5ingpCGKgYFxDmNSmubDGXmDoUgWMTAwDmB8YvBr0s6s26gYGBgHMNoxr7Zhmb+IPNAXF2NgYGzByEcr8gK1DcH5CMg//xsYGBjbMZLltuFykjguLh0DA+MAxmShk2GvydP/yXMxMDC2ZuSPbEcu2rZEfU8MDIztGG3x2QbZPE3My+ais4GBgbEFo92gb0e7JiMa9bAFBgbGpoy1UNuGzrasrdsJGBgYBzDWWgJrgXK+6Rb9P2BgYGzEyIvDdqN/Uty2TQgMDIxzGGtxbLIl9+Y2AwYGxgGMNtjNy91koQkbAwPjNEZy07UAOkkQi4EwDAyMYxj5gtZqybxkfUMtjoGBcXPGszza4rbdyGtfKwYGxgmMtf7g5Kq1Nue8hMbAwLg7Iwmy7ed5EVsnoBgYGAcw1grOdgijHdQoBjIwMDAwBgXkWgD9asDFwMDYlJFsn7XnJA3Ll/fHwMA4gLGW5OW/rqV9eTsBAwNjb8baiEM+VLG2iLapiYGBsSnjB6Fwk2FFTN/wAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

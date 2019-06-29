@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>原生JavaScript生成GUID | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,JavaScript">
+    <meta name="description" content="GUID（全局统一标识符）是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。通常平台会提供生成GUID的API。生成算法很有意思，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字。GUID的唯一缺陷在于生成的结果串会比较大。 　　GUID的格式为：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx 　　大家都知道GUID在前端开发中用处不大，">
+<meta name="keywords" content="Front-End,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生JavaScript生成GUID">
+<meta property="og:url" content="https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="GUID（全局统一标识符）是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。通常平台会提供生成GUID的API。生成算法很有意思，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字。GUID的唯一缺陷在于生成的结果串会比较大。 　　GUID的格式为：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx 　　大家都知道GUID在前端开发中用处不大，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T08:58:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生JavaScript生成GUID">
+<meta name="twitter:description" content="GUID（全局统一标识符）是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。通常平台会提供生成GUID的API。生成算法很有意思，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字。GUID的唯一缺陷在于生成的结果串会比较大。 　　GUID的格式为：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx 　　大家都知道GUID在前端开发中用处不大，">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">原生JavaScript生成GUID</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">原生JavaScript生成GUID</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2014-09-04T09:59:00.000Z" itemprop="datePublished" class="page-time">
+  2014-09-04
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-原生JavaScript生成GUID"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">原生JavaScript生成GUID</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2014-09-04 17:59:00" datetime="2014-09-04T09:59:00.000Z"  itemprop="datePublished">2014-09-04</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>　　GUID（全局统一标识符）是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。通常平台会提供生成GUID的API。生成算法很有意思，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字。GUID的唯一缺陷在于生成的结果串会比较大。</p>
+<p>　　GUID的格式为：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</p>
+<p>　　大家都知道GUID在前端开发中用处不大，但如果需要插入某个ID，并且这个ID与后台对应等其它需要GUID的操作时，为了方便，我们还是可以生成一个GUID的。</p>
+<p>　　一般在sql、java、C#等后台或数据库语言中生成GUID都很简单，而前端没有直接生成GUID的方法，只能自己手写一个。但由于GUID需要获取以太网卡的地址、以及纳秒级的时间等数字。而前端获取到这些信息比较困难（知道的童鞋请一定告诉我），而我们可以模拟实现生成GUID，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 功能：生成一个GUID码，其中GUID以14个以下的日期时间及18个以上的16进制随机数组成，GUID存在一定的重复概率，但重复概率极低，理论上重复概率为每10ms有1/(16^18)，即16的18次方分之1，重复概率低至可忽略不计</span></span><br><span class="line"><span class="comment"> * 免责声明：此代码为作者学习专用，如在使用者在使用过程中因代码问题造成的损失，与作者没有任何关系</span></span><br><span class="line"><span class="comment"> * 日期：2014年9月4日</span></span><br><span class="line"><span class="comment"> * 作者：wyc</span></span><br><span class="line"><span class="comment"> * http://www.cnblogs.com/wuyuchang</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">GUID</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 判断是否初始化过，如果初始化过以下代码，则以下代码将不再执行，实际中只执行一次 */</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span>.newGUID != <span class="string">'function'</span>) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/* 生成GUID码 */</span></span><br><span class="line">        GUID.prototype.newGUID = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">            <span class="keyword">var</span> guidStr = <span class="string">''</span>;</span><br><span class="line">                sexadecimalDate = <span class="keyword">this</span>.hexadecimal(<span class="keyword">this</span>.getGUIDDate(), <span class="number">16</span>);</span><br><span class="line">                sexadecimalTime = <span class="keyword">this</span>.hexadecimal(<span class="keyword">this</span>.getGUIDTime(), <span class="number">16</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">9</span>; i++) &#123;</span><br><span class="line">                guidStr += <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random()*<span class="number">16</span>).toString(<span class="number">16</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            guidStr += sexadecimalDate;</span><br><span class="line">            guidStr += sexadecimalTime;</span><br><span class="line">            <span class="keyword">while</span>(guidStr.length &lt; <span class="number">32</span>) &#123;</span><br><span class="line">                guidStr += <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random()*<span class="number">16</span>).toString(<span class="number">16</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.formatGUID(guidStr);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 功能：获取当前日期的GUID格式，即8位数的日期：19700101</span></span><br><span class="line"><span class="comment">         * 返回值：返回GUID日期格式的字条串</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        GUID.prototype.getGUIDDate = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.date.getFullYear() + <span class="keyword">this</span>.addZero(<span class="keyword">this</span>.date.getMonth() + <span class="number">1</span>) + <span class="keyword">this</span>.addZero(<span class="keyword">this</span>.date.getDay());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 功能：获取当前时间的GUID格式，即8位数的时间，包括毫秒，毫秒为2位数：12300933</span></span><br><span class="line"><span class="comment">         * 返回值：返回GUID日期格式的字条串</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        GUID.prototype.getGUIDTime = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.addZero(<span class="keyword">this</span>.date.getHours()) + <span class="keyword">this</span>.addZero(<span class="keyword">this</span>.date.getMinutes()) + <span class="keyword">this</span>.addZero(<span class="keyword">this</span>.date.getSeconds()) + <span class="keyword">this</span>.addZero( <span class="built_in">parseInt</span>(<span class="keyword">this</span>.date.getMilliseconds() / <span class="number">10</span> ));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 功能: 为一位数的正整数前面添加0，如果是可以转成非NaN数字的字符串也可以实现</span></span><br><span class="line"><span class="comment">         * 参数: 参数表示准备再前面添加0的数字或可以转换成数字的字符串</span></span><br><span class="line"><span class="comment">         * 返回值: 如果符合条件，返回添加0后的字条串类型，否则返回自身的字符串</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        GUID.prototype.addZero = <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">Number</span>(num).toString() != <span class="string">'NaN'</span> &amp;&amp; num &gt;= <span class="number">0</span> &amp;&amp; num &lt; <span class="number">10</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">'0'</span> + <span class="built_in">Math</span>.floor(num);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> num.toString();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* </span></span><br><span class="line"><span class="comment">         * 功能：将y进制的数值，转换为x进制的数值</span></span><br><span class="line"><span class="comment">         * 参数：第1个参数表示欲转换的数值；第2个参数表示欲转换的进制；第3个参数可选，表示当前的进制数，如不写则为10</span></span><br><span class="line"><span class="comment">         * 返回值：返回转换后的字符串</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        GUID.prototype.hexadecimal = <span class="function"><span class="keyword">function</span>(<span class="params">num, x, y</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (y != <span class="literal">undefined</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">parseInt</span>(num.toString(), y).toString(x);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">parseInt</span>(num.toString()).toString(x);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 功能：格式化32位的字符串为GUID模式的字符串</span></span><br><span class="line"><span class="comment">         * 参数：第1个参数表示32位的字符串</span></span><br><span class="line"><span class="comment">         * 返回值：标准GUID格式的字符串</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        GUID.prototype.formatGUID = <span class="function"><span class="keyword">function</span>(<span class="params">guidStr</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> str1 = guidStr.slice(<span class="number">0</span>, <span class="number">8</span>) + <span class="string">'-'</span>,</span><br><span class="line">                str2 = guidStr.slice(<span class="number">8</span>, <span class="number">12</span>) + <span class="string">'-'</span>,</span><br><span class="line">                str3 =  guidStr.slice(<span class="number">12</span>, <span class="number">16</span>) + <span class="string">'-'</span>,</span><br><span class="line">                str4 = guidStr.slice(<span class="number">16</span>, <span class="number">20</span>) + <span class="string">'-'</span>,</span><br><span class="line">                str5 = guidStr.slice(<span class="number">20</span>);</span><br><span class="line">            <span class="keyword">return</span> str1 + str2 + str3 + str4 + str5;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　只需要将其保存在一个JS文件中并引用即可。<br>　　然后我们只需要如下即可获取GUID码。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> guid = <span class="keyword">new</span> GUID();</span><br><span class="line">alert(guid.newGUID());</span><br></pre></td></tr></table></figure>
+
+<p>　　实现原理很简单，这里只是采用了系统时间与18个以上的十六进制随机数组成，并用系统时间转换为十六进制，这样虽然还是有可能重复，但是重复的概率极低，可忽略不计。<br>　　以上为本人写的生成GUID的方法，如有更好的方法可以告诉我，谢谢！</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T08:58:28.000Z" itemprop="dateUpdated">2019-06-29 16:58:28</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2014/09/04/原生JavaScript生成GUID/" target="_blank" rel="external">https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/&title=《原生JavaScript生成GUID》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/&title=《原生JavaScript生成GUID》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《原生JavaScript生成GUID》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2014/11/04/PHP生成验证码/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">PHP生成验证码</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2014/08/29/清除css、javascript及背景图在浏览器中的缓存/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">清除css、javascript及背景图在浏览器中的缓存</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/&title=《原生JavaScript生成GUID》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/&title=《原生JavaScript生成GUID》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《原生JavaScript生成GUID》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/09/04/原生JavaScript生成GUID/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNElEQVR42u3aS47CMBBFUfa/6bTU6gESYO4rG9Qu34wQhNgng1J9fLvh6/q97j/ffzO+5/HO9MnLLhkyZGzLuIbX42Lpf8n9rxjB82XIkHEAg4fCMe/Vr3xD/PXJkCFDxtrtjteSIUOGjE8EXL7dVZ9lyJAhIy0vx4E4TfvIustqcRkyZGzIqA0GvvP54/MNGTJk/HvGFV61QDledyYN/fuXDBkyWjNIK40fjOBJW9qeQ+FYhgwZTRnjEjQtSsfPIaT0tcqQIeMERm15Aqsdzli1QxkyZHRizBzh4lSeXNYOdsiQIaM3Y+ZxaXjlBXAx3MuQIaM1oxZkyWJ807zcRa03GTJktGOQphsvOGuNflLoFkeYMmTI2JxRS+nWJnPkWMabIC5DhozWjKA4DIvPGfDUiFSGDBntGHzTvFnPk8WZoxioXyhDhoxGDLJ1PsLkL2XmWMaTgCtDhoymDL58eufMptPBpwwZMnozeMCttc/40/jgIR5eypAhY3NGWi7ydlvt4qmnDBkyzmHw4Dh/CIzfGR9EkyFDxgGMtBDlzS+ePtZaeDJkyDiBwbtx8wcpZkrWILeVIUNGO8YVXukrSANu8VcZMmS0Zsw0wtLis9b0rx34kCFDRj9G7TAED6y1NJTgZciQcRpjJsh+Z9j55sXJkCFDRjhW5IF71RBChgwZMkgCx1PDT6SYMmTIOIHBUz2yWNqSSwec8SBThgwZmzPSApJ/T4rY2oBhwQhThgwZezB+AD2VGQZSyVtzAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

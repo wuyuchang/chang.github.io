@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>webkit内核下的mouseup后mousemove自动触发问题及解决方法 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,JavaScript">
+    <meta name="description" content="如题，就以chrome为代表举例说明遇到mousemove的问题。为body分别绑定onmousedown、onmousemove、onmouseup，并为触发时打印至控制台。代码如下（同学不要忘记body要全屏，并在body上执行操作）： 12345678910111213var body = document.body;body.onmousedown = function() &amp;#123;">
+<meta name="keywords" content="Front-End,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webkit内核下的mouseup后mousemove自动触发问题及解决方法">
+<meta property="og:url" content="https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="如题，就以chrome为代表举例说明遇到mousemove的问题。为body分别绑定onmousedown、onmousemove、onmouseup，并为触发时打印至控制台。代码如下（同学不要忘记body要全屏，并在body上执行操作）： 12345678910111213var body = document.body;body.onmousedown = function() &amp;#123;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T12:14:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webkit内核下的mouseup后mousemove自动触发问题及解决方法">
+<meta name="twitter:description" content="如题，就以chrome为代表举例说明遇到mousemove的问题。为body分别绑定onmousedown、onmousemove、onmouseup，并为触发时打印至控制台。代码如下（同学不要忘记body要全屏，并在body上执行操作）： 12345678910111213var body = document.body;body.onmousedown = function() &amp;#123;">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">webkit内核下的mouseup后mousemove自动触发问题及解决方法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">webkit内核下的mouseup后mousemove自动触发问题及解决方法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2015-02-28T07:16:00.000Z" itemprop="datePublished" class="page-time">
+  2015-02-28
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-webkit内核下的mouseup后mousemove自动触发问题及解决方法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">webkit内核下的mouseup后mousemove自动触发问题及解决方法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2015-02-28 15:16:00" datetime="2015-02-28T07:16:00.000Z"  itemprop="datePublished">2015-02-28</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>如题，就以chrome为代表举例说明遇到mousemove的问题。<br>为<code>body</code>分别绑定<code>onmousedown</code>、<code>onmousemove</code>、<code>onmouseup</code>，并为触发时打印至控制台。代码如下（同学不要忘记<code>body</code>要全屏，并在<code>body</code>上执行操作）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> body = <span class="built_in">document</span>.body;</span><br><span class="line"></span><br><span class="line">body.onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'down'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">body.onmousemove = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'move'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">body.onmouseup = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'up'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先将鼠标移至body区内，刷页面，单击一次<code>body</code>，会发现依次打印了<code>down</code>、<code>up</code>、<code>move</code>，由此可断定是于<code>up</code>后执行的<code>move</code>。我们知道一般我们执行一次点击过程的顺序为：<code>onmousedown</code>、<code>onmousemove</code>、<code>onmouseup</code>、<code>click</code>，而在chrome中却在<code>onmouseup</code>后执行了一次<code>onmousemove</code>，此bug说不清是否有意而为之，但对于开发来说是没有必要的，因此我们就要避免此问题的出现，以免莫名多执行了一次<code>onmousemove</code>。</p>
+<p>解决方法不高级，也就是判断是否真的移动了，从而判断是否执行<code>onmousemove</code>触发的函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> body = <span class="built_in">document</span>.body,</span><br><span class="line">    obj = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">body.onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'down'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">body.onmousemove = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (e.pageX === obj.x &amp;&amp; e.pageY === obj.y) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'move'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 前面说过是在onmouseup后执行onmousemove，因此在这更改x,y更合理</span></span><br><span class="line">body.onmouseup = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    obj.x = e.pageX;</span><br><span class="line">    obj.y = e.pageY;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'up'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>会发现，<code>onmousemove</code>恢复正常。单击依次打印：<code>down</code>、<code>up</code>。
+问题就此解决。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T12:14:10.000Z" itemprop="dateUpdated">2019-06-29 20:14:10</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/" target="_blank" rel="external">https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/&title=《webkit内核下的mouseup后mousemove自动触发问题及解决方法》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/&title=《webkit内核下的mouseup后mousemove自动触发问题及解决方法》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《webkit内核下的mouseup后mousemove自动触发问题及解决方法》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2015/07/23/一些JavaScript常用方技巧/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">一些JavaScript常用方技巧</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2015/01/25/userAgent判断浏览器内核-系统版本-移动设备等/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">userAgent判断浏览器内核,系统版本,移动设备等</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/&title=《webkit内核下的mouseup后mousemove自动触发问题及解决方法》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/&title=《webkit内核下的mouseup后mousemove自动触发问题及解决方法》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《webkit内核下的mouseup后mousemove自动触发问题及解决方法》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/02/28/webkit内核下的mouseup后mousemove自动触发问题及解决方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADNElEQVR42u3aQW7bQAwF0Nz/0irQVYHa8iepohL9tAqUWJo3XjDkn5+f+Dp+X3/+fH7n3WffPS1/y9+/fffeCy5sbGzsh7CP0+vd0s+fk9zPecnzcws2Njb2VnZetPItyJG9cph/PdjY2NjY52WjugXJcicNDDY2NjZ2r1TkSzmCqzoXwsbGxsZOhkqTjbgqAPgPszRsbGzs27N7Qe89f/7n+TY2Njb2zdhH8bpqxJOUqKSAHa0LGxsbexO7OvrvNSRJVDw5HtRbDzY2NvYOdh7BTopZ73jlaPTf+56xsbGxH8iuLi6/04P14orkPjY2NvZu9nx+Ps8oejFzb/3Y2NjY38DODzue36+OmfLWKG+lkhViY2NjP5ddbS16zcNk3N/b3A+BBzY2NvYidm+IU6VWty8vpXnY0OxXsLGxsW/PzstGdS+T0jWPHJpRBDY2NvYidq8l6B3ZzJuf/PnVojvqhLCxsbFvyc6LUPX4TvUJk2YjL64v6jY2Njb2w9nVD/TKT7KIPEKoBgPY2NjYu9nnS88LRjVwnW/05JAQNjY29ib2vNgky732eFCyNdGXhI2Njb2OPR8J9cLXfNyfx8lRc4KNjY29gl1IgAfR7CQ2zpuNQouCjY2NvZqdl5/q0Z/8LdWBVLUYY2NjY38DOxmy95aeA6pfQ2EshY2Njb2O3cPkI6FeVDA5lPPhC8DGxsZex87bgOSATnUM1CuW+fXiCdjY2NiL2JOjNtW4Ny82Vx0nit6CjY2N/XB2MsSvFobe087bkrw0RpuCjY2NvY7dC2iTEVIvQs4LZP7ZFx0YNjY29gp2HhJcNpofHMq5NlrGxsbG3sFO/sWPDsFcOuKf/2VUt7GxsbEXsfMSVY1se6VxEjxHf4ONjY29jl0dFfWahGqUm7Ql+YZGQS82Njb2A9n51YtyR69sFarCLA0bGxt7EXsS2VYHSclGVFuR6uEhbGxs7K3svGhdFQnkWzAvhC9Wi42Njf2V7HlbktyZFMXCM7GxsbG/mD0pP/mhn0l5iwoeNjY29jp2MlSqlqh8fH/+ll5j82GF2NjY2IvYVwW9+dJ7b6m2Rr3YGBsbG/tR7F/0+L+DpZHRvgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

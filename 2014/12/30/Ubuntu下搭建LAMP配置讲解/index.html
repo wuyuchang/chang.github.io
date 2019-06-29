@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Ubuntu下搭建LAMP配置讲解 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Back-End,PHP,Linux,Apache">
+    <meta name="description" content="LAMP（Linux, Apache, Mysql, PHP），顾名思义，要在Ubuntu下搭建LAMP环境时，需要先下载Apache, Mysql, PHP。 安装apache21$sudo apt-get install apache2  （然后可通过sudo /etc/init.d/apache2 restart重启服务器，当然可以把restart改为start/stop对应启动与关闭） 安">
+<meta name="keywords" content="Back-End,PHP,Linux,Apache">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu下搭建LAMP配置讲解">
+<meta property="og:url" content="https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="LAMP（Linux, Apache, Mysql, PHP），顾名思义，要在Ubuntu下搭建LAMP环境时，需要先下载Apache, Mysql, PHP。 安装apache21$sudo apt-get install apache2  （然后可通过sudo /etc/init.d/apache2 restart重启服务器，当然可以把restart改为start/stop对应启动与关闭） 安">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T10:34:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu下搭建LAMP配置讲解">
+<meta name="twitter:description" content="LAMP（Linux, Apache, Mysql, PHP），顾名思义，要在Ubuntu下搭建LAMP环境时，需要先下载Apache, Mysql, PHP。 安装apache21$sudo apt-get install apache2  （然后可通过sudo /etc/init.d/apache2 restart重启服务器，当然可以把restart改为start/stop对应启动与关闭） 安">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Ubuntu下搭建LAMP配置讲解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Ubuntu下搭建LAMP配置讲解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2014-12-30T09:42:00.000Z" itemprop="datePublished" class="page-time">
+  2014-12-30
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装apache2"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装apache2</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装php"><span class="post-toc-number">2.</span> <span class="post-toc-text">安装php</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装mysql"><span class="post-toc-number">3.</span> <span class="post-toc-text">安装mysql</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Ubuntu下搭建LAMP配置讲解"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Ubuntu下搭建LAMP配置讲解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2014-12-30 17:42:00" datetime="2014-12-30T09:42:00.000Z"  itemprop="datePublished">2014-12-30</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>LAMP（Linux, Apache, Mysql, PHP），顾名思义，要在Ubuntu下搭建LAMP环境时，需要先下载Apache, Mysql, PHP。</p>
+<h2 id="安装apache2"><a href="#安装apache2" class="headerlink" title="安装apache2"></a>安装apache2</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span>sudo apt-get install apache2</span><br></pre></td></tr></table></figure>
+
+<p>（然后可通过<code>sudo /etc/init.d/apache2 restart</code>重启服务器，当然可以把<code>restart</code>改为<code>start</code>/<code>stop</code>对应启动与关闭）</p>
+<h2 id="安装php"><a href="#安装php" class="headerlink" title="安装php"></a>安装php</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo apt-get install libapache2-mod-php5 php5</span><br></pre></td></tr></table></figure>
+
+<p>装完之后写一个测试程序。<br>先执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo gedit /var/www/test.php</span><br></pre></td></tr></table></figure>
+
+<p>在<code>/var/www/</code>目录下创建<code>test.php</code>的测试文件，然后<code>test.php</code>如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?</span>hp</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">"Hello, World!"</span>;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+
+<p>完成之后保存，再到浏览器中输入<a href="http://localhost/test.php，若浏览器能输入&quot;Hello" target="_blank" rel="noopener">http://localhost/test.php，若浏览器能输入&quot;Hello</a>, World!”则表示php安装成功</p>
+<h2 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mysql-server mysql-client</span><br></pre></td></tr></table></figure>
+
+<p>apt-get将会自动下载最新mysql，安装过程中，mysql会提示输入mysql的密码。<br>于是，mysql就这样安装好了，是不是比windows下安装mysql快，方便100倍？<br>附mysql启动、关闭、重启命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo /etc/init.d/mysql start</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>start</code>改为<code>stop</code>/<code>restart</code>代表停止/重启<br>完成之后需要设置<code>/var/www</code>的下的权限，不然会提示权限不足</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo chmod -R 777 /var/www</span><br></pre></td></tr></table></figure>
+
+<p>其中-R表示递归，即所有的子目录设置同样的权限。777是最高权限，所有的用户可读可写，可根据需要自行修改对应权限。</p>
+<p>就这样LAMP轻松的在Ubuntu下搭建好了。</p>
+<p>那如何更改apache的根目录<code>/var/www</code>呢？<br>只需要将<code>/etc/apache2/apache.conf</code>下的<code>Directory</code>中的<code>/var/www</code>更改为自己的路径（注意：此路径只能是<code>/var/www</code>下的子路径）</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;Directory /var/www/html/&gt;</span> <span class="comment"># 此处进行了修改</span></span><br><span class="line">    <span class="attribute"><span class="nomarkup">Options</span></span> Indexes FollowSymLinks</span><br><span class="line">    <span class="attribute">AllowOverride</span> None</span><br><span class="line">    <span class="attribute">Require</span> <span class="literal">all</span> granted</span><br><span class="line"><span class="section">&lt;/Directory&gt;</span></span><br></pre></td></tr></table></figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T10:34:02.000Z" itemprop="dateUpdated">2019-06-29 18:34:02</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2014/12/30/Ubuntu下搭建LAMP配置讲解/" target="_blank" rel="external">https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Back-End/">Back-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/&title=《Ubuntu下搭建LAMP配置讲解》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/&title=《Ubuntu下搭建LAMP配置讲解》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Ubuntu下搭建LAMP配置讲解》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2015/01/23/location将地址栏参数拆分成键值对的对象/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">location将地址栏参数拆分成键值对的对象</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2014/11/10/PHP-jpgraph的一点小提示（附安装方法）/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">PHP jpgraph的一点小提示（附安装方法）</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/&title=《Ubuntu下搭建LAMP配置讲解》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/&title=《Ubuntu下搭建LAMP配置讲解》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Ubuntu下搭建LAMP配置讲解》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/12/30/Ubuntu下搭建LAMP配置讲解/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACu0lEQVR42u3aQXLbQAwEQP3/087VqYTMDMCVVanmSSXRJHsPXHiA1ys+vi6O779efb76NTnn6o4PH3h4eHgPPXr7oH9eMyElR8K+XAI8PDy8Y7z3PGJyl3zLub8aHh4e3ufw8ofIa93kSfDw8PD+J959cJAEEC0JDw8P7xN4s6B280LP49r7cOSxrAUPDw9vkgy82lj2pz4f6e/h4eHhrbvq+xdu0k7Lt5z6afHw8PAO8PIXblvszgYO8sZY8Zx4eHh4h3mzoKG9cTuUsDoTDw8P79Ez8+g2eX3nZfTs/HqrwMPDwzvAm0UGyQ2SEGHfThuODuDh4eGtebMIddN1yq95v7j1HoiHh4f3KC8vkfOAIBk+yAPZB0av8PDw8Na8NoRtl6P9flguXy0fHh4e3mFeEpjen9MOB7QjCPXf4uHh4R3mzS402yre1GbDw8PDO8bbx6+z9v8mhog2Jzw8PLwDvH3JO2ti5eX7LCauDzw8PLyY194yb4y1EW1Ssiev/t++x8PDwzvGa+cLZozZpnJ/x38sEB4eHt4xXh6MJt8nL/G8LM4X5S/XxMPDwzvA25S27dhBu1htRFuU73h4eHgL3qzd9dRQVLs0yfWLMAIPDw9vwZvFCnmIMGvqz6KKyzACDw8P7yHepk+UA/Jyub0mHh4e3s/y8nA2iVDzoLYdEchDYTw8PLzTvLZN9dSLO/9mdnc8PDy8c7ximGkxBJAHtcUowP3Gg4eHh/co76s88vC03SraUa3o+nh4eHgHeO0Lt31Z5/FE+9D7gQM8PDy8DS8fvcrD332hPFuIy/8Y8PDw8A7w2kZUW17nzbPZeFb9Mx4eHt4befkWkvyabAabcQc8PDy8T+PNit22sJ4FzXh4eHineXnhO9sY2hJ51uJaZS14eHh4MW/WymrPbGPZzZABHh4e3jHeL5vxc6hCH5/eAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

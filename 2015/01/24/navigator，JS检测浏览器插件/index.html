@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>navigator，JS检测浏览器插件 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,JavaScript">
+    <meta name="description" content="最早由Netscape Navigator 2.0引入的navigator对象，现在已经成为识别客户端浏览器的事实标准。虽然其它浏览器也通过其它方式提供了相同或相似的信息（例如，IE中的window.clientInformation和Opera中的window.opera），但navigator对象却是所有支持JavaScript的浏览器所共有的。与其它BOM对象的情况一样，每个浏览器中的nav">
+<meta name="keywords" content="Front-End,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="navigator，JS检测浏览器插件">
+<meta property="og:url" content="https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="最早由Netscape Navigator 2.0引入的navigator对象，现在已经成为识别客户端浏览器的事实标准。虽然其它浏览器也通过其它方式提供了相同或相似的信息（例如，IE中的window.clientInformation和Opera中的window.opera），但navigator对象却是所有支持JavaScript的浏览器所共有的。与其它BOM对象的情况一样，每个浏览器中的nav">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T10:47:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="navigator，JS检测浏览器插件">
+<meta name="twitter:description" content="最早由Netscape Navigator 2.0引入的navigator对象，现在已经成为识别客户端浏览器的事实标准。虽然其它浏览器也通过其它方式提供了相同或相似的信息（例如，IE中的window.clientInformation和Opera中的window.opera），但navigator对象却是所有支持JavaScript的浏览器所共有的。与其它BOM对象的情况一样，每个浏览器中的nav">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">navigator，JS检测浏览器插件</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">navigator，JS检测浏览器插件</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2015-01-24T03:26:00.000Z" itemprop="datePublished" class="page-time">
+  2015-01-24
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#检测插件"><span class="post-toc-number">1.</span> <span class="post-toc-text">检测插件</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-navigator，JS检测浏览器插件"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">navigator，JS检测浏览器插件</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2015-01-24 11:26:00" datetime="2015-01-24T03:26:00.000Z"  itemprop="datePublished">2015-01-24</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>最早由Netscape Navigator 2.0引入的navigator对象，现在已经成为识别客户端浏览器的事实标准。虽然其它浏览器也通过其它方式提供了相同或相似的信息（例如，IE中的<code>window.clientInformation</code>和Opera中的<code>window.opera</code>），但<code>navigator</code>对象却是所有支持JavaScript的浏览器所共有的。与其它BOM对象的情况一样，每个浏览器中的<code>navigator</code>对象也都有一套自己的属性。下表列出了存在于所有浏览器中的属性和方法，以及支持它们的浏览器版本。</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性或方法</th>
+<th align="left">说明</th>
+<th align="left">IE</th>
+<th align="left">FireFox</th>
+<th align="left">Safari/Chrome</th>
+<th align="left">Opera</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">appCodeName</td>
+<td align="left">返回浏览器的名称，通常是Mozilla，即使在非Mozilla浏览器中也是如此</td>
+<td align="left">3.0+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">appMinorVersion</td>
+<td align="left">次版本信息</td>
+<td align="left">4.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">9.5+</td>
+</tr>
+<tr>
+<td align="left">appName</td>
+<td align="left">完整的浏览器名称</td>
+<td align="left">3.0+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">appVersion</td>
+<td align="left">浏览器的版本，一般不与实际的浏览器版本对应</td>
+<td align="left">3.0+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">buildID</td>
+<td align="left">浏览器的编译版本</td>
+<td align="left">-</td>
+<td align="left">2.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">cookieEnabled</td>
+<td align="left">表示cookie是否启用</td>
+<td align="left">4.0+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">cpuClass</td>
+<td align="left">客户端计算机中使用的CPU类型（x86、68K、Alpha、PPC或other）</td>
+<td align="left">4.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">javaEnabled</td>
+<td align="left">表示当前浏览器中是否启用了java</td>
+<td align="left">4.0+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">language</td>
+<td align="left">浏览器的主语言</td>
+<td align="left">-</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">mimeType</td>
+<td align="left">在浏览器中注册的MIME类型数组</td>
+<td align="left">4.0+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">onLine</td>
+<td align="left">表示浏览器是否连接到因特网</td>
+<td align="left">4.0+</td>
+<td align="left">1.0+</td>
+<td align="left">-</td>
+<td align="left">9.5+</td>
+</tr>
+<tr>
+<td align="left">opsProfile</td>
+<td align="left">似乎早就不用了，查不到相关文档</td>
+<td align="left">4.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">oscpu</td>
+<td align="left">客户端计算机使用的操作系统或使用的CPU</td>
+<td align="left">-</td>
+<td align="left">1.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">platform</td>
+<td align="left">浏览器所在的系统平台</td>
+<td align="left">4.0+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">plugins</td>
+<td align="left">浏览器中安装的插件信息的数组</td>
+<td align="left">4.0+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">preference()</td>
+<td align="left">设置用户的首选项</td>
+<td align="left">-</td>
+<td align="left">1.5+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">product</td>
+<td align="left">产品名称（如Gecko）</td>
+<td align="left">-</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">productSub</td>
+<td align="left">关于产品的次要信息（如Gecko的版本）</td>
+<td align="left">-</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">registerContentHandler()</td>
+<td align="left">针对特定的MIME类型将一个站点注册为处理程序</td>
+<td align="left">-</td>
+<td align="left">2.0</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">registerProtocolHandler()</td>
+<td align="left">针对特定协议将一个站点注册为处理程序</td>
+<td align="left">-</td>
+<td align="left">2.0</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">securityPolicy</td>
+<td align="left">已经废弃。安全策略的名称。为了与Netscape Navigator 4向后兼容而保留下来</td>
+<td align="left">-</td>
+<td align="left">1.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">systemLanguage</td>
+<td align="left">操作系统的语言</td>
+<td align="left">4.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">taintEnabled</td>
+<td align="left">已经废弃。表示是否允许变量被修改(taint)。为了与Netscape Navigator 3向后兼容而保留下来</td>
+<td align="left">4.0+</td>
+<td align="left">1.0+</td>
+<td align="left">-</td>
+<td align="left">7.0</td>
+</tr>
+<tr>
+<td align="left">userAgent</td>
+<td align="left">浏览器的用户代理字符串</td>
+<td align="left">3.+</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">userLanguage</td>
+<td align="left">操作系统的默认语言</td>
+<td align="left">4.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">7.0+</td>
+</tr>
+<tr>
+<td align="left">userProfile</td>
+<td align="left">借以访问用户个人信息的对象</td>
+<td align="left">4.0+</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">vendor</td>
+<td align="left">浏览器的品牌</td>
+<td align="left">-</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">vendorSub</td>
+<td align="left">有关供应商的次要信息</td>
+<td align="left">-</td>
+<td align="left">1.0+</td>
+<td align="left">1.0+</td>
+<td align="left">-</td>
+</tr>
+</tbody></table>
+<p>表中的这些navigator对象的属性通常用于检测显示网页的浏览器类型。</p>
+<h2 id="检测插件"><a href="#检测插件" class="headerlink" title="检测插件"></a>检测插件</h2><p>检测浏览器中是否安装了特定的插件是一种最常见的检例程。对于非IE浏览器可以使用plugins数组达到这个目的。该数组中的每一项都包含下列属性。<br><code>name</code>: 插件名字<br><code>description</code>: 插件的描述<br><code>filename</code>: 插件的文件名<br><code>length</code>: 插件所处理的MIME类型数量<br>一般来说，<code>name</code>属性中会包含检测插件必需的所有信息，但有时候也不完全如此。在检测插件时，需要像下面这样循环迭代每个插件并将插件的<code>name</code>与给定的名字进行比较。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 检测浏览器中是否存在此插件（在IE中无效）</span></span><br><span class="line"><span class="comment"> * @param 插件名 name</span></span><br><span class="line"><span class="comment"> * @return boolean 存在插件返回true，否则返回false</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hasPlugin</span> (<span class="params">name</span>) </span>&#123;</span><br><span class="line">  name = name.toLowerCase();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; navigator.plugins.length; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (navigator.plugins[i].name.toLowerCase().indexOf(name) &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而检测IE中的插件比较麻烦，因为IE不支持Netscape式的插件。在IE中检测插件的唯一方式就是使用专有的<code>ActiveXObject</code>类型，并尝试创建一个特定插件的实例。IE是以COM对象的方式实现插件的，而COM对象使用唯一标识符来标识。因此，要想检查特定的插件，就必须知道其COM标识符。例如，Flash的标识符是<code>ShockwaveFlash.ShockwaveFlash</code>。知道唯一标识符之后，就可以编写类似下面的函数来检测IE中是否安装相应的插件了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 检测IE中的插件</span></span><br><span class="line"><span class="comment"> * @param 插件名 name</span></span><br><span class="line"><span class="comment"> * @return boolean 存在插件返回true，否则返回false</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hasIEPlugin</span> (<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">new</span> ActiveXObject(name);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (ex) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>鉴于检测这两种插件的方法差别太大，因此典型的做法是针对每个插件分别创建检测函数，而不是使用前面介绍的通用检测方法。来看下面的例子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 检测浏览器中是否存在此插件（在IE中无效）</span></span><br><span class="line"><span class="comment"> * @param 插件名 name</span></span><br><span class="line"><span class="comment"> * @return boolean 存在插件返回true，否则返回false</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hasPlugin</span> (<span class="params">name</span>) </span>&#123;</span><br><span class="line">  name = name.toLowerCase();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; navigator.plugins.length; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (navigator.plugins[i].name.toLowerCase().indexOf(name) &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 检测IE中的插件</span></span><br><span class="line"><span class="comment"> * @param 插件名 name</span></span><br><span class="line"><span class="comment"> * @return boolean 存在插件返回true，否则返回false</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hasIEPlugin</span> (<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">new</span> ActiveXObject(name);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (ex) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检测所有浏览器中的Flash</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hasFlash</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// return hasPlugin("Flash") || hasIEPlugin("ShockwaveFlash.ShockwaveFlash");</span></span><br><span class="line">  <span class="keyword">var</span> result = hasPlugin(<span class="string">"Flash"</span>);</span><br><span class="line">  <span class="keyword">if</span> (!result) &#123;</span><br><span class="line">    result = hasIEPlugin(<span class="string">"ShockwaveFlash.ShockwaveFlash"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检测所有浏览器中的QuickTime</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hasQuickTime</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// return hasPlugin("QuickTime") || hasIEPlugin("QuickTime.QuickTime");</span></span><br><span class="line">  <span class="keyword">var</span> result = hasPlugin(<span class="string">"QuickTime"</span>);</span><br><span class="line">  <span class="keyword">if</span> (!result) &#123;</span><br><span class="line">    reseult = hasIEPlugin(<span class="string">"QuickTime.QuickTime"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(hasFlash());        <span class="comment">// 检测浏览器是否有Flash插件</span></span><br><span class="line">alert(hasQuickTime())    <span class="comment">// 检测浏览器是否有QuickTime插件</span></span><br></pre></td></tr></table></figure>
+
+<p>（注：本文摘自：《JavaScript高级程序设计》第3版，第8章，8.3 navigator对象  p210）</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T10:47:04.000Z" itemprop="dateUpdated">2019-06-29 18:47:04</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2015/01/24/navigator，JS检测浏览器插件/" target="_blank" rel="external">https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/&title=《navigator，JS检测浏览器插件》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/&title=《navigator，JS检测浏览器插件》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《navigator，JS检测浏览器插件》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2015/01/25/userAgent判断浏览器内核-系统版本-移动设备等/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">userAgent判断浏览器内核,系统版本,移动设备等</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2015/01/23/location将地址栏参数拆分成键值对的对象/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">location将地址栏参数拆分成键值对的对象</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/&title=《navigator，JS检测浏览器插件》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/&title=《navigator，JS检测浏览器插件》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《navigator，JS检测浏览器插件》 — Yuchang Wu's blog&url=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2015/01/24/navigator，JS检测浏览器插件/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACnElEQVR42u3aQZLCMAwEQP7/afgACSPJonLonCgqG9w52NqRXq/4et9e9/dcPe3q+fe/+9q48PDw8NaWfv/5aqH50xJqvmY8PDy8bd799l3dsvMNPWEk67n8Hg8PD+8BvOpB0iupczYeHh7ek3kJOD9U8gwBDw8P75m8akQ7OTDyCLh3Px4eHt42L+8iPefzSn8PDw8Pb9xVrx4GyZMnmPJq8fDw8BZ426MDpyKMfLzgy/14eHh4R3nVmKBaduff9I6NH3fi4eHhLfB67ahkU85fUw9QaKfh4eHhHeVNGlFnQ4TqgEKyEjw8PLw9XrKjVttRpxj5kOtlgIuHh4f3F14emFZL8+qrqQ6wfunv4eHh4R3lTf44atu3koHJS7m8Ew8PD+8orxc69Jr6+YZ+7Nfx8PDwjvKqm3ivUM6HBvKBqtHQAB4eHt4yLw9kkxJ5MlBVLr7x8PDwFnj5yFR1ib1Rrbz4zotsPDw8vH/yqhHA5DXlxfSo9MfDw8Mb8+ahw6SAnpTI0QvFw8PDW+BVl9gbipoHsqO2HB4eHt4CrzrS1NuyzwKqI1l4eHh4G7xqIyrZ6HvttHlU8aMBhoeHhzfg5YBJc6tXTOcBx+VK8PDw8BZ4SQya46vlcjJc1Sv98fDw8LZ5k9K5uk33Gmy9WAQPDw9vm1ctbSfg/CgqnGz3/T08PDy8Zd6kqM0Pm14oXG6A4eHh4R3lvYvXJMY9NUBQOH7w8PDwFnj5dSqe6IW/p0p/PDw8vFO8Xmvq1HFSjXTLbTM8PDy8Nd4kpOi9ml5IUQ5H8PDw8B7Du2/q54XyZIAgiiHw8PDwHsPLm2E5ssqIfh0PDw9vjTcpi3uNsV4bLHkReHh4eNu8A//wDzb3vPVVbaHh4eHhLfA+xrPLiJYqsOoAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

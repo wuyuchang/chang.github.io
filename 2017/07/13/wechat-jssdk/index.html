@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>微信JSSDK测试接口的Node实现 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,Node.js,SDK">
+    <meta name="description" content="做了一个网站，放到线上，用微信打开，点击分享，可是分享后发给朋友的链接卡片是微信默认自带的，如下：   这标题，描述以及图片是默认自带的，丑不说，分享给别人还以为是盗号网站呢，而接入微信的JSSDK后，分享可以自定义内容，如下：   我承认，虽然这分享的标题和内容也并不正经，但这不妨碍我表达**我们可以通过微信JSSDK定义分享内容**，接下来我们将一步一步从零实现JSSDK从后端Node.js的">
+<meta name="keywords" content="Front-End,Node.js,SDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信JSSDK测试接口的Node实现">
+<meta property="og:url" content="https://blog.afacat.com/2017/07/13/wechat-jssdk/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="做了一个网站，放到线上，用微信打开，点击分享，可是分享后发给朋友的链接卡片是微信默认自带的，如下：   这标题，描述以及图片是默认自带的，丑不说，分享给别人还以为是盗号网站呢，而接入微信的JSSDK后，分享可以自定义内容，如下：   我承认，虽然这分享的标题和内容也并不正经，但这不妨碍我表达**我们可以通过微信JSSDK定义分享内容**，接下来我们将一步一步从零实现JSSDK从后端Node.js的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.afacat.com/2017/07/13/wechat-jssdk/default_share.png">
+<meta property="og:image" content="https://blog.afacat.com/2017/07/13/wechat-jssdk/jssdk_share.png">
+<meta property="og:updated_time" content="2019-06-29T09:35:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信JSSDK测试接口的Node实现">
+<meta name="twitter:description" content="做了一个网站，放到线上，用微信打开，点击分享，可是分享后发给朋友的链接卡片是微信默认自带的，如下：   这标题，描述以及图片是默认自带的，丑不说，分享给别人还以为是盗号网站呢，而接入微信的JSSDK后，分享可以自定义内容，如下：   我承认，虽然这分享的标题和内容也并不正经，但这不妨碍我表达**我们可以通过微信JSSDK定义分享内容**，接下来我们将一步一步从零实现JSSDK从后端Node.js的">
+<meta name="twitter:image" content="https://blog.afacat.com/2017/07/13/wechat-jssdk/default_share.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">微信JSSDK测试接口的Node实现</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">微信JSSDK测试接口的Node实现</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-13T08:30:56.000Z" itemprop="datePublished" class="page-time">
+  2017-07-13
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#成为测试公众号开发者"><span class="post-toc-number">1.</span> <span class="post-toc-text">成为测试公众号开发者</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#登录测试公众号后台"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">登录测试公众号后台</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#成为测试公众号开发者-1"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">成为测试公众号开发者</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#接口配置信息"><span class="post-toc-number">2.</span> <span class="post-toc-text">接口配置信息</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修改接口配置信息"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">修改接口配置信息</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#搭建简单的Node服务器"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">搭建简单的Node服务器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#根据微信测试公众号请求信息返回对应内容"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">根据微信测试公众号请求信息返回对应内容</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#微信JSSDK使用步骤"><span class="post-toc-number">3.</span> <span class="post-toc-text">微信JSSDK使用步骤</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#填写安全域名"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">填写安全域名</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前端引入JS"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">前端引入JS</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#填写接口的配置信息"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">填写接口的配置信息</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调用接口"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">调用接口</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在Node服务器中生成jssdk所需要的配置信息"><span class="post-toc-number">4.</span> <span class="post-toc-text">在Node服务器中生成jssdk所需要的配置信息</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成signature"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">生成signature</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#生成access-token"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">生成access_token</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#获取jsapi-ticket"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">获取jsapi_ticket</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#生成签名"><span class="post-toc-number">4.1.3.</span> <span class="post-toc-text">生成签名</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#曝露接口，返回给前端"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">曝露接口，返回给前端</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前端请求后端接口，获取配置信息"><span class="post-toc-number">5.</span> <span class="post-toc-text">前端请求后端接口，获取配置信息</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取配置"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">获取配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#做你想做的，比如，自定义分享"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">做你想做的，比如，自定义分享</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#缓存access-token及jsapi-ticket"><span class="post-toc-number">6.</span> <span class="post-toc-text">缓存access_token及jsapi_ticket</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-wechat-jssdk"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">微信JSSDK测试接口的Node实现</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-13 16:30:56" datetime="2017-07-13T08:30:56.000Z"  itemprop="datePublished">2017-07-13</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>做了一个网站，放到线上，用微信打开，点击分享，可是分享后发给朋友的链接卡片是微信默认自带的，如下：</p>
+<img src="/2017/07/13/wechat-jssdk/default_share.png" title="默认分享">
+<br>
+这标题，描述以及图片是默认自带的，丑不说，分享给别人还以为是盗号网站呢，而接入微信的JSSDK后，分享可以自定义内容，如下：
+<img src="/2017/07/13/wechat-jssdk/jssdk_share.png" title="接口分享">
+<br>
+我承认，虽然这分享的标题和内容也并不正经，但这不妨碍我表达**我们可以通过微信JSSDK定义分享内容**，接下来我们将一步一步从零实现JSSDK从后端Node.js的接入。
+
+<h2 id="成为测试公众号开发者"><a href="#成为测试公众号开发者" class="headerlink" title="成为测试公众号开发者"></a>成为测试公众号开发者</h2><h3 id="登录测试公众号后台"><a href="#登录测试公众号后台" class="headerlink" title="登录测试公众号后台"></a>登录测试公众号后台</h3><p>首先我们需要在<a href="https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login" target="_blank" rel="noopener">微信公众平台</a>申请测试接口，地址：<a href="https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login" target="_blank" rel="noopener">https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login</a><br>使用微信扫描登录后，即可来微信公众平台测试账号系统。</p>
+<h3 id="成为测试公众号开发者-1"><a href="#成为测试公众号开发者-1" class="headerlink" title="成为测试公众号开发者"></a>成为测试公众号开发者</h3><p>其次在微信公众平台测试账号中，扫描测试号二维码，成为测试公众号的开发者</p>
+<h2 id="接口配置信息"><a href="#接口配置信息" class="headerlink" title="接口配置信息"></a>接口配置信息</h2><h3 id="修改接口配置信息"><a href="#修改接口配置信息" class="headerlink" title="修改接口配置信息"></a>修改接口配置信息</h3><ol>
+<li>URL地址必须是你服务器上的地址，此地址要能通过浏览器的地址栏访问到（没有服务器？没关系，一会儿我们搭建一个）<br>假设我这里填写的服务器地址是”<a href="http://www.your_server_name.com/wxJssdk&quot;" target="_blank" rel="noopener">http://www.your_server_name.com/wxJssdk&quot;</a></li>
+<li>Token你可以随意填写，用作生成签名，（不知道签名？没关系，一会儿会用到这东西的）<br>假设我这里填写的Token是”<a href>jegfjaeghfuccawegfgjdbh</a>“</li>
+</ol>
+<p>此时点击提交是会提示配置失败的，因为在提交的时候，微信是会请求你的服务器地址，而你的当前配置的地址并不能访问，所以会提示配置失败。不过别急，我们先来搭建一个简单的Node服务器，让微信能够访问该服务器。</p>
+<h3 id="搭建简单的Node服务器"><a href="#搭建简单的Node服务器" class="headerlink" title="搭建简单的Node服务器"></a>搭建简单的Node服务器</h3><p>我们需要在<a href="http://www.your_server_name.com" target="_blank" rel="noopener">http://www.your_server_name.com</a> 这个域名上搭建一个服务器，并且曝出一个接口为<code>/wxJssdk</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/wxJssdk'</span>, (req, res) =&gt; &#123;</span><br><span class="line">  res.send(<span class="string">'请求成功了了了了'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">80</span>, err =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span>(!err) <span class="built_in">console</span>.log(<span class="string">'connect succeed'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们在地址栏中访问<a href="http://www.your_server_name.com/wxJssdk" target="_blank" rel="noopener">http://www.your_server_name.com/wxJssdk</a> ，如果页面显示“请求成功了了了了”，则进入到下一步，如果没有成功的话，检查一下你的服务器是否开启Node服务器，如：<code>node index.js</code></p>
+<p>此时保存微信测试公众号后台的接口配置信息，仍然会提示配置失败，这是因为我们没有按照它的要求返回。</p>
+<h3 id="根据微信测试公众号请求信息返回对应内容"><a href="#根据微信测试公众号请求信息返回对应内容" class="headerlink" title="根据微信测试公众号请求信息返回对应内容"></a>根据微信测试公众号请求信息返回对应内容</h3><p>根据<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421135319" target="_blank" rel="noopener">微信公众号开发文档接入指南</a>，微信在请求我们配置的接口时，会带上如下信息</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">signature</td>
+<td align="left">微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。</td>
+</tr>
+<tr>
+<td align="left">timestamp</td>
+<td align="left">时间戳</td>
+</tr>
+<tr>
+<td align="left">nonce</td>
+<td align="left">随机数</td>
+</tr>
+<tr>
+<td align="left">echostr</td>
+<td align="left">随机字符串</td>
+</tr>
+<tr>
+<td align="left">微信服务器会通过GET请求，来请求我们所配置的接口，并带上以上表格的信息，而我们必须按照以下要求，将微信发送的信息进行要求校验，以确保是微信发送的信息，其中校验流程如下：</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>1）将token、timestamp、nonce三个参数进行字典序排序<br>2）将三个参数字符串拼接成一个字符串进行sha1加密<br>3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"><span class="keyword">const</span> sha1 = <span class="built_in">require</span>(<span class="string">'sha1'</span>)</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/wxJssdk'</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> wx = req.query</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> token = <span class="string">'jegfjaeghfuccawegfgjdbh'</span></span><br><span class="line">  <span class="keyword">let</span> timestamp = wx.timestamp</span><br><span class="line">  <span class="keyword">let</span> nonce = wx.nonce</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 1）将token、timestamp、nonce三个参数进行字典序排序</span></span><br><span class="line">  <span class="keyword">let</span> list = [token, timestamp, nonce].sort()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2）将三个参数字符串拼接成一个字符串进行sha1加密</span></span><br><span class="line">  <span class="keyword">let</span> str = list.join(<span class="string">''</span>)</span><br><span class="line">  <span class="keyword">let</span> result = sha1(str)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信</span></span><br><span class="line">  <span class="keyword">if</span> (result === wx.signature) &#123;</span><br><span class="line">    res.send(wx.echostr) <span class="comment">// 返回微信传来的echostr，表示校验成功，此处不能返回其它</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    res.send(<span class="literal">false</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>此时我们重启Node服务器，再次保存接口配置信息即可配置成功。</p>
+<h2 id="微信JSSDK使用步骤"><a href="#微信JSSDK使用步骤" class="headerlink" title="微信JSSDK使用步骤"></a>微信JSSDK使用步骤</h2><p>根据<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115" target="_blank" rel="noopener">微信JSSDK说明文档</a>，我们需要完成如下：</p>
+<h3 id="填写安全域名"><a href="#填写安全域名" class="headerlink" title="填写安全域名"></a>填写安全域名</h3><p>登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”，即要调用接口的域名，不包含协议</p>
+<h3 id="前端引入JS"><a href="#前端引入JS" class="headerlink" title="前端引入JS"></a>前端引入JS</h3><p>在需要调用JS接口的页面引入此JS文件，（支持https）：<a href="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" target="_blank" rel="noopener">http://res.wx.qq.com/open/js/jweixin-1.2.0.js</a></p>
+<h3 id="填写接口的配置信息"><a href="#填写接口的配置信息" class="headerlink" title="填写接口的配置信息"></a>填写接口的配置信息</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wx.config(&#123;</span><br><span class="line">  debug: <span class="literal">true</span>, <span class="comment">// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。</span></span><br><span class="line">  appId: <span class="string">''</span>, <span class="comment">// 必填，公众号的唯一标识</span></span><br><span class="line">  timestamp: , <span class="comment">// 必填，生成签名的时间戳</span></span><br><span class="line">  nonceStr: <span class="string">''</span>, <span class="comment">// 必填，生成签名的随机串</span></span><br><span class="line">  signature: <span class="string">''</span>,<span class="comment">// 必填，签名</span></span><br><span class="line">  jsApiList: [] <span class="comment">// 必填，需要使用的JS接口列表，所有JS接口列表见附录2</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="调用接口"><a href="#调用接口" class="headerlink" title="调用接口"></a>调用接口</h3><p>做你前端该做的，调用微信分享接口，或微信提供的其它接口，whatever you need，当然，这并不是我们所要讲的重点，我们接下来要看一下微信的配置信息从哪获取</p>
+<h2 id="在Node服务器中生成jssdk所需要的配置信息"><a href="#在Node服务器中生成jssdk所需要的配置信息" class="headerlink" title="在Node服务器中生成jssdk所需要的配置信息"></a>在Node服务器中生成jssdk所需要的配置信息</h2><p>从上一节可以看到，调用微信JSSDK需要以下信息</p>
+<ol>
+<li>appId</li>
+<li>timestamp</li>
+<li>nonceStr</li>
+<li>signature</li>
+<li>jsApiList</li>
+</ol>
+<p>其中：</p>
+<ol>
+<li>第1项appId是测试公众号后台的appId，我们已知</li>
+<li>第2项时间戳我们也可以自己生成</li>
+<li>第3项nonceStr可以随意填写，你可以理解为密钥</li>
+<li>第4项signature则需要我们按要求生成</li>
+<li>第5项是所需要接口的接口名</li>
+</ol>
+<h3 id="生成signature"><a href="#生成signature" class="headerlink" title="生成signature"></a>生成signature</h3><blockquote>
+<p>生成签名之前必须先了解一下jsapi_ticket，jsapi_ticket是公众号用于调用微信JS接口的临时票据。正常情况下，jsapi_ticket的有效期为7200秒，通过access_token来获取。由于获取jsapi_ticket的api调用次数非常有限，频繁刷新jsapi_ticket会导致api调用受限，影响自身业务，开发者必须在自己的服务全局缓存jsapi_ticket 。</p>
+</blockquote>
+<p>为了保证我们appid，appsecret，nonceStr等信息不在前端曝露，我们以下步骤将在服务器上进行操作，以免他人盗用信息获取（注：微信请求有每日次数限制，一旦超出，则无法使用，具体请求次数限制在微信公众号后台中可查看）</p>
+<h4 id="生成access-token"><a href="#生成access-token" class="headerlink" title="生成access_token"></a>生成access_token</h4><p>根据微信开发文档[获取access_token文档说明]，我们需要将微信测试公众号后台的appid和和appsecret以GET的请求方式向<a href="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET" target="_blank" rel="noopener">https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET</a> 发起请求获取token，请求成功后我们会获得下返回JSON转化的字符串</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"access_token"</span>:<span class="string">"ACCESS_TOKEN"</span>,<span class="attr">"expires_in"</span>:<span class="number">7200</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体请求代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> grant_type = <span class="string">'client_credential'</span></span><br><span class="line"><span class="keyword">const</span> appid = <span class="string">'your app id'</span></span><br><span class="line"><span class="keyword">const</span> secret = <span class="string">'your app secret'</span></span><br><span class="line"></span><br><span class="line">request(<span class="string">'https://api.weixin.qq.com/cgi-bin/token?grant_type='</span> + grant_type + <span class="string">'&amp;appid='</span> + appid + <span class="string">'&amp;secret='</span> + secret, (err, response, body) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> access_toekn = <span class="built_in">JSON</span>.parse(body).access_token</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取jsapi-ticket"><a href="#获取jsapi-ticket" class="headerlink" title="获取jsapi_ticket"></a>获取jsapi_ticket</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> grant_type = <span class="string">'client_credential'</span></span><br><span class="line"><span class="keyword">const</span> appid = <span class="string">'your app id'</span></span><br><span class="line"><span class="keyword">const</span> secret = <span class="string">'your app secret'</span></span><br><span class="line"></span><br><span class="line">request(<span class="string">'https://api.weixin.qq.com/cgi-bin/token?grant_type='</span> + grant_type + <span class="string">'&amp;appid='</span> + appid + <span class="string">'&amp;secret='</span> + secret, (err, response, body) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> access_toekn = <span class="built_in">JSON</span>.parse(body).access_token</span><br><span class="line"></span><br><span class="line">  request(<span class="string">'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='</span> + access_token + <span class="string">'&amp;type=jsapi'</span>, (err, response, body) =&gt; &#123;</span><br><span class="line">     <span class="keyword">let</span> jsapi_ticket = <span class="built_in">JSON</span>.parse(body).ticket</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="生成签名"><a href="#生成签名" class="headerlink" title="生成签名"></a>生成签名</h4><p>生成签名的步骤和最开始的<code>/wxJssdk</code>的算法是一致的，具体如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> jsapi_ticket = jsapi_ticket  <span class="comment">// 上一步从获取的jsapi_ticket</span></span><br><span class="line"><span class="keyword">let</span> nonce_str = <span class="string">'123456'</span>    <span class="comment">// 密钥，字符串任意，可以随机生成</span></span><br><span class="line"><span class="keyword">let</span> timestamp = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()  <span class="comment">// 时间戳</span></span><br><span class="line"><span class="keyword">let</span> url = req.query.url   <span class="comment">// 使用接口的url链接，不包含#后的内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将请求以上字符串，先按字典排序，再以'&amp;'拼接，如下：其中j &gt; n &gt; t &gt; u，此处直接手动排序</span></span><br><span class="line"><span class="keyword">let</span> str = <span class="string">'jsapi_ticket='</span> + jsapi_ticket + <span class="string">'&amp;noncestr='</span> + nonce_str + <span class="string">'&amp;timestamp='</span> + timestamp + <span class="string">'&amp;url='</span> + url</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用sha1加密</span></span><br><span class="line"><span class="keyword">let</span> signature = sha1(str)</span><br></pre></td></tr></table></figure>
+
+<p>连接后的代码为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> grant_type = <span class="string">'client_credential'</span></span><br><span class="line"><span class="keyword">const</span> appid = <span class="string">'your app id'</span></span><br><span class="line"><span class="keyword">const</span> secret = <span class="string">'your app secret'</span></span><br><span class="line"></span><br><span class="line">request(<span class="string">'https://api.weixin.qq.com/cgi-bin/token?grant_type='</span> + grant_type + <span class="string">'&amp;appid='</span> + appid + <span class="string">'&amp;secret='</span> + secret, (err, response, body) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> access_toekn = <span class="built_in">JSON</span>.parse(body).access_token</span><br><span class="line"></span><br><span class="line">  request(<span class="string">'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='</span> + access_token + <span class="string">'&amp;type=jsapi'</span>, (err, response, body) =&gt; &#123;</span><br><span class="line">     <span class="keyword">let</span> jsapi_ticket = <span class="built_in">JSON</span>.parse(body).ticket</span><br><span class="line">     <span class="keyword">let</span> nonce_str = <span class="string">'123456'</span>    <span class="comment">// 密钥，字符串任意，可以随机生成</span></span><br><span class="line">     <span class="keyword">let</span> timestamp = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()  <span class="comment">// 时间戳</span></span><br><span class="line">     <span class="keyword">let</span> url = req.query.url   <span class="comment">// 使用接口的url链接，不包含#后的内容</span></span><br><span class="line"></span><br><span class="line">     <span class="comment">// 将请求以上字符串，先按字典排序，再以'&amp;'拼接，如下：其中j &gt; n &gt; t &gt; u，此处直接手动排序</span></span><br><span class="line">     <span class="keyword">let</span> str = <span class="string">'jsapi_ticket='</span> + jsapi_ticket + <span class="string">'&amp;noncestr='</span> + nonce_str + <span class="string">'&amp;timestamp='</span> + timestamp + <span class="string">'&amp;url='</span> + url</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 用sha1加密</span></span><br><span class="line">     <span class="keyword">let</span> signature = sha1(str)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="曝露接口，返回给前端"><a href="#曝露接口，返回给前端" class="headerlink" title="曝露接口，返回给前端"></a>曝露接口，返回给前端</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">app.post(<span class="string">'/wxJssdk/getJssdk'</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> grant_type = <span class="string">'client_credential'</span></span><br><span class="line">  <span class="keyword">const</span> appid = <span class="string">'your app id'</span></span><br><span class="line">  <span class="keyword">const</span> secret = <span class="string">'your app secret'</span></span><br><span class="line"></span><br><span class="line">  request(<span class="string">'https://api.weixin.qq.com/cgi-bin/token?grant_type='</span> + grant_type + <span class="string">'&amp;appid='</span> + appid + <span class="string">'&amp;secret='</span> + secret, (err, response, body) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> access_toekn = <span class="built_in">JSON</span>.parse(body).access_token</span><br><span class="line"></span><br><span class="line">    request(<span class="string">'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='</span> + access_token + <span class="string">'&amp;type=jsapi'</span>, (err, response, body) =&gt; &#123;</span><br><span class="line">       <span class="keyword">let</span> jsapi_ticket = <span class="built_in">JSON</span>.parse(body).ticket</span><br><span class="line">       <span class="keyword">let</span> nonce_str = <span class="string">'123456'</span>    <span class="comment">// 密钥，字符串任意，可以随机生成</span></span><br><span class="line">       <span class="keyword">let</span> timestamp = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()  <span class="comment">// 时间戳</span></span><br><span class="line">       <span class="keyword">let</span> url = req.query.url   <span class="comment">// 使用接口的url链接，不包含#后的内容</span></span><br><span class="line"></span><br><span class="line">       <span class="comment">// 将请求以上字符串，先按字典排序，再以'&amp;'拼接，如下：其中j &gt; n &gt; t &gt; u，此处直接手动排序</span></span><br><span class="line">       <span class="keyword">let</span> str = <span class="string">'jsapi_ticket='</span> + jsapi_ticket + <span class="string">'&amp;noncestr='</span> + nonce_str + <span class="string">'&amp;timestamp='</span> + timestamp + <span class="string">'&amp;url='</span> + url</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 用sha1加密</span></span><br><span class="line">       <span class="keyword">let</span> signature = sha1(str)</span><br><span class="line"></span><br><span class="line">       res.send(&#123;</span><br><span class="line">         appId: appid,</span><br><span class="line">         timestamp: timpstamp,</span><br><span class="line">         nonceStr: nonce_str,</span><br><span class="line">         signature: signature,</span><br><span class="line">       &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="前端请求后端接口，获取配置信息"><a href="#前端请求后端接口，获取配置信息" class="headerlink" title="前端请求后端接口，获取配置信息"></a>前端请求后端接口，获取配置信息</h2><h3 id="获取配置"><a href="#获取配置" class="headerlink" title="获取配置"></a>获取配置</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">axios.post(<span class="string">'/wxJssdk/getJssdk'</span>, &#123;<span class="attr">url</span>: location.href&#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> data = response.data</span><br><span class="line"></span><br><span class="line">  wx.config(&#123;</span><br><span class="line">    debug: <span class="literal">false</span>, <span class="comment">// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。</span></span><br><span class="line">    appId: data.appId, <span class="comment">// 必填，公众号的唯一标识</span></span><br><span class="line">    timestamp: data.timestamp, <span class="comment">// 必填，生成签名的时间戳</span></span><br><span class="line">    nonceStr: data.nonceStr, <span class="comment">// 必填，生成签名的随机串</span></span><br><span class="line">    signature: data.signature,<span class="comment">// 必填，签名，见附录1</span></span><br><span class="line">    jsApiList: [<span class="string">'onMenuShareTimeline'</span>, <span class="string">'onMenuShareAppMessage'</span>] <span class="comment">// 必填，需要使用的JS接口列表，所有JS接口列表见附录2</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="做你想做的，比如，自定义分享"><a href="#做你想做的，比如，自定义分享" class="headerlink" title="做你想做的，比如，自定义分享"></a>做你想做的，比如，自定义分享</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (wx) &#123;</span><br><span class="line">  axios.post(<span class="string">'/wxJssdk/getJssdk'</span>, &#123;<span class="attr">url</span>: location.href&#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> data = response.data</span><br><span class="line"></span><br><span class="line">    wx.config(&#123;</span><br><span class="line">      debug: <span class="literal">false</span>, <span class="comment">// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。</span></span><br><span class="line">      appId: data.appId, <span class="comment">// 必填，公众号的唯一标识</span></span><br><span class="line">      timestamp: data.timestamp, <span class="comment">// 必填，生成签名的时间戳</span></span><br><span class="line">      nonceStr: data.nonceStr, <span class="comment">// 必填，生成签名的随机串</span></span><br><span class="line">      signature: data.signature,<span class="comment">// 必填，签名，见附录1</span></span><br><span class="line">      jsApiList: [<span class="string">'onMenuShareTimeline'</span>, <span class="string">'onMenuShareAppMessage'</span>] <span class="comment">// 必填，需要使用的JS接口列表，所有JS接口列表见附录2</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    wx.ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      wx.onMenuShareTimeline(&#123;</span><br><span class="line">      title: wxShare.title,</span><br><span class="line">      desc: wxShare.desc,</span><br><span class="line">      link: wxShare.link,</span><br><span class="line">      imgUrl: wxShare.imgUrl</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      wx.onMenuShareAppMessage(&#123;</span><br><span class="line">      title: wxShare.title,</span><br><span class="line">      desc: wxShare.desc,</span><br><span class="line">      link: wxShare.link,</span><br><span class="line">      imgUrl: wxShare.imgUrl</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">    wx.error(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">       <span class="comment">// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，后端配置好了，我们已经能够正常使用微信的接口了，但是微信每日接口请求是有上限的，通过2000次/天，因此如果网站上线后，一量当天访问量超过2000次你的接口将失效，而且每次都请求微信接口两次，造成请求时间浪费，所以我们需要将以上获取信息缓存在后端，避免造成接口失效以及多次请求微信后台。</p>
+<h2 id="缓存access-token及jsapi-ticket"><a href="#缓存access-token及jsapi-ticket" class="headerlink" title="缓存access_token及jsapi_ticket"></a>缓存access_token及jsapi_ticket</h2><p>此处直接上代码，利用node_cache包进行缓存</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'request'</span>)</span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"><span class="keyword">const</span> sha1 = <span class="built_in">require</span>(<span class="string">'sha1'</span>)</span><br><span class="line"><span class="keyword">const</span> waterfall = <span class="built_in">require</span>(<span class="string">'async/waterfall'</span>)</span><br><span class="line"><span class="keyword">const</span> NodeCache = <span class="built_in">require</span>(<span class="string">'node-cache'</span>)</span><br><span class="line"><span class="keyword">const</span> cache = <span class="keyword">new</span> NodeCache(&#123;<span class="attr">stdTTL</span>: <span class="number">3600</span>, <span class="attr">checkperiod</span>: <span class="number">3600</span>&#125;) <span class="comment">//3600秒后过过期</span></span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/wxJssdk'</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> wx = req.query</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 1）将token、timestamp、nonce三个参数进行字典序排序</span></span><br><span class="line">  <span class="keyword">let</span> token = <span class="string">'jegfjaeghfuyawegfgjdbh'</span></span><br><span class="line">  <span class="keyword">let</span> timestamp = wx.timestamp</span><br><span class="line">  <span class="keyword">let</span> nonce = wx.nonce</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2）将三个参数字符串拼接成一个字符串进行sha1加密</span></span><br><span class="line">  <span class="keyword">let</span> list = [token, timestamp, nonce]</span><br><span class="line">  <span class="keyword">let</span> result = sha1(list.sort().join(<span class="string">''</span>))</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信</span></span><br><span class="line">  <span class="keyword">if</span> (result === wx.signature) &#123;</span><br><span class="line">    res.send(wx.echostr)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    res.send(<span class="literal">false</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/wxJssdk/getJssdk'</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> grant_type = <span class="string">'client_credential'</span></span><br><span class="line">  <span class="keyword">let</span> appid = <span class="string">'your app id'</span></span><br><span class="line">  <span class="keyword">let</span> secret = <span class="string">'your app secret'</span> <span class="comment">// appscret</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> steps = []</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第一步，获取access_token</span></span><br><span class="line">  steps.push(<span class="function">(<span class="params">cb</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> steps1 = []</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第1.1步，从缓存中读取access_token</span></span><br><span class="line">    steps1.push(<span class="function">(<span class="params">cb1</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> access_token = cache.get(<span class="string">'access_token'</span>, (err, access_token) =&gt; &#123;</span><br><span class="line">        cb1(err, access_token)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第1.2步，缓存中有access_token则直接返回，如果没有，则从服务器中读取access_token</span></span><br><span class="line">    steps1.push(<span class="function">(<span class="params">access_token, cb1</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (access_token) &#123;</span><br><span class="line">        cb1(<span class="literal">null</span>, access_token, <span class="string">'from_cache'</span>)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        request(<span class="string">'https://api.weixin.qq.com/cgi-bin/token?grant_type='</span> + grant_type + <span class="string">'&amp;appid='</span> + appid + <span class="string">'&amp;secret='</span> + secret, (err, response, body) =&gt; &#123;</span><br><span class="line">          cb1(err, <span class="built_in">JSON</span>.parse(body).access_token, <span class="string">'from_server'</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第1.3步，如果是新从服务器取的access_token，则缓存起来，否则直接返回</span></span><br><span class="line">    steps1.push(<span class="function">(<span class="params">access_token, from_where, cb1</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (from_where === <span class="string">'from_cache'</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">' === 成功从缓存中读取access_token: '</span> + access_token + <span class="string">' ==='</span>)</span><br><span class="line">        cb1(<span class="literal">null</span>, access_token)</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (from_where === <span class="string">'from_server'</span>) &#123;</span><br><span class="line">        cache.set(<span class="string">'access_token'</span>, access_token, (err, success) =&gt; &#123;</span><br><span class="line">          <span class="keyword">if</span> (!err &amp;&amp; success) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">' === 缓存已过期，从服务器中读取access_token: '</span> + access_token + <span class="string">' ==='</span>)</span><br><span class="line">            cb1(<span class="literal">null</span>, access_token)</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            cb1(err || <span class="string">'cache设置access_token时，出现未知错误'</span>)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cb1(<span class="string">'1.3获取from_where时，from_where值为空'</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    waterfall(steps1, (err, access_token) =&gt; &#123;</span><br><span class="line">      cb(err, access_token)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第二步，获取ticket</span></span><br><span class="line">  steps.push(<span class="function">(<span class="params">access_token, cb</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> steps1 = []</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第2.1步，从缓存中读取ticket</span></span><br><span class="line">    steps1.push(<span class="function">(<span class="params">cb1</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> ticket = cache.get(<span class="string">'ticket'</span>, (err, ticket) =&gt; &#123;</span><br><span class="line">        cb1(err, ticket)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第2.2步，缓存中有ticket则直接返回，如果没有，则从服务器中读取ticket</span></span><br><span class="line">    steps1.push(<span class="function">(<span class="params">ticket, cb1</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (ticket) &#123;</span><br><span class="line">        cb1(<span class="literal">null</span>, ticket, <span class="string">'from_cache'</span>)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        request(<span class="string">'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='</span> + access_token + <span class="string">'&amp;type=jsapi'</span>, (err, response, body) =&gt; &#123;</span><br><span class="line">          cb1(err, <span class="built_in">JSON</span>.parse(body).ticket, <span class="string">'from_server'</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第2.3步，如果新从服务器取的ticket，则缓存起来，否则直接返回</span></span><br><span class="line">    steps1.push(<span class="function">(<span class="params">ticket, from_where, cb1</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (from_where === <span class="string">'from_cache'</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">' === 成功从缓存中读取ticket: '</span> + ticket + <span class="string">' ==='</span>)</span><br><span class="line">        cb1(<span class="literal">null</span>, ticket)</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (from_where === <span class="string">'from_server'</span>) &#123;</span><br><span class="line">        cache.set(<span class="string">'ticket'</span>, ticket, (err, success) =&gt; &#123;</span><br><span class="line">          <span class="keyword">if</span> (!err &amp;&amp; success) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">' === 缓存已过期，从服务器中读取ticket: '</span> + ticket + <span class="string">' ==='</span>);</span><br><span class="line">            cb1(<span class="literal">null</span>, ticket)</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            cb1(err || <span class="string">'cache设置ticket时，出现未知错误'</span>)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cb1(<span class="string">'2.3获取from_where时，from_where值为空'</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    waterfall(steps1, (err, ticket) =&gt; &#123;</span><br><span class="line">      cb(err, ticket)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第三步，生成签名</span></span><br><span class="line">  steps.push(<span class="function">(<span class="params">ticket, cb</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> jsapi_ticket = ticket</span><br><span class="line">    <span class="keyword">let</span> nonce_str = <span class="string">'123456'</span></span><br><span class="line">    <span class="keyword">let</span> timestamp = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()</span><br><span class="line">    <span class="keyword">let</span> url = req.query.url</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> str = <span class="string">'jsapi_ticket='</span> + jsapi_ticket + <span class="string">'&amp;noncestr='</span> + nonce_str + <span class="string">'&amp;timestamp='</span> + timestamp + <span class="string">'&amp;url='</span> + url</span><br><span class="line">    <span class="keyword">let</span> signature = sha1(str)</span><br><span class="line"></span><br><span class="line">    cb(<span class="literal">null</span>, &#123;</span><br><span class="line">      appId: appid,</span><br><span class="line">      timestamp: timestamp,</span><br><span class="line">      nonceStr: nonce_str,</span><br><span class="line">      signature: signature,</span><br><span class="line">      ticket: ticket</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  waterfall(steps, (err, data) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">      res.send(&#123;<span class="attr">status</span>: <span class="string">'error'</span>, <span class="attr">data</span>: err&#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      res.send(&#123;<span class="attr">status</span>: <span class="string">'success'</span>, <span class="attr">data</span>: data&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.use(<span class="string">'/wxJssdk/public'</span>, express.static(<span class="string">'public'</span>))</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">80</span>, err =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span>(!err) <span class="built_in">console</span>.log(<span class="string">'connect succeed'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T09:35:41.000Z" itemprop="dateUpdated">2019-06-29 17:35:41</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/07/13/wechat-jssdk/" target="_blank" rel="external">https://blog.afacat.com/2017/07/13/wechat-jssdk/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDK/">SDK</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2017/07/13/wechat-jssdk/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/06/28/web-server/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Config web server with Nginx in Linux for beginner</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/01/03/config-ThinkPHP-support-memcache-in-php5/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">config ThinkPHP support memcache in php5</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2017/07/13/wechat-jssdk/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aUW7CMBAFQO5/6fQAlPS9NVTCHn9FEGJPKm29u3484nE9jedvX92fPLn91XBgYGB8LeO6Hff3vGLcz3L/apJ5f5kRAwPjAEYSCtvFJUE2eVr0BAwMDIzy0W1gxcDAwPhcwG0XkW8EMTAwMGZJ7KwYd79lnCXPGBgYpzHyqvv/X3+kv4GBgfFVjKscK6W3PFzWq8LAwNia8a4ENb/O25btejAwME5mJOll3gxICmfJJ0VfFAMDY1NGW+K/X3RyFKMNxFHAxcDA2IIxC5or9ySFvDpYY2BgHMBINnNJiS3ZPiaFuXZGDAyMvRl5+Fs/+jDbOA4PWGBgYGzHyCeYlf7Xw2uyKgwMjL0ZK+3GfLJ8oe0xDgwMjL0Zn2s05m3RWUfy5X8MDAyMTRltWptvBNuSWVvsw8DAOIGxctChfTXXaBTbTQwMjCMZ7z1y0b6CopuBgYGxNaMtgSXHJtY3gvXaMDAwtmbkbYDZ9PmBsPb+l38TDAyMrRltQX+lxLbyzD/OjGBgYGzNmE3TpsezVDnakmJgYBzJSApqK22Dui44OzmCgYHx5YxZQ7ENiCtBdrgpxMDA2IgxC3P5Q1d+lR9Kw8DAOIGxVOSKG5x5AtymyhgYGOcw2sA3aze2DdEiDcbAwMAor/MA2n7+5oCLgYFxACNPetcbllF/AwMDY2tGksS2d66w60NmGBgYWzNm+66VzkPbFk2KgBgYGJsyfgDh0YmH0Q6bawAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

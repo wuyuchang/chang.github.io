@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99837978-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<!-- End Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>面向对象JS基础讲解: JavaScript原型 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Front-End,JavaScript,prototype">
+    <meta name="description" content="什么是面向对象？面向对象是一种思想！（废话）。 面向对象可以把程序中的关键模块都视为对象，而模块拥有属性及方法。这样我们如果把一些属性及方法封装起来，日后使用将非常方便，也可以避免繁琐重复的工作。接下来将为大家讲解在JS中面向对象的实现。 工厂模式工厂模式是软件工程领域一种广为人知的设计模式，而由于在ECMAScript中无法创建类，因此用函数封装以特定接口创建对象。其实现方法非常简单，也就是在函">
+<meta name="keywords" content="Front-End,JavaScript,prototype">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向对象JS基础讲解: JavaScript原型">
+<meta property="og:url" content="https://blog.afacat.com/2014/08/12/JavaScript原型/index.html">
+<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:description" content="什么是面向对象？面向对象是一种思想！（废话）。 面向对象可以把程序中的关键模块都视为对象，而模块拥有属性及方法。这样我们如果把一些属性及方法封装起来，日后使用将非常方便，也可以避免繁琐重复的工作。接下来将为大家讲解在JS中面向对象的实现。 工厂模式工厂模式是软件工程领域一种广为人知的设计模式，而由于在ECMAScript中无法创建类，因此用函数封装以特定接口创建对象。其实现方法非常简单，也就是在函">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-29T08:36:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面向对象JS基础讲解: JavaScript原型">
+<meta name="twitter:description" content="什么是面向对象？面向对象是一种思想！（废话）。 面向对象可以把程序中的关键模块都视为对象，而模块拥有属性及方法。这样我们如果把一些属性及方法封装起来，日后使用将非常方便，也可以避免繁琐重复的工作。接下来将为大家讲解在JS中面向对象的实现。 工厂模式工厂模式是软件工程领域一种广为人知的设计模式，而由于在ECMAScript中无法创建类，因此用函数封装以特定接口创建对象。其实现方法非常简单，也就是在函">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Yuchang Wu</h5>
+          <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wuyuchang" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/yuchang.wu.73" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">面向对象JS基础讲解: JavaScript原型</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">面向对象JS基础讲解: JavaScript原型</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2014-08-12T15:33:00.000Z" itemprop="datePublished" class="page-time">
+  2014-08-12
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#工厂模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">工厂模式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#构造函数模式"><span class="post-toc-number">2.</span> <span class="post-toc-text">构造函数模式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原型模式"><span class="post-toc-number">3.</span> <span class="post-toc-text">原型模式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#混合模式（原型模式-构造函数模式）"><span class="post-toc-number">4.</span> <span class="post-toc-text">混合模式（原型模式  + 构造函数模式）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#动态原型模式"><span class="post-toc-number">5.</span> <span class="post-toc-text">动态原型模式</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JavaScript原型"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">面向对象JS基础讲解: JavaScript原型</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2014-08-12 23:33:00" datetime="2014-08-12T15:33:00.000Z"  itemprop="datePublished">2014-08-12</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>什么是面向对象？面向对象是一种思想！（废话）。</p>
+<p>面向对象可以把程序中的关键模块都视为对象，而模块拥有属性及方法。这样我们如果把一些属性及方法封装起来，日后使用将非常方便，也可以避免繁琐重复的工作。接下来将为大家讲解在JS中面向对象的实现。</p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>工厂模式是软件工程领域一种广为人知的设计模式，而由于在ECMAScript中无法创建类，因此用函数封装以特定接口创建对象。其实现方法非常简单，也就是<strong>在函数内创建一个对象，给对象赋予属性及方法再将对象返回即可</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createBlog</span>(<span class="params">name, url</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">    o.name = name;</span><br><span class="line">    o.url = url;</span><br><span class="line">    o.sayUrl= <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.url);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> blog1 = createBlog(<span class="string">'wuyuchang'</span>, <span class="string">'http://www.cnblogs.com/wuyuchang/'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到工厂模式的实现方法非常简单，解决了创建多个相似对象的问题，但是<strong>工厂模式却无从识别对象的类型</strong>，因为全部都是<code>Object</code>，不像<code>Date</code>、<code>Array</code>等，因此出现了构造函数模式。</p>
+<h2 id="构造函数模式"><a href="#构造函数模式" class="headerlink" title="构造函数模式"></a>构造函数模式</h2><p>ECMAScript中构造函数可以创建特定类型的对象，类似于<code>Array</code>、<code>Date</code>等原生JS的对象。其实现方法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Blog</span>(<span class="params">name, url</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.url = url;</span><br><span class="line">    <span class="keyword">this</span>.alertUrl = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.url);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> blog = <span class="keyword">new</span> Blog(<span class="string">'wuyuchang'</span>, <span class="string">'http://www.cnblogs.com/wuyuchang/'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(blog <span class="keyword">instanceof</span> Blog);    <span class="comment">// true， 判断blog是否是Blog的实例，即解决了工厂模式中不能</span></span><br></pre></td></tr></table></figure>
+
+<p>这个例子与工厂模式中除了函数名不同以外，细心的童鞋应该发现许多不同之处：</p>
+<ul>
+<li>函数名首写字母为大写　　（虽然标准没有严格规定首写字母为大写，但按照惯例，构造函数的首写字母用大写</li>
+<li>没有显示的创建对象</li>
+<li>直接将属性和方法赋值给了this对象</li>
+<li>没有<code>return</code>语句</li>
+<li>使用<code>new</code>创建对象</li>
+<li>能够识别对象（这正是构造函数模式胜于工厂模式的地方）</li>
+</ul>
+<p><strong>构造函数虽然好用，但也并非没有缺点，使用构造函数的最大的问题在于每次创建实例的时候都要重新创建一次方法（理论上每次创建对象的时候对象的属性均不同，而对象的方法是相同的），然而创建两次完全相同的方法是没有必要的</strong>，因此，我们可以将函数移到对象外面（也许有些童鞋已经看出缺点，嘘！）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Blog</span>(<span class="params">name, url</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.url = url;</span><br><span class="line">    <span class="keyword">this</span>.alertUrl = alertUrl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">alertUrl</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>.url);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> blog = <span class="keyword">new</span> Blog(<span class="string">'wuyuchang'</span>, <span class="string">'http://www.cnblogs.com/wuyuchang/'</span>),</span><br><span class="line">    blog2 = <span class="keyword">new</span> Blog(<span class="string">'cnblogs'</span>, <span class="string">'http://www.cnblogs.com/'</span>);</span><br><span class="line">blog.alertUrl();    <span class="comment">// http://www.cnblogs.com/wuyuchang/</span></span><br><span class="line">blog2.alertUrl();    <span class="comment">// http://www.cnblogs.com/</span></span><br></pre></td></tr></table></figure>
+
+<p>我们将<code>alertUrl</code>设置成全局函数，这样一来blog与blog2访问的都是同一个函数，可是问题又来了，在全局作用域中定义了一个实际只想让Blog使用的函数，显示让全局作用域有些名副其实，更让人无法接受的是在全局作用域中定义了许多仅供特定对象使用的方法，浪费空间不说，显然失去了面向对象封装性了，因此可以通过原型来解决此问题。</p>
+<h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><p>我们创建的每个函数都有<code>prototype</code>（原型）属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法。使用原型对象的好处就是可以让所有对象实例共享它所包含的属性及方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Blog</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Blog.prototype.name = <span class="string">'wuyuchang'</span>;</span><br><span class="line">Blog.prototype.url = <span class="string">'http://www.cnblogs.com/wuyuchang/'</span>;</span><br><span class="line">Blog.prototype.friend = [<span class="string">'fr1'</span>, <span class="string">'fr2'</span>, <span class="string">'fr3'</span>, <span class="string">'fr4'</span>];</span><br><span class="line">Blog.prototype.alertInfo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>.name + <span class="keyword">this</span>.url + <span class="keyword">this</span>.friend );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 以下为测试代码</span></span><br><span class="line"><span class="keyword">var</span> blog = <span class="keyword">new</span> Blog(),</span><br><span class="line">    blog2 = <span class="keyword">new</span> Blog();</span><br><span class="line">blog.alertInfo();    <span class="comment">// wuyuchanghttp://www.cnblogs.com/wuyuchang/fr1,fr2,fr3,fr4</span></span><br><span class="line">blog2.alertInfo();    <span class="comment">// wuyuchanghttp://www.cnblogs.com/wuyuchang/fr1,fr2,fr3,fr4</span></span><br><span class="line"></span><br><span class="line">blog.name = <span class="string">'wyc1'</span>;</span><br><span class="line">blog.url = <span class="string">'http://***.com'</span>;</span><br><span class="line">blog.friend.pop();</span><br><span class="line">blog2.name = <span class="string">'wyc2'</span>;</span><br><span class="line">blog2.url = <span class="string">'http://+++.com'</span>;</span><br><span class="line">blog.alertInfo();    <span class="comment">// wyc1http://***.comfr1,fr2,fr3</span></span><br><span class="line">blog2.alertInfo();    <span class="comment">// wyc2http://+++.comfr1,fr2,fr3</span></span><br></pre></td></tr></table></figure>
+
+<p>原型模式也不是没有缺点，首先，它省略了构造函数传递初始化参数这一环节，结果所有实例在默认情况下都取得了相同的属性值，这样非常不方便，但这还是不是原型的最大问题，原型模式的最大问题在于共享的本性所导致的，由于共享，因此因此一个实例修改了引用，另一个也随之更改了引用。因此我们通常不单独使用原型，而是结合原型模式与构造函数模式。</p>
+<h2 id="混合模式（原型模式-构造函数模式）"><a href="#混合模式（原型模式-构造函数模式）" class="headerlink" title="混合模式（原型模式  + 构造函数模式）"></a>混合模式（原型模式  + 构造函数模式）</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Blog</span>(<span class="params">name, url, friend</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.url = url;</span><br><span class="line">    <span class="keyword">this</span>.friend = friend;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Blog.prototype.alertInfo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>.name + <span class="keyword">this</span>.url + <span class="keyword">this</span>.friend);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> blog = <span class="keyword">new</span> Blog(<span class="string">'wuyuchang'</span>, <span class="string">'http://www.cnblogs.com/wuyuchang/'</span>, [<span class="string">'fr1'</span>, <span class="string">'fr2'</span>, <span class="string">'fr3'</span>]),</span><br><span class="line">    blog2 = <span class="keyword">new</span> Blog(<span class="string">'wyc'</span>, <span class="string">'http://**.com'</span>, [<span class="string">'a'</span>, <span class="string">'b'</span>]);</span><br><span class="line"></span><br><span class="line">blog.friend.pop();</span><br><span class="line">blog.alertInfo();    <span class="comment">// wuyuchanghttp://www.cnblogs.com/wuyuchang/fr1,fr2</span></span><br><span class="line">blog2.alertInfo();    <span class="comment">// wychttp://**.coma,b</span></span><br></pre></td></tr></table></figure>
+
+<p>混合模式中构造函数模式用于定义实例属性，而原型模式用于定义方法和共享属性。每个实例都会有自己的一份实例属性，但同时又共享着方法，最大限度的节省了内存。另外这种模式还支持传递初始参数。优点甚多。这种模式在ECMAScript中是使用最广泛、认同度最高的一种创建自定义对象的方法。</p>
+<h2 id="动态原型模式"><a href="#动态原型模式" class="headerlink" title="动态原型模式"></a>动态原型模式</h2><p>动态原型模式将所有信息封装在了构造函数中，而通过构造函数中初始化原型（仅第一个对象实例化时初始化原型），这个可以通过判断该方法是否有效而选择是否需要初始化原型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Blog</span>(<span class="params">name, url</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.url = url;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span>.alertInfo != <span class="string">'function'</span>) &#123;</span><br><span class="line">        <span class="comment">// 这段代码只执行了一次</span></span><br><span class="line">        alert(<span class="string">'exe time'</span>);</span><br><span class="line">        Blog.prototype.alertInfo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            alert(thia.name + <span class="keyword">this</span>.url);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> blog = <span class="keyword">new</span> Blog(<span class="string">'wuyuchang'</span>, <span class="string">'http://www.cnblogs.com/wuyuchang'</span>),</span><br><span class="line">    blog2 = <span class="keyword">new</span> Blog(<span class="string">'wyc'</span>, <span class="string">'http:***.com'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到上面的例子中只弹出一次窗，’exe time’，即当blog初始化时，这样做blog2就不在需要初始化原型，对于使用这种模式创建对象，可以算是perfect了。</p>
+<p>此博文参考《JavaScript高级程序设计》第3版，但语言都经过简化，例子也重写过，如果有什么不懂的地方请留言回复，作者将更新博客。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-29T08:36:59.000Z" itemprop="dateUpdated">2019-06-29 16:36:59</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2014/08/12/JavaScript原型/" target="_blank" rel="external">https://blog.afacat.com/2014/08/12/JavaScript原型/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://blog.afacat.com">
+            <img src="/img/avatar.jpg" alt="Yuchang Wu">
+            Yuchang Wu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Front-End/">Front-End</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/prototype/">prototype</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/08/12/JavaScript原型/&title=《面向对象JS基础讲解: JavaScript原型》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/08/12/JavaScript原型/&title=《面向对象JS基础讲解: JavaScript原型》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/08/12/JavaScript原型/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《面向对象JS基础讲解: JavaScript原型》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/08/12/JavaScript原型/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/08/12/JavaScript原型/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2014/08/13/让IE6支持inline-block/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">让IE6/7支持inline-block</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2014/08/11/DOM2级事件兼容/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">DOM2级事件兼容</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'wuyuchang';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2014/08/12/JavaScript原型/&title=《面向对象JS基础讲解: JavaScript原型》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2014/08/12/JavaScript原型/&title=《面向对象JS基础讲解: JavaScript原型》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2014/08/12/JavaScript原型/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《面向对象JS基础讲解: JavaScript原型》 — Yuchang Wu's blog&url=https://blog.afacat.com/2014/08/12/JavaScript原型/&via=https://blog.afacat.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2014/08/12/JavaScript原型/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACFklEQVR42u3aQYrDMAwF0N7/0p1todT9kpOBys+rEJLYLwshyX484vF8Ge93Xu9/en795epbzYGBgfGzjOdyrCeoLvfTk+9z5WvDwMA4h7H/6RyWv5usDQMDA2N9nUyfB00MDAyMOxjVcJmDMTAwMHpFbNImW098X7DGwMCYzci77v9/fcv+BgYGxk8xnsWxTs6q25x5+P6yKgwMjNGMPMDtbEBWi9XmejAwMIYy8tZYtUDthdr8TvQXMTAwRjCuhfXu9Fp+X34QBgbGaEZeXuYpXbUMzheKgYFxDuOCOrgVXtdJZPJTMDAwMPZD6lUtuSgRxMDAGMpIgmavfXZHUfrxCxgYGMcwqsEuL2h3AFFrDwMD40hGFZaXoDsdwcvKVwwMjB9k7G9V3hJGq2dGMDAwRjPyZC4feXFbTUabGS4GBsYIRjWC9QLlTkL5yLNIDAyM0YykfZbz8lC7c5gMAwNjNmM/CObUanFbPWqGgYFxJqN6GGI/3awG6C+7HBgYGOMYvTZZjs8L1GbgxsDAOICRT9xbXDWtLPMwMDCGMnobk9Vm2VVhOkoKMTAwxjGqwbFXcPZ+QbX0xcDAmM2oBtleo3/nAFk0LwYGxgGMXpFZ3W7cT/WiLUwMDAyMi8Lu+t3yNioGBgZGUEzmyV91odH3MTAwDmD0wmKeIFYD9421OAYGxg8yrj0YccdBjWoTEAMDYxDjDxyoiYeroPQ3AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
