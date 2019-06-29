@@ -34,18 +34,18 @@ ga('send', 'pageview');
 <meta name="keywords" content="Linux,Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Config web server with Nginx in Linux for beginner">
-<meta property="og:url" content="https://blog.afacat.com/2019/06/28/web-server/index.html">
+<meta property="og:url" content="https://blog.afacat.com/2017/05/23/web-server/index.html">
 <meta property="og:site_name" content="Yuchang Wu&#39;s blog">
 <meta property="og:description" content="We use Debian to finish the demo.Both of below are basic command line, If you are not familiar with command line in Linux, you should learn it first. Update &amp;amp; Upgrade12$ apt-get update$ apt-get up">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://blog.afacat.com/2019/06/28/web-server/default_server.png">
-<meta property="og:image" content="https://blog.afacat.com/2019/06/28/web-server/response_header.png">
-<meta property="og:image" content="https://blog.afacat.com/2019/06/28/web-server/response_header_safe.png">
-<meta property="og:updated_time" content="2019-06-28T02:45:15.000Z">
+<meta property="og:image" content="https://blog.afacat.com/2017/05/23/web-server/default_server.png">
+<meta property="og:image" content="https://blog.afacat.com/2017/05/23/web-server/response_header.png">
+<meta property="og:image" content="https://blog.afacat.com/2017/05/23/web-server/response_header_safe.png">
+<meta property="og:updated_time" content="2019-06-29T12:26:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Config web server with Nginx in Linux for beginner">
 <meta name="twitter:description" content="We use Debian to finish the demo.Both of below are basic command line, If you are not familiar with command line in Linux, you should learn it first. Update &amp;amp; Upgrade12$ apt-get update$ apt-get up">
-<meta name="twitter:image" content="https://blog.afacat.com/2019/06/28/web-server/default_server.png">
+<meta name="twitter:image" content="https://blog.afacat.com/2017/05/23/web-server/default_server.png">
     
         <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
     
@@ -151,8 +151,8 @@ ga('send', 'pageview');
         <h1 class="title">Config web server with Nginx in Linux for beginner</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-06-28T02:45:15.000Z" itemprop="datePublished" class="page-time">
-  2019-06-28
+                <time datetime="2017-05-23T07:16:00.000Z" itemprop="datePublished" class="page-time">
+  2017-05-23
 </time>
 
 
@@ -182,7 +182,7 @@ ga('send', 'pageview');
     <div class="post-card">
         <h1 class="post-card-title">Config web server with Nginx in Linux for beginner</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-06-28 10:45:15" datetime="2019-06-28T02:45:15.000Z"  itemprop="datePublished">2019-06-28</time>
+            <time class="post-time" title="2017-05-23 15:16:00" datetime="2017-05-23T07:16:00.000Z"  itemprop="datePublished">2017-05-23</time>
 
             
 
@@ -320,7 +320,7 @@ Let’s look at the file via vim.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/nginx</span><br><span class="line">$ vim nginx.conf</span><br></pre></td></tr></table></figure>
 
 <p>go to 35 line through <code>35 G</code></p>
-<img src="/2019/06/28/web-server/default_server.png" title="NGINX default server">
+<img src="/2017/05/23/web-server/default_server.png" title="NGINX default server">
 
 <p>We drop the unnecessary code, and simplify the code and explain the meaning of the code to below:</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;                  <span class="comment"># listening the port, so you access the server with 80 port, this is the default port, so you can access the web server without append :80</span></span><br><span class="line">    <span class="attribute">server_name</span>  localhost;           <span class="comment"># domain</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;                      <span class="comment"># route, NGINX will receive the URL path, and adapt it with the route, if the path is same with route, then go into the brace block</span></span><br><span class="line">        <span class="attribute">root</span>   html;                  <span class="comment"># basic directory where web server in, in this demo, it is in ./html</span></span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;  <span class="comment"># access it without append the file name if it is index.html or index.htm</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -336,7 +336,7 @@ Let’s look at the file via vim.</p>
 
 <p>Now, you can access www. <em><a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a></em></p>
 <h2 id="change-response-header"><a href="#change-response-header" class="headerlink" title="change response header"></a>change response header</h2><p>We already install the headers-more-nginx-module, so we can configure the response header. Before we configure it, let’s open the developers-tool in google-chrome, and look at the network request, we can get the response headers:</p>
-<img src="/2019/06/28/web-server/response_header.png" title="response headers">
+<img src="/2017/05/23/web-server/response_header.png" title="response headers">
 <p>For some security reason, we don’t want to show Server information to client, so we can add the configuration to <em>hello_world.conf</em>.</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">more_set_headers</span> <span class="string">"Server"</span> <span class="string">""</span>; <span class="comment"># add this</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">  <span class="attribute">server_name</span> localhost;</span><br><span class="line">  <span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span> /home/www;</span><br><span class="line">    <span class="attribute">index</span> index.html index.htm;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -344,7 +344,7 @@ Let’s look at the file via vim.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -s reload</span><br></pre></td></tr></table></figure>
 
 <p>Then we reload the page in browser, and open the network, the Server information already drop.</p>
-<img src="/2019/06/28/web-server/response_header_safe.png" title="response headers without server information">
+<img src="/2017/05/23/web-server/response_header_safe.png" title="response headers without server information">
 
 <p>Now, your nginx server is more safer than before you add the server information into response headers.</p>
 <p>For more detail about the headers-more-nginx-module, see: <a href="https://github.com/openresty/headers-more-nginx-module" target="_blank" rel="noopener">https://github.com/openresty/headers-more-nginx-module</a></p>
@@ -362,12 +362,12 @@ Let’s look at the file via vim.</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-06-28T02:45:15.000Z" itemprop="dateUpdated">2019-06-28 10:45:15</time>
+    最后更新时间：<time datetime="2019-06-29T12:26:00.000Z" itemprop="dateUpdated">2019-06-29 20:26:00</time>
 </span><br>
 
 
         
-        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2019/06/28/web-server/" target="_blank" rel="external">https://blog.afacat.com/2019/06/28/web-server/</a>
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/05/23/web-server/" target="_blank" rel="external">https://blog.afacat.com/2017/05/23/web-server/</a>
         
     </div>
     
@@ -398,7 +398,7 @@ Let’s look at the file via vim.</p>
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2019/06/28/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/05/23/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -408,22 +408,22 @@ Let’s look at the file via vim.</p>
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2019/06/28/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/05/23/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2019/06/28/web-server/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2017/05/23/web-server/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&url=https://blog.afacat.com/2019/06/28/web-server/&via=https://blog.afacat.com" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&url=https://blog.afacat.com/2017/05/23/web-server/&via=https://blog.afacat.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2019/06/28/web-server/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2017/05/23/web-server/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -443,14 +443,21 @@ Let’s look at the file via vim.</p>
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/13/wechat-jssdk/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">微信JSSDK测试接口的Node实现</h4>
+      </a>
+    </div>
   
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2017/07/13/wechat-jssdk/" id="post-next" class="post-nav-link">
+      <a href="/2017/01/03/config-ThinkPHP-support-memcache-in-php5/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">微信JSSDK测试接口的Node实现</h4>
+        <h4 class="title">config ThinkPHP support memcache in php5</h4>
       </a>
     </div>
   
@@ -559,7 +566,7 @@ Let’s look at the file via vim.</p>
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2019/06/28/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/05/23/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -569,22 +576,22 @@ Let’s look at the file via vim.</p>
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2019/06/28/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/05/23/web-server/&title=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2019/06/28/web-server/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.afacat.com/2017/05/23/web-server/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&url=https://blog.afacat.com/2019/06/28/web-server/&via=https://blog.afacat.com" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Config web server with Nginx in Linux for beginner》 — Yuchang Wu's blog&url=https://blog.afacat.com/2017/05/23/web-server/&via=https://blog.afacat.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2019/06/28/web-server/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.afacat.com/2017/05/23/web-server/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -595,7 +602,7 @@ Let’s look at the file via vim.</p>
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3ay47CMAwFUP7/p5ntSCM698aA1OR0haCPnC6MHfvxiI/nr+PvN7+/f3X+9Z3bqxYPDAyM2zKel0e+6He9iOtzXlIxMDAOYCShsF1cHmSv73Z9BwwMDIw8gcuDZv4KMDAwMCYBt03ykoViYGBgXDOSIjYJuHkSef30D9biGBgYN2Tku+7f//yR/gYGBsatGM/ymBSlecuzXhUGBsbWjLUGZJtE5ingpCGKgYFxDmNSmubDGXmDoUgWMTAwDmB8YvBr0s6s26gYGBgHMNoxr7Zhmb+IPNAXF2NgYGzByEcr8gK1DcH5CMg//xsYGBjbMZLltuFykjguLh0DA+MAxmShk2GvydP/yXMxMDC2ZuSPbEcu2rZEfU8MDIztGG3x2QbZPE3My+ais4GBgbEFo92gb0e7JiMa9bAFBgbGpoy1UNuGzrasrdsJGBgYBzDWWgJrgXK+6Rb9P2BgYGzEyIvDdqN/Uty2TQgMDIxzGGtxbLIl9+Y2AwYGxgGMNtjNy91koQkbAwPjNEZy07UAOkkQi4EwDAyMYxj5gtZqybxkfUMtjoGBcXPGszza4rbdyGtfKwYGxgmMtf7g5Kq1Nue8hMbAwLg7Iwmy7ed5EVsnoBgYGAcw1grOdgijHdQoBjIwMDAwBgXkWgD9asDFwMDYlJFsn7XnJA3Ll/fHwMA4gLGW5OW/rqV9eTsBAwNjb8baiEM+VLG2iLapiYGBsSnjB6Fwk2FFTN/wAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3awa7CMAxE0f7/T4ctEiSd8RSkODcr9ChtThd+duzrktf4WO9/X1+v3Nn9VXHBgAFjW8ZYLuUafbvre65hN0+EAQPGAQwlFK6v14Omsml9bzBgwIAxu0YJlEpghQEDBozfMfTkz8XDgAEDRlLErm+0Tgpn3ybFMwwYMM5h6Kfu///8k/4GDBgwtmIMc+mh0w2XI1gwYMDozcgL1OTQLQm4MGDAOIfhFqtJqHXLWuVA0D7ngwEDxoYM98e1MYtaO9Mdy4ABA8ZpjLyslR4pHOoZLUwYMGAcwFCGG549mHMTRD3phAEDRieGHiifCqZ68qePccCAAaM3oxiVhSuTVLI29gEDBoyujGToIT9KSwLul9QQBgwYrRluk1If83qqdXoT4mHAgNGakYx/JfVjcjxnF7EwYMBoxHAPwpIgq7ysWjsBBgwYvRl6Qra+xn01tUO3YtiFAQPGhoxktCspgJPexc3/ChgwYLRjuIVlraCtjXe4LwsGDBi9GeubKp+T0S63oJ0+CwYMGMcwasFXSTeTBFE62oMBA8aRjFoTsVamPnB/GDBgNGUMc7mpnjt4oYT7aVIIAwaMpgy3S6g8QD9cc4c8jLNDGDBgtGMoIdLdSl7EuuUuDBgwTmC4ow+1dqPdWdV3BQMGDBhCkZkEUL1INhoDMGDAgCGkknrKqDcspy8FBgwYBzDcbekBMUn7jCEzGDBgtGbkIxTuA5LhsKiRCQMGjP0YL3/4apjoOLy1AAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
