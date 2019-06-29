@@ -23,7 +23,7 @@ ga('send', 'pageview');
     
     
     
-    <title>微信JSSDK测试接口的Node实现 | Yuchang Wu&#39;s blog | Don&#39;t forget your original intention</title>
+    <title>微信JSSDK测试接口的Node实现 | 阿法猫 | 不忘初心，方得始终</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
@@ -35,7 +35,7 @@ ga('send', 'pageview');
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信JSSDK测试接口的Node实现">
 <meta property="og:url" content="https://blog.afacat.com/2017/07/13/wechat-jssdk/index.html">
-<meta property="og:site_name" content="Yuchang Wu&#39;s blog">
+<meta property="og:site_name" content="阿法猫">
 <meta property="og:description" content="做了一个网站，放到线上，用微信打开，点击分享，可是分享后发给朋友的链接卡片是微信默认自带的，如下：   这标题，描述以及图片是默认自带的，丑不说，分享给别人还以为是盗号网站呢，而接入微信的JSSDK后，分享可以自定义内容，如下：   我承认，虽然这分享的标题和内容也并不正经，但这不妨碍我表达**我们可以通过微信JSSDK定义分享内容**，接下来我们将一步一步从零实现JSSDK从后端Node.js的">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://blog.afacat.com/2017/07/13/wechat-jssdk/default_share.png">
@@ -46,7 +46,7 @@ ga('send', 'pageview');
 <meta name="twitter:description" content="做了一个网站，放到线上，用微信打开，点击分享，可是分享后发给朋友的链接卡片是微信默认自带的，如下：   这标题，描述以及图片是默认自带的，丑不说，分享给别人还以为是盗号网站呢，而接入微信的JSSDK后，分享可以自定义内容，如下：   我承认，虽然这分享的标题和内容也并不正经，但这不妨碍我表达**我们可以通过微信JSSDK定义分享内容**，接下来我们将一步一步从零实现JSSDK从后端Node.js的">
 <meta name="twitter:image" content="https://blog.afacat.com/2017/07/13/wechat-jssdk/default_share.png">
     
-        <link rel="alternate" type="application/atom+xml" title="Yuchang Wu&#39;s blog" href="/atom.xml">
+        <link rel="alternate" type="application/atom+xml" title="阿法猫" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="/css/style.css?v=1.7.2">
@@ -71,7 +71,7 @@ ga('send', 'pageview');
           <img src="/img/avatar.jpg">
         </a>
         <hgroup class="introduce">
-          <h5 class="nickname">Yuchang Wu</h5>
+          <h5 class="nickname">阿法猫</h5>
           <a href="mailto:mr.wuyuchang@gmail.com" title="mr.wuyuchang@gmail.com" class="mail">mr.wuyuchang@gmail.com</a>
         </hgroup>
       </div>
@@ -82,21 +82,21 @@ ga('send', 'pageview');
             <li class="waves-block waves-effect">
               <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
-                Home
+                首页
               </a>
             </li>
         
             <li class="waves-block waves-effect">
               <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
-                Archives
+                归档
               </a>
             </li>
         
             <li class="waves-block waves-effect">
               <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
-                Tags
+                标签
               </a>
             </li>
         
@@ -318,8 +318,8 @@ ga('send', 'pageview');
     
     <footer>
         <a href="https://blog.afacat.com">
-            <img src="/img/avatar.jpg" alt="Yuchang Wu">
-            Yuchang Wu
+            <img src="/img/avatar.jpg" alt="阿法猫">
+            阿法猫
         </a>
     </footer>
 </blockquote>
@@ -343,7 +343,7 @@ ga('send', 'pageview');
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — 阿法猫&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -353,7 +353,7 @@ ga('send', 'pageview');
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — 阿法猫&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -363,7 +363,7 @@ ga('send', 'pageview');
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&via=https://blog.afacat.com" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《微信JSSDK测试接口的Node实现》 — 阿法猫&url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&via=https://blog.afacat.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -486,7 +486,7 @@ ga('send', 'pageview');
         </p>
     </div>
     <div class="bottom">
-        <p><span>Yuchang Wu &copy; 2015 - 2019</span>
+        <p><span>阿法猫 &copy; 2015 - 2019</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
@@ -504,7 +504,7 @@ ga('send', 'pageview');
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — 阿法猫&pic=https://blog.afacat.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -514,7 +514,7 @@ ga('send', 'pageview');
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&title=《微信JSSDK测试接口的Node实现》 — 阿法猫&source=this is a lazy boy, he keep nothing to here" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -524,7 +524,7 @@ ga('send', 'pageview');
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《微信JSSDK测试接口的Node实现》 — Yuchang Wu's blog&url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&via=https://blog.afacat.com" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《微信JSSDK测试接口的Node实现》 — 阿法猫&url=https://blog.afacat.com/2017/07/13/wechat-jssdk/&via=https://blog.afacat.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>

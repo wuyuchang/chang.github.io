@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Yuchang Wu&#39;s blog</title>
+  <title>阿法猫</title>
   
-  <subtitle>Don&#39;t forget your original intention</subtitle>
+  <subtitle>不忘初心，方得始终</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.afacat.com/"/>
@@ -10,7 +10,7 @@
   <id>https://blog.afacat.com/</id>
   
   <author>
-    <name>Yuchang Wu</name>
+    <name>阿法猫</name>
     
   </author>
   
